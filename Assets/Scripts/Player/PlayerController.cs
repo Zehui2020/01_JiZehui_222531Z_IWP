@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private MovementController movementController;
-    private CameraController camController;
+    private WeaponController weaponController;
 
     private bool isDisabled = false;
 
@@ -13,11 +13,10 @@ public class PlayerController : MonoBehaviour
     {
         // Get player components
         movementController = GetComponent<MovementController>();
-        camController = GetComponent<CameraController>();
+        weaponController = GetComponent<WeaponController>();
 
         // Initialize components
         movementController.IntializeMovementController();
-        camController.Initialise();
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -40,11 +39,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
             movementController.ToggleSprint();
 
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        if (Input.GetKeyDown(KeyCode.R))
+            weaponController.ReloadWeapon();
 
-        camController.ReadMouseAxisCommand(mouseX, mouseY);
-        camController.UpdateTransform();
+        if (Input.GetKeyDown(KeyCode.E))
+            weaponController.SwitchWeapon();
+
+        if (Input.GetMouseButtonDown(0))
+            weaponController.UseWeapon();
 
         movementController.UpdateAnimation();
 
