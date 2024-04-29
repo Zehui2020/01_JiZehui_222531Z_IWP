@@ -10,7 +10,6 @@ public class MovementData : ScriptableObject
     public float sprintSpeed;
 
     public float baseJumpForce;
-    public float jumpChargeMultiplier;
 
     public float airMultiplier;
     public float groundDrag;

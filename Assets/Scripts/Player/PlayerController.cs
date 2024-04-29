@@ -31,9 +31,6 @@ public class PlayerController : MonoBehaviour
 
         movementController.HandleMovment();
 
-        if (Input.GetKey(KeyCode.Space))
-            movementController.ChargeJump();
-
         if (Input.GetKeyUp(KeyCode.Space))
             movementController.HandleJump();
 

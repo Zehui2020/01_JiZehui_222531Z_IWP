@@ -13,7 +13,6 @@ public class MovementController : MonoBehaviour
 
     private Vector3 direction;
     public float stamina = 100;
-    private float jumpChargeTime = 0;
     private float moveSpeed;
     private bool useStamina = true;
     private bool canJump = true;
@@ -151,14 +150,6 @@ public class MovementController : MonoBehaviour
         // Update facing direction
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, targetAngle, 0), moveSpeed * Time.deltaTime);
-        //Debug.Log(submergence);
-    }
-
-    public void ChargeJump()
-    {
-        jumpChargeTime += Time.deltaTime;
-        if (jumpChargeTime > 1f)
-            jumpChargeTime = 1f;
     }
 
     public void HandleJump()
@@ -170,18 +161,16 @@ public class MovementController : MonoBehaviour
         isGrounded = false;
 
         // Calculate stamina cost
-        float totalJumpCost = (movementData.jumpStaminaCost * (jumpChargeTime * movementData.jumpChargeMultiplier)) * 0.75f;
+        float totalJumpCost = movementData.jumpStaminaCost * 0.75f;
         if (totalJumpCost < movementData.jumpStaminaCost)
             totalJumpCost = movementData.jumpStaminaCost;
         if (useStamina)
             stamina -= totalJumpCost;
 
         playerRB.velocity = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
-        playerRB.AddForce(transform.up * (movementData.baseJumpForce + jumpChargeTime * movementData.jumpChargeMultiplier), ForceMode.Impulse);
+        playerRB.AddForce(transform.up * movementData.baseJumpForce, ForceMode.Impulse);
 
         //animationController.ChangeAnimation(animationController.Jump, 0f, 0, 0);
-
-        jumpChargeTime = 0;
 
         //AudioManager.Instance.Play("Jump");
     }
