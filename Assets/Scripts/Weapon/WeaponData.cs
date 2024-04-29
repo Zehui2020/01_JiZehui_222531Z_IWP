@@ -9,7 +9,8 @@ public class WeaponData : ScriptableObject
     public WeaponType weaponType;
 
     public float damagePerBullet;
-    public float fireRate;
+    public float attackInterval;
     public float recoil;
     public float reloadDuration;
+    public int ammoPerMag;
 }
