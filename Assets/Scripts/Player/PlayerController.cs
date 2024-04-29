@@ -6,17 +6,21 @@ public class PlayerController : MonoBehaviour
 {
     private MovementController movementController;
     private WeaponController weaponController;
+    private AnimationManager animationManager;
 
     private bool isDisabled = false;
 
     private void Awake()
     {
         // Get player components
+        animationManager = GetComponent<AnimationManager>();
         movementController = GetComponent<MovementController>();
         weaponController = GetComponent<WeaponController>();
 
         // Initialize components
+        animationManager.InitAnimationManager();
         movementController.IntializeMovementController();
+        weaponController.InitWeaponController();
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -28,7 +32,12 @@ public class PlayerController : MonoBehaviour
         if (isDisabled)
             return;
 
-        movementController.HandleMovment();
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
+
+        movementController.HandleMovment(horizontal, vertical);
 
         if (Input.GetKeyUp(KeyCode.Space))
             movementController.HandleJump();
@@ -49,6 +58,7 @@ public class PlayerController : MonoBehaviour
             weaponController.UseWeapon();
 
         movementController.UpdateAnimation();
+        weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);
 
         transform.forward = Camera.main.transform.forward;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);

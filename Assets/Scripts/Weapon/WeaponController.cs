@@ -7,6 +7,14 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private List<Weapon> weapons;
     private int currentWeapon;
 
+    public void InitWeaponController()
+    {
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.InitWeapon();
+        }
+    }
+
     public void UseWeapon()
     {
         if (weapons.Count == 0)
@@ -33,5 +41,10 @@ public class WeaponController : MonoBehaviour
     public void ReplaceWeapon(Weapon newWeapon)
     {
         weapons[currentWeapon] = newWeapon;
+    }
+
+    public void UpdateCurrentWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
+    {
+        weapons[currentWeapon].UpdateWeapon(horizontal, vertical, mouseX, mouseY, isGrounded);
     }
 }

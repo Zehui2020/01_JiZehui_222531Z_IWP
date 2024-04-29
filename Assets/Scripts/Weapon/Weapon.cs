@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    private WeaponSway weaponSway;
     [SerializeField] private WeaponData weaponData;
     [SerializeField] private Transform firePoint;
     [SerializeField] private LayerMask targetLayer;
@@ -13,6 +14,16 @@ public class Weapon : MonoBehaviour
 
     private Coroutine useWeaponRoutine;
     private Coroutine reloadWeaponRoutine;
+
+    public void InitWeapon()
+    {
+        weaponSway = GetComponent<WeaponSway>();
+    }
+
+    public void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
+    {
+        weaponSway.UpdateWeaponSway(horizontal, vertical, mouseX, mouseY, isGrounded);
+    }
 
     public void OnUse()
     {

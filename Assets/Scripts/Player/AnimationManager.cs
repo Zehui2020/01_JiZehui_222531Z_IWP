@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class AnimationController : MonoBehaviour
+public class AnimationManager : MonoBehaviour
 {
-    public static AnimationController Instance { get; set; }
+    public static AnimationManager Instance { get; set; }
 
-    private Animator animator;
+    [SerializeField] private Animator animator;
 
     private int currentState;
     private float transitionDelay;
@@ -19,12 +19,10 @@ public class AnimationController : MonoBehaviour
     public readonly int Jump = Animator.StringToHash("Jump");
     public readonly int Falling = Animator.StringToHash("Falling");
 
-    private void Awake()
+    public void InitAnimationManager()
     {
         if (Instance == null)
             Instance = this;
-
-        animator = GetComponent<Animator>();
     }
 
     public void ChangeAnimation(int state, float transitionDuration, float delayDuration, int layer)

@@ -9,7 +9,7 @@ public class MovementController : MonoBehaviour
     private bool isMoving = false;
     private bool isSprinting = false;
     private bool isCrouching = false;
-    private bool isGrounded = true;
+    public bool isGrounded = true;
 
     private Vector3 direction;
     public float stamina = 100;
@@ -17,12 +17,13 @@ public class MovementController : MonoBehaviour
     private bool useStamina = true;
     private bool canJump = true;
 
-    //[SerializeField] private AnimationController animationController;
+    private AnimationManager animationManager;
 
     // Start is called before the first frame update
     public void IntializeMovementController()
     {
-        //animationManager = AnimationManager.Instance;
+        animationManager = AnimationManager.Instance;
+
         moveSpeed = movementData.walkSpeed;
         playerCol = GetComponent<CapsuleCollider>();
         playerRB = GetComponent<Rigidbody>();
@@ -81,11 +82,8 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    public void HandleMovment()
+    public void HandleMovment(float horizontal, float vertical)
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-
         isMoving = horizontal != 0 || vertical != 0;
 
         if (isMoving)
@@ -126,15 +124,15 @@ public class MovementController : MonoBehaviour
                 moveSpeed = movementData.crouchSpeed;
         }
 
-        if (!isMoving || !isGrounded)
-        {
-            //AudioManager.Instance.Stop("Walk");
-            //AudioManager.Instance.Stop("Sprint");
-        }
+        //if (!isMoving || !isGrounded)
+        //{
+        //    AudioManager.Instance.Stop("Walk");
+        //    AudioManager.Instance.Stop("Sprint");
+        //}
 
-        //// Set player to falling if falling
-        //if (playerRB.velocity.y <= -0.5f)
-        //    animationController.ChangeAnimation(animationController.Falling, 0.1f, 0, 0);
+        // Set player to falling if falling
+        if (playerRB.velocity.y <= -0.5f)
+            animationManager.ChangeAnimation(animationManager.Falling, 0.1f, 0, 0);
 
         // If run out of stamina
         if (stamina <= 0f && isSprinting)
@@ -170,7 +168,7 @@ public class MovementController : MonoBehaviour
         playerRB.velocity = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
         playerRB.AddForce(transform.up * movementData.baseJumpForce, ForceMode.Impulse);
 
-        //animationController.ChangeAnimation(animationController.Jump, 0f, 0, 0);
+        animationManager.ChangeAnimation(animationManager.Jump, 0f, 0, 0);
 
         //AudioManager.Instance.Play("Jump");
     }
@@ -180,18 +178,18 @@ public class MovementController : MonoBehaviour
         if (!isGrounded)
             return;
 
-        //if (isMoving)
-        //{
-        //    if (!isSprinting && !isCrouching) animationController.ChangeAnimation(animationController.Walk, 0.15f, 0, 0);
-        //    if (isSprinting && !isCrouching) animationController.ChangeAnimation(animationController.Sprint, 0.15f, 0, 0);
-        //    if (!isSprinting && isCrouching) animationController.ChangeAnimation(animationController.CrouchWalk, 0.15f, 0, 0);
+        if (isMoving)
+        {
+            if (!isSprinting && !isCrouching) animationManager.ChangeAnimation(animationManager.Walk, 0.15f, 0, 0);
+            if (isSprinting && !isCrouching) animationManager.ChangeAnimation(animationManager.Sprint, 0.15f, 0, 0);
+            if (!isSprinting && isCrouching) animationManager.ChangeAnimation(animationManager.CrouchWalk, 0.15f, 0, 0);
 
-        //}
-        //else
-        //{
-        //    if (!isCrouching) animationController.ChangeAnimation(animationController.Idle, 0.15f, 0, 0);
-        //    if (isCrouching) animationController.ChangeAnimation(animationController.CrouchIdle, 0.15f, 0, 0);
-        //}
+        }
+        else
+        {
+            if (!isCrouching) animationManager.ChangeAnimation(animationManager.Idle, 0.15f, 0, 0);
+            if (isCrouching) animationManager.ChangeAnimation(animationManager.CrouchIdle, 0.15f, 0, 0);
+        }
     }
 
     public void MovePlayer()
