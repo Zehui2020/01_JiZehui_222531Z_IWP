@@ -72,13 +72,17 @@ public class Weapon : MonoBehaviour
 
     public virtual void UseWeaponLogic()
     {
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, targetLayer))
-        {
-            Debug.Log("Hit object: " + hit.collider.gameObject.name);
-        }
-
         weaponAnimator.SetTrigger("use");
         ammoCount--;
+
+        if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, targetLayer))
+            return;
+
+        Stats stat = hit.collider.GetComponent<Stats>();
+        if (stat == null)
+            return;
+
+        stat.DealDamage(weaponData.damagePerBullet);
     }
 
     private IEnumerator UseWeapon()

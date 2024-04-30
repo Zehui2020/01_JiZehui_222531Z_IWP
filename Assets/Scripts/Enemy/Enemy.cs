@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Stats
 {
     public enum EnemyType { Normal, Elite, MiniBoss, Boss }
     public EnemyType enemyType;
 
-    private AINavigation aiNavigation;
-    private GameObject player;
-    [SerializeField] private float moveSpeed;
+    [SerializeField] protected EnemyData enemyData;
+    protected AINavigation aiNavigation;
+    protected GameObject player;
+    protected Animator animator;
+    private CombatCollisionController collisionController;
 
     private void Awake()
     {
@@ -19,18 +21,37 @@ public class Enemy : MonoBehaviour
     public virtual void InitEnemy()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        animator = GetComponent<Animator>();
+        collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
         aiNavigation.InitNavMeshAgent();
-
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool ChasePlayer()
     {
-        aiNavigation.SetNavMeshTarget(player.transform.position, moveSpeed);
-        if (aiNavigation.OnReachTarget(player.transform.position, 5f))
+        aiNavigation.SetNavMeshTarget(player.transform.position, enemyData.moveSpeed);
+
+        if (aiNavigation.OnReachTarget(enemyData.attackRange))
+        {
             aiNavigation.StopNavigation();
+            return false;
+        }
         else
+        {
             aiNavigation.ResumeNavigation();
+            return true;
+        }
+    }
+
+    public void OnDamageEventStart(int col)
+    {
+        collisionController.EnableCollider(col);
+        collisionController.StartDamageCheck(enemyData.damage);
+    }
+
+    public void OnDamageEventEnd(int col)
+    {
+        collisionController.DisableCollider(col);
+        collisionController.StopDamageCheck();
     }
 }

@@ -8,7 +8,7 @@ public class WeaponData : ScriptableObject
     public enum WeaponType { Melee, Ranged }
     public WeaponType weaponType;
 
-    public float damagePerBullet;
+    public int damagePerBullet;
     public float attackInterval;
     public float recoil;
     public float reloadDuration;

@@ -4,13 +4,14 @@ using UnityEngine.AI;
 public class AINavigation : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
+    private Vector3 target;
 
     public void InitNavMeshAgent()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    public bool OnReachTarget(Vector3 target, float distance)
+    public bool OnReachTarget(float distance)
     {
         if (Vector3.Distance(target, transform.position) <= distance)
             return true;
@@ -20,6 +21,7 @@ public class AINavigation : MonoBehaviour
 
     public void SetNavMeshTarget(Vector3 target, float speed)
     {
+        this.target = target;
         navMeshAgent.speed = speed;
         navMeshAgent.destination = target;
     }
