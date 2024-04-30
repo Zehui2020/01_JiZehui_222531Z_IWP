@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MovementData movementData;
 
     private bool isDisabled = false;
+    private bool isADS = false;
 
     private void Awake()
     {
@@ -62,7 +63,11 @@ public class PlayerController : MonoBehaviour
             weaponController.UseWeapon();
 
         if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
+        {
+            isADS = !isADS;
             weaponController.ADSWeapon();
+            uiController.OnADS(isADS);
+        }
 
         movementController.UpdateAnimation();
         weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);

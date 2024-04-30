@@ -7,6 +7,7 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private Slider staminaBar;
+    [SerializeField] private GameObject crossHair;
 
     public void UpdateStaminaBar(float currentStamina, float maxStamina)
     {
@@ -16,5 +17,10 @@ public class UIController : MonoBehaviour
             staminaBar.gameObject.SetActive(false);
         else
             staminaBar.gameObject.SetActive(true);
+    }
+
+    public void OnADS(bool isADS)
+    {
+        crossHair.SetActive(!isADS);
     }
 }

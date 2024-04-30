@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 1
   damagePerBullet: 15
-  attackInterval: 0.5
+  attackInterval: 0.3
   recoil: 10
-  reloadDuration: 1
+  reloadDuration: 1.4
   ammoPerMag: 10
+  unADSSway: 10
+  ADSSway: 1

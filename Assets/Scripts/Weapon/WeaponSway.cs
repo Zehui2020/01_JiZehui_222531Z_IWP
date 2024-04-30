@@ -35,6 +35,16 @@ public class WeaponSway : MonoBehaviour
     Vector2 walkInput;
     Vector2 lookInput;
 
+    Vector3 initialPosition;
+    Quaternion initialRotation;
+
+    void Start()
+    {
+        // Store initial position and rotation
+        initialPosition = transform.localPosition;
+        initialRotation = transform.localRotation;
+    }
+
     public void UpdateWeaponSway(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
     {
         walkInput.x = horizontal;
@@ -58,7 +68,7 @@ public class WeaponSway : MonoBehaviour
         invertLook.x = Mathf.Clamp(invertLook.x, -maxStepDistance, maxStepDistance);
         invertLook.y = Mathf.Clamp(invertLook.y, -maxStepDistance, maxStepDistance);
 
-        swayPos = invertLook;
+        swayPos = initialPosition + invertLook;
     }
 
     void SwayRotation()
@@ -66,7 +76,8 @@ public class WeaponSway : MonoBehaviour
         Vector2 invertLook = lookInput * -rotationStep;
         invertLook.x = Mathf.Clamp(invertLook.x, -maxRotationStep, maxRotationStep);
         invertLook.y = Mathf.Clamp(invertLook.y, -maxRotationStep, maxRotationStep);
-        swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
+
+        swayEulerRot = initialRotation.eulerAngles + new Vector3(invertLook.y, invertLook.x, invertLook.x);
     }
 
     void CompositePositionRotation()
@@ -90,5 +101,4 @@ public class WeaponSway : MonoBehaviour
         bobEulerRotation.y = (walkInput != Vector2.zero ? multiplier.y * curveCos : 0);
         bobEulerRotation.z = (walkInput != Vector2.zero ? multiplier.z * curveCos * walkInput.x : 0);
     }
-
 }

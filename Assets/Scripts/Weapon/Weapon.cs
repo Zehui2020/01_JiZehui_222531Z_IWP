@@ -10,6 +10,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private LayerMask targetLayer;
 
+    [SerializeField] private Vector3 unADSPos;
+    [SerializeField] private Vector3 ADSPos;
+
     [SerializeField] protected int ammoCount;
     [SerializeField] protected int totalAmmo;
 
@@ -25,6 +28,14 @@ public class Weapon : MonoBehaviour
 
     public void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
     {
+        if (weaponSway == null)
+            return;
+
+        if (isADS)
+            transform.localPosition = Vector3.Lerp(transform.localPosition, ADSPos, Time.deltaTime * 20f);
+        else
+            transform.localPosition = Vector3.Lerp(transform.localPosition, unADSPos, Time.deltaTime * 20f);
+
         weaponSway.UpdateWeaponSway(horizontal, vertical, mouseX, mouseY, isGrounded);
     }
 
@@ -46,6 +57,11 @@ public class Weapon : MonoBehaviour
     public void ToggleADS()
     {
         isADS = !isADS;
+
+        if (isADS)
+            weaponSway.smooth = weaponData.ADSSway;
+        else
+            weaponSway.smooth = weaponData.unADSSway;
     }
 
     public void Reload()
@@ -56,11 +72,12 @@ public class Weapon : MonoBehaviour
 
     public virtual void UseWeaponLogic()
     {
-        if (Physics.Raycast(firePoint.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, targetLayer))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, targetLayer))
         {
             Debug.Log("Hit object: " + hit.collider.gameObject.name);
         }
 
+        weaponAnimator.SetTrigger("use");
         ammoCount--;
     }
 
@@ -75,6 +92,8 @@ public class Weapon : MonoBehaviour
 
     private IEnumerator DoReload()
     {
+        weaponAnimator.SetTrigger("reload");
+
         yield return new WaitForSeconds(weaponData.reloadDuration);
 
         totalAmmo -= weaponData.ammoPerMag - ammoCount;

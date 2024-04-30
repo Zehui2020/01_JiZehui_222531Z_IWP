@@ -13,4 +13,7 @@ public class WeaponData : ScriptableObject
     public float recoil;
     public float reloadDuration;
     public int ammoPerMag;
+
+    public float unADSSway;
+    public float ADSSway;
 }
