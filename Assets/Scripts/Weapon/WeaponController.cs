@@ -23,6 +23,14 @@ public class WeaponController : MonoBehaviour
         weapons[currentWeapon].OnUse();
     }
 
+    public void ADSWeapon()
+    {
+        if (weapons.Count == 0)
+            return;
+
+        weapons[currentWeapon].ToggleADS();
+    }
+
     public void ReloadWeapon()
     {
         if (weapons.Count == 0)

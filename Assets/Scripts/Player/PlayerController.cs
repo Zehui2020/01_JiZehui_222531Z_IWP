@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     private MovementController movementController;
     private WeaponController weaponController;
     private AnimationManager animationManager;
+    private UIController uiController;
+
+    [SerializeField] private MovementData movementData;
 
     private bool isDisabled = false;
 
@@ -16,6 +19,7 @@ public class PlayerController : MonoBehaviour
         animationManager = GetComponent<AnimationManager>();
         movementController = GetComponent<MovementController>();
         weaponController = GetComponent<WeaponController>();
+        uiController = GetComponent<UIController>();
 
         // Initialize components
         animationManager.InitAnimationManager();
@@ -31,7 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDisabled)
             return;
-
+            
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         float mouseX = Input.GetAxis("Mouse X");
@@ -57,8 +61,13 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             weaponController.UseWeapon();
 
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
+            weaponController.ADSWeapon();
+
         movementController.UpdateAnimation();
         weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);
+
+        uiController.UpdateStaminaBar(movementController.stamina, movementData.maxStamina);
 
         transform.forward = Camera.main.transform.forward;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);

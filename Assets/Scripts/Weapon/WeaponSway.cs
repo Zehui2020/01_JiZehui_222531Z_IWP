@@ -46,7 +46,7 @@ public class WeaponSway : MonoBehaviour
 
         Sway();
         SwayRotation();
-        BobOffset(isGrounded);
+        BobOffset(isGrounded, horizontal, vertical);
         BobRotation();
 
         CompositePositionRotation();
@@ -75,12 +75,12 @@ public class WeaponSway : MonoBehaviour
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(swayEulerRot) * Quaternion.Euler(bobEulerRotation), Time.deltaTime * smoothRot);
     }
 
-    void BobOffset(bool isGrounded)
+    void BobOffset(bool isGrounded, float horizontal, float vertical)
     {
-        speedCurve += Time.deltaTime * (isGrounded ? (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) * bobExaggeration : 1f) + 0.01f;
+        speedCurve += Time.deltaTime * (isGrounded ? (horizontal + vertical) * bobExaggeration : 1f) + 0.01f;
 
         bobPosition.x = (curveCos * bobLimit.x * (isGrounded ? 1 : 0)) - (walkInput.x * travelLimit.x);
-        bobPosition.y = (curveSin * bobLimit.y) - (Input.GetAxis("Vertical") * travelLimit.y);
+        bobPosition.y = (curveSin * bobLimit.y) - (vertical * travelLimit.y);
         bobPosition.z = -(walkInput.y * travelLimit.z);
     }
 

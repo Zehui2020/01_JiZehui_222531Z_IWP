@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private WeaponSway weaponSway;
+    private Animator weaponAnimator;
     [SerializeField] private WeaponData weaponData;
     [SerializeField] private Transform firePoint;
     [SerializeField] private LayerMask targetLayer;
@@ -14,10 +15,12 @@ public class Weapon : MonoBehaviour
 
     private Coroutine useWeaponRoutine;
     private Coroutine reloadWeaponRoutine;
+    private bool isADS = false;
 
     public void InitWeapon()
     {
         weaponSway = GetComponent<WeaponSway>();
+        weaponAnimator = GetComponent<Animator>();
     }
 
     public void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
@@ -38,6 +41,11 @@ public class Weapon : MonoBehaviour
 
         else if (weaponData.weaponType == WeaponData.WeaponType.Melee)
             useWeaponRoutine = StartCoroutine(UseWeapon());
+    }
+
+    public void ToggleADS()
+    {
+        isADS = !isADS;
     }
 
     public void Reload()
