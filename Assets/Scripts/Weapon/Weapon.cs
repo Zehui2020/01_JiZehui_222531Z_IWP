@@ -194,6 +194,20 @@ public class Weapon : MonoBehaviour
             return weaponData.unADSCamShakeDuration;
     }
 
+    protected Vector3 GetShotDirection(Vector3 direction)
+    {
+        Vector3 BSAOffset = new Vector3(GetRandomOffsetBSA(), GetRandomOffsetBSA(), 0);
+        return direction + BSAOffset.normalized;
+    }
+
+    private float GetRandomOffsetBSA()
+    {
+        if (!isADS)
+            return Random.Range(-weaponData.unADSBulletSpreadAccuracy, weaponData.unADSBulletSpreadAccuracy);
+        else
+            return Random.Range(-weaponData.ADSBulletSpreadAccuracy, weaponData.ADSBulletSpreadAccuracy);
+    }
+
     public float GetWeaponZoomAmount()
     {
         return weaponData.ADSZoomAmount;
@@ -224,7 +238,6 @@ public class Weapon : MonoBehaviour
             Transform _HasChildren = child.GetComponentInChildren<Transform>();
             if (_HasChildren != null)
                 SetGameLayerRecursive(child.gameObject, layer);
-
         }
     }
 }

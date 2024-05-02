@@ -5,15 +5,20 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    public enum Weapon { Pistol, Shotgun }
+    public enum Weapon { Pistol, Shotgun, Rifle }
     public Weapon weapon;
 
     public enum WeaponType { Melee, Ranged }
     public WeaponType weaponType;
 
     public int damagePerBullet;
-    public float recoil;
     public int ammoPerMag;
+
+    public float ADSRecoil;
+    public float unADSRecoil;
+
+    public float ADSBulletSpreadAccuracy;
+    public float unADSBulletSpreadAccuracy;
 
     public float unADSSway;
     public float ADSSway;

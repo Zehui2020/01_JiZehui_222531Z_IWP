@@ -76,15 +76,23 @@ public class WeaponController : MonoBehaviour
             targetWeapon = weapon;
         }
 
+        if (targetWeapon == null)
+            return;
+
         if (weapons.Count < 2)
         {
             weapons.Add(targetWeapon);
+            weaponPool.Remove(targetWeapon);
             weapons[currentWeapon].OnSwap();
         }
         else
         {
             weapons[currentWeapon].OnReturnToPool();
+            weaponPool.Add(weapons[currentWeapon]);
+
             weapons[currentWeapon] = targetWeapon;
+            weaponPool.Remove(targetWeapon);
+
             targetWeapon.gameObject.SetActive(true);
         }
     }

@@ -9,7 +9,7 @@ public class Pistol : Weapon
         ammoCount--;
         EjectShell("PistolShell");
 
-        if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, targetLayer))
+        if (!Physics.Raycast(Camera.main.transform.position, GetShotDirection(Camera.main.transform.forward), out RaycastHit hit, Mathf.Infinity, targetLayer))
             return;
 
         Stats stat = hit.collider.GetComponent<Stats>();

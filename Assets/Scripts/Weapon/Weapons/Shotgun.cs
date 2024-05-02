@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class Shotgun : Weapon
 {
+    [SerializeField] private float bulletsPerShot;
+
     public override void UseWeapon()
     {
         ammoCount--;
 
-        if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Mathf.Infinity, targetLayer))
-            return;
+        for (int i = 0; i < bulletsPerShot; i++)
+        {
+            if (!Physics.Raycast(Camera.main.transform.position, GetShotDirection(Camera.main.transform.forward), out RaycastHit hit, Mathf.Infinity, targetLayer))
+                return;
 
-        Stats stat = hit.collider.GetComponent<Stats>();
-        if (stat == null)
-            return;
+            Stats stat = hit.collider.GetComponent<Stats>();
+            if (stat == null)
+                return;
 
-        stat.DealDamage(weaponData.damagePerBullet);
+            stat.DealDamage(weaponData.damagePerBullet);
+        }
     }
 
     public override void ReloadWeapon()
@@ -24,9 +29,6 @@ public class Shotgun : Weapon
         totalAmmo--;
 
         if (ammoCount >= weaponData.ammoPerMag)
-        {
-            //ammoCount = weaponData.ammoPerMag;
             weaponAnimator.SetTrigger("finishReloading");
-        }
     }
 }
