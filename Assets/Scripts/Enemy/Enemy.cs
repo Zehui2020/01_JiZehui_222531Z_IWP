@@ -11,6 +11,7 @@ public class Enemy : Stats
     protected AINavigation aiNavigation;
     protected GameObject player;
     protected Animator animator;
+    protected Collider enemyCol;
     private CombatCollisionController collisionController;
 
     private void Awake()
@@ -22,6 +23,7 @@ public class Enemy : Stats
     {
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
+        enemyCol = GetComponent<Collider>();
         collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
         aiNavigation.InitNavMeshAgent();

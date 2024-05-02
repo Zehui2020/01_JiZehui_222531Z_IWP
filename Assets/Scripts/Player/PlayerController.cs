@@ -4,28 +4,36 @@ using UnityEngine;
 
 public class PlayerController : PlayerStats
 {
+    public static PlayerController Instance;
     private MovementController movementController;
     private WeaponController weaponController;
     private AnimationManager animationManager;
     private UIController uiController;
+    private CameraController cameraController;
 
     [SerializeField] private MovementData movementData;
+    private Rigidbody playerRB;
 
     private bool isDisabled = false;
     private bool isADS = false;
 
     private void Awake()
     {
+        Instance = this;
+
         // Get player components
         animationManager = GetComponent<AnimationManager>();
         movementController = GetComponent<MovementController>();
         weaponController = GetComponent<WeaponController>();
         uiController = GetComponent<UIController>();
+        cameraController = GetComponent<CameraController>();
+        playerRB = GetComponent<Rigidbody>();
 
         // Initialize components
         animationManager.InitAnimationManager();
         movementController.IntializeMovementController();
         weaponController.InitWeaponController();
+        cameraController.InitCameraController();
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -60,13 +68,21 @@ public class PlayerController : PlayerStats
             weaponController.SwitchWeapon();
 
         if (Input.GetMouseButtonDown(0))
-            weaponController.UseWeapon();
+        {
+            if (weaponController.UseWeapon())
+                cameraController.ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeDuration());
+        }
 
         if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
         {
             isADS = !isADS;
             weaponController.ADSWeapon();
             uiController.OnADS(isADS);
+
+            if (isADS)
+                cameraController.Zoom(weaponController.GetWeaponZoomAmount(), weaponController.GetWeaponZoomDuration());
+            else
+                cameraController.Zoom(60, weaponController.GetWeaponZoomDuration());
         }
 
         movementController.UpdateAnimation();
@@ -104,5 +120,10 @@ public class PlayerController : PlayerStats
     private void OnCollisionExit(Collision col)
     {
         movementController.ExitCollision(col);
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return playerRB.velocity;
     }
 }

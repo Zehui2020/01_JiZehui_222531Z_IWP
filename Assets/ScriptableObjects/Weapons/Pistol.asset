@@ -12,11 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5069522a5e918284797d68e99654e33c, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
+  weapon: 0
   weaponType: 1
   damagePerBullet: 15
-  attackInterval: 0.35
   recoil: 10
-  reloadDuration: 1.5
   ammoPerMag: 10
   unADSSway: 10
   ADSSway: 1
+  ADSCamShake: 1
+  unADSCamShake: 1.5
+  ADSCamShakeDuration: 0.1
+  unADSCamShakeDuration: 0.2
+  ADSZoomAmount: 50
+  ADSZoomDuration: 1
+  shellEjectForce: 1.2
+  shellEjectUpwardForce: 1.2
+  shellEjectTorque: 20

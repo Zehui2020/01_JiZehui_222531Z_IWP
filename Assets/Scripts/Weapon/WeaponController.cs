@@ -5,22 +5,30 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     [SerializeField] private List<Weapon> weapons;
+    [SerializeField] private List<Weapon> weaponPool;
     private int currentWeapon;
+
+    public event System.Action SwapWeaponEvent;
 
     public void InitWeaponController()
     {
-        foreach (Weapon weapon in weapons)
+        SwapWeaponEvent += OnSwitchWeapon;
+
+        foreach (Weapon weapon in weaponPool)
         {
-            weapon.InitWeapon();
+            weapon.InitWeapon(SwapWeaponEvent);
+
+            if (weapon != weapons[currentWeapon])
+                weapon.gameObject.SetActive(false);
         }
     }
 
-    public void UseWeapon()
+    public bool UseWeapon()
     {
         if (weapons.Count == 0)
-            return;
+            return false;
 
-        weapons[currentWeapon].OnUse();
+        return weapons[currentWeapon].OnUse();
     }
 
     public void ADSWeapon()
@@ -36,23 +44,73 @@ public class WeaponController : MonoBehaviour
         if (weapons.Count == 0)
             return;
 
-        weapons[currentWeapon].Reload();
+        weapons[currentWeapon].OnReload();
     }
 
     public void SwitchWeapon()
     {
-        currentWeapon++;
-        if (currentWeapon > weapons.Count)
-            currentWeapon = 0;
+        if (weapons.Count > 1)
+            weapons[currentWeapon].OnSwap();
     }
 
-    public void ReplaceWeapon(Weapon newWeapon)
+    public void OnSwitchWeapon()
     {
-        weapons[currentWeapon] = newWeapon;
+        currentWeapon++;
+        if (currentWeapon > weapons.Count - 1)
+            currentWeapon = 0;
+
+        if (!weapons[currentWeapon].gameObject.activeInHierarchy)
+            weapons[currentWeapon].gameObject.SetActive(true);
+        else
+            weapons[currentWeapon].OnShow();
+    }
+
+    public void ReplaceWeapon(WeaponData.Weapon newWeapon)
+    {
+        Weapon targetWeapon = null;
+        foreach (Weapon weapon in weaponPool)
+        {
+            if (weapon.GetWeapon() != newWeapon)
+                continue;
+
+            targetWeapon = weapon;
+        }
+
+        if (weapons.Count < 2)
+        {
+            weapons.Add(targetWeapon);
+            weapons[currentWeapon].OnSwap();
+        }
+        else
+        {
+            weapons[currentWeapon].OnReturnToPool();
+            weapons[currentWeapon] = targetWeapon;
+            targetWeapon.gameObject.SetActive(true);
+        }
     }
 
     public void UpdateCurrentWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
     {
         weapons[currentWeapon].UpdateWeapon(horizontal, vertical, mouseX, mouseY, isGrounded);
+    }
+
+    public float GetWeaponCamShakeAmount()
+    {
+        return weapons[currentWeapon].GetCamShakeAmount();
+    }
+
+    public float GetWeaponCamShakeDuration()
+    {
+        return weapons[currentWeapon].GetCamShakeDuration();
+    }
+
+    public float GetWeaponZoomAmount()
+    {
+        return weapons[currentWeapon].GetWeaponZoomAmount();
+    }
+
+    public float GetWeaponZoomDuration()
+    {
+        return weapons[currentWeapon].GetWeaponZoomDuration();
     }
 }

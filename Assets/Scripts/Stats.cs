@@ -12,7 +12,7 @@ public class Stats : MonoBehaviour
         if (damage - armour <= 0)
             health -= (int)(damage * 0.1f);
         else
-            health -= damage;
+            health -= damage - armour;
     }
 
     public virtual void Heal(int amount)
