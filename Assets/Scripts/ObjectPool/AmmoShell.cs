@@ -15,7 +15,7 @@ public class AmmoShell : PooledObject
     public void SetupShell(Vector3 spawnPos, float ejectForce, float ejectUpwardForce, Vector3 torque, float lifetime)
     {
         transform.position = spawnPos;
-        transform.localRotation = Quaternion.identity;
+        transform.forward = PlayerController.Instance.transform.forward;
         gameObject.SetActive(true);
 
         shellRB.AddForce(transform.up * ejectForce + transform.right * ejectUpwardForce, ForceMode.Impulse);

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5069522a5e918284797d68e99654e33c, type: 3}
+  m_Name: Rifle
+  m_EditorClassIdentifier: 
+  weapon: 2
+  weaponType: 1
+  damagePerBullet: 50
+  ammoPerMag: 10
+  ADSRecoil: 0
+  unADSRecoil: 0
+  ADSBulletSpreadAccuracy: 0
+  unADSBulletSpreadAccuracy: 0
+  unADSSway: 10
+  ADSSway: 1
+  ADSCamShake: 3
+  unADSCamShake: 5
+  ADSCamShakeDuration: 0.2
+  unADSCamShakeDuration: 0.3
+  ADSZoomAmount: 40
+  ADSZoomDuration: 1.5
+  shellEjectForce: 1.5
+  shellEjectUpwardForce: 1.5
+  shellEjectTorque: 20

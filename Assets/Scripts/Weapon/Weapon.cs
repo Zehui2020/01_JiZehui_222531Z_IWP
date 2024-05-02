@@ -103,11 +103,13 @@ public class Weapon : MonoBehaviour
 
     public bool OnUse()
     {
-        if (currentState == WeaponState.USE)
+        if (currentState == WeaponState.USE || 
+            currentState == WeaponState.HIDE ||
+            currentState == WeaponState.SHOW ||
+            currentState == WeaponState.RELOAD)
             return false;
 
         if (weaponData.weaponType == WeaponData.WeaponType.Ranged &&
-            currentState != WeaponState.RELOAD &&
             ammoCount > 0)
         {
             ChangeState(WeaponState.USE);
@@ -124,7 +126,8 @@ public class Weapon : MonoBehaviour
 
     public void OnReload()
     {
-        if (currentState != WeaponState.RELOAD && ammoCount < weaponData.ammoPerMag)
+        if (currentState != WeaponState.RELOAD && 
+            ammoCount < weaponData.ammoPerMag)
             ChangeState(WeaponState.RELOAD);
     }
 
@@ -150,6 +153,9 @@ public class Weapon : MonoBehaviour
 
     public void Swap()
     {
+        if (returnToPool)
+            return;
+
         if (invokeSwapEvent)
             SwapWeaponEvent.Invoke();
 

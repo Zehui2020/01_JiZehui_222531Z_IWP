@@ -15,8 +15,11 @@ MonoBehaviour:
   weapon: 0
   weaponType: 1
   damagePerBullet: 15
-  recoil: 10
   ammoPerMag: 10
+  ADSRecoil: 0
+  unADSRecoil: 0
+  ADSBulletSpreadAccuracy: 0
+  unADSBulletSpreadAccuracy: 0
   unADSSway: 10
   ADSSway: 1
   ADSCamShake: 1
@@ -27,4 +30,4 @@ MonoBehaviour:
   ADSZoomDuration: 1
   shellEjectForce: 1.2
   shellEjectUpwardForce: 1.2
-  shellEjectTorque: 20
+  shellEjectTorque: 50
