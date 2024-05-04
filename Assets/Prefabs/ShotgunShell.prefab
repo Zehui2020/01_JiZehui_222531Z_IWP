@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: ShotgunShell
+  poolAmount: 10
 --- !u!136 &-3171441967061507411
 CapsuleCollider:
   m_ObjectHideFlags: 0

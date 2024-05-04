@@ -7,6 +7,7 @@ namespace DesignPatterns.ObjectPool
         private ObjectPool pool;
         public ObjectPool Pool { get => pool; set => pool = value; }
         public string objectName;
+        public int poolAmount;
 
         public virtual void Init() { }
 

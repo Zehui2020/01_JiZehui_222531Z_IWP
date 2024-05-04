@@ -16,9 +16,13 @@ public class KnifeController : MonoBehaviour
     public bool Knife()
     {
         if (canKnife)
+        {
             gameObject.SetActive(true);
+            canKnife = false;
+            return true;
+        }
 
-        return canKnife;
+        return false;
     }
 
     public void OnDamageEventStart(int col)

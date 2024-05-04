@@ -15,6 +15,7 @@ MonoBehaviour:
   weapon: 1
   weaponType: 1
   damagePerBullet: 6
+  headshotMultiplier: 1.5
   ammoPerMag: 7
   ADSRecoil: 0
   unADSRecoil: 0

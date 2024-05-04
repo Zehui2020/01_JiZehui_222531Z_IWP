@@ -41,7 +41,7 @@ public class Zombie : Enemy
             case ZombieState.DIE:
                 aiNavigation.StopNavigation();
                 animator.CrossFade(Die, 0.1f);
-                enemyCol.enabled = false;
+                SetEnemyColliders(false);
                 break;
 
             default:

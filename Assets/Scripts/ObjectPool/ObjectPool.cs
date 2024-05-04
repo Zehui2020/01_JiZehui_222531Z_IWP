@@ -7,10 +7,6 @@ namespace DesignPatterns.ObjectPool
     {
         public static ObjectPool Instance;
 
-        // initial number of cloned objects
-        [SerializeField] private uint initPoolSize;
-        public uint InitPoolSize => initPoolSize;
-
         // PooledObject prefab
         [SerializeField] private PooledObject[] objectsToPool;
 
@@ -43,7 +39,7 @@ namespace DesignPatterns.ObjectPool
 
             foreach (PooledObject pooledObject in objectsToPool)
             {
-                for (int i = 0; i < initPoolSize; i++)
+                for (int i = 0; i < pooledObject.poolAmount; i++)
                 {
                     instance = Instantiate(pooledObject);
                     instance.Init();

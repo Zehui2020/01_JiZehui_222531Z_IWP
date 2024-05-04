@@ -9,8 +9,10 @@ public class PlayerController : PlayerStats
     private WeaponController weaponController;
     private UIController uiController;
     private CameraController cameraController;
+    private ItemManager itemManager;
     [SerializeField] private KnifeController knifeController;
 
+    [SerializeField] private ItemStats itemStats;
     [SerializeField] private MovementData movementData;
     private Rigidbody playerRB;
 
@@ -26,6 +28,7 @@ public class PlayerController : PlayerStats
         weaponController = GetComponent<WeaponController>();
         uiController = GetComponent<UIController>();
         cameraController = GetComponent<CameraController>();
+        itemManager = GetComponent<ItemManager>();
         playerRB = GetComponent<Rigidbody>();
 
         // Initialize components
@@ -115,6 +118,11 @@ public class PlayerController : PlayerStats
         movementController.SetUseStamina(true);
     }
 
+    public void AddItem(Item item)
+    {
+        itemManager.AddItem(item);
+    }
+
     private void OnCollisionEnter(Collision col)
     {
         if (movementController != null)
@@ -124,6 +132,11 @@ public class PlayerController : PlayerStats
     private void OnCollisionExit(Collision col)
     {
         movementController.ExitCollision(col);
+    }
+
+    private void OnApplicationQuit()
+    {
+        itemStats.ResetStats();
     }
 
     public Vector3 GetVelocity()

@@ -6,27 +6,41 @@ using DesignPatterns.ObjectPool;
 public class BulletTracer : PooledObject
 {
     private TrailRenderer trailRenderer;
-    private Rigidbody tracerRB;
     [SerializeField] private float tracerLifetime;
 
     public override void Init()
     {
         trailRenderer = GetComponent<TrailRenderer>();
-        tracerRB = GetComponent<Rigidbody>();
     }
 
-    public void SetupTracer(Transform startPoint, Vector3 direction, float shootForce, float tracerSize)
+    public void SetupTracer(Vector3 startPoint, Vector3 endPoint, RaycastHit hit, float tracerSize)
     {
-        transform.position = startPoint.position;
+        StartCoroutine(DeactivateRoutine());
+        StartCoroutine(DoSetupTracer(startPoint, endPoint, hit, tracerSize));
+    }
 
+    private IEnumerator DoSetupTracer(Vector3 startPoint, Vector3 endPoint, RaycastHit hit, float tracerSize)
+    {
+        transform.position = startPoint;
         trailRenderer.Clear();
+
+        yield return null;
+
+        trailRenderer.emitting = true;
         trailRenderer.startWidth = tracerSize;
         trailRenderer.endWidth = tracerSize;
 
-        gameObject.SetActive(true);
-        tracerRB.AddForce(direction.normalized * shootForce, ForceMode.Impulse);
+        float distance = Vector3.Distance(startPoint, endPoint);
+        float remainingDist = distance;
 
-        StartCoroutine(DeactivateRoutine());
+        while (remainingDist > 0)
+        {
+            transform.position = Vector3.Lerp(startPoint, endPoint, Mathf.Clamp01(1 - (remainingDist / distance)));
+            remainingDist -= Time.deltaTime * 100f;
+            yield return null;
+        }
+
+        transform.position = endPoint;
     }
 
     private IEnumerator DeactivateRoutine()
@@ -40,6 +54,7 @@ public class BulletTracer : PooledObject
         Release();
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
+        trailRenderer.emitting = false;
         gameObject.SetActive(false);
     }
 

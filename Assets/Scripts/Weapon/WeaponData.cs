@@ -12,6 +12,7 @@ public class WeaponData : ScriptableObject
     public WeaponType weaponType;
 
     public int damagePerBullet;
+    public float headshotMultiplier;
     public int ammoPerMag;
 
     public float ADSRecoil;

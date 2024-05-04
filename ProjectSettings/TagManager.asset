@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - BulletTracer
+  - Body
+  - Head
   layers:
   - Default
   - TransparentFX
@@ -41,4 +43,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Popup
+    uniqueID: 862333539
     locked: 0

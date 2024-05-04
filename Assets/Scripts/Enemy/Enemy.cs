@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Stats
+public class Enemy : EnemyStats
 {
     public enum EnemyType { Normal, Elite, MiniBoss, Boss }
     public EnemyType enemyType;
@@ -11,7 +11,7 @@ public class Enemy : Stats
     protected AINavigation aiNavigation;
     protected GameObject player;
     protected Animator animator;
-    protected Collider enemyCol;
+    [SerializeField] protected Collider[] enemyCols;
     private CombatCollisionController collisionController;
 
     private void Awake()
@@ -23,7 +23,6 @@ public class Enemy : Stats
     {
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
-        enemyCol = GetComponent<Collider>();
         collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
         aiNavigation.InitNavMeshAgent();
@@ -55,5 +54,11 @@ public class Enemy : Stats
     {
         collisionController.DisableCollider(col);
         collisionController.StopDamageCheck();
+    }
+
+    protected void SetEnemyColliders(bool active)
+    {
+        foreach (Collider col in enemyCols)
+            col.enabled = active;
     }
 }

@@ -55,12 +55,12 @@ public class CombatCollisionController : MonoBehaviour
                 for (int i = 0; i < numColliders; i++)
                 {
                     GameObject hitGameObject = hitColliders[i].gameObject;
-                    Stats stats = hitGameObject.GetComponent<Stats>();
+                    Stats stats = GetTopmostParent(hitGameObject.transform).GetComponent<Stats>();
 
                     if (stats == null)
                         continue;
 
-                    stats.DealDamage(damage);
+                    stats.TakeDamage(damage, out bool crit);
                     StopDamageCheck();
                     yield break;
                 }
@@ -68,5 +68,18 @@ public class CombatCollisionController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private Transform GetTopmostParent(Transform child)
+    {
+        Transform parent = child.parent;
+
+        while (parent != null)
+        {
+            child = parent;
+            parent = child.parent;
+        }
+
+        return child;
     }
 }

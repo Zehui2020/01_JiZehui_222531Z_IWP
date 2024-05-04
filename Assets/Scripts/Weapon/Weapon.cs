@@ -159,14 +159,35 @@ public class Weapon : MonoBehaviour
         Ray ray = new Ray(Camera.main.transform.position, shootDir);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (!Physics.Raycast(ray, out hit))
         {
-            Stats stat = hit.collider.GetComponent<Stats>();
-            if (stat != null)
-                stat.DealDamage(weaponData.damagePerBullet);
+            ShootTracer(firePoint.position + (shootDir * 500f), new RaycastHit(), tracerSize);
+            return;
         }
+            
+        ShootTracer(hit.point, hit, tracerSize);
 
-        ShootTracer(shootDir, 100f, tracerSize);
+        Stats stat = GetTopmostParent(hit.collider.transform).GetComponent<Stats>();
+        if (stat == null)
+            return;
+
+        int damage = weaponData.damagePerBullet;
+        DamagePopup.ColorType colorType;
+
+        if (hit.collider.CompareTag("Head"))
+        {
+            colorType = DamagePopup.ColorType.YELLOW;
+            damage = (int)(damage * weaponData.headshotMultiplier);
+        }
+        else
+            colorType = DamagePopup.ColorType.WHITE;
+
+        damage = stat.TakeDamage(damage, out bool crit);
+        if (crit)
+            colorType = DamagePopup.ColorType.RED;
+
+        DamagePopup damagePopup = ObjectPool.Instance.GetPooledObject("DamagePopup", true).GetComponent<DamagePopup>();
+        damagePopup.SetupPopup(damage, hit.point, colorType);
     }
 
     public void Swap()
@@ -202,10 +223,10 @@ public class Weapon : MonoBehaviour
         shell.SetupShell(shellSpawnPoint.position, weaponData.shellEjectForce, weaponData.shellEjectUpwardForce, new Vector3(GetRandomTorque(), GetRandomTorque(), 0), shellLifetime);
     }
 
-    protected void ShootTracer(Vector3 direction, float force, float tracerSize)
+    protected void ShootTracer(Vector3 endPos, RaycastHit hit, float tracerSize)
     {
-        BulletTracer tracer = ObjectPool.Instance.GetPooledObject("BulletTracer", false).GetComponent<BulletTracer>();
-        tracer.SetupTracer(firePoint, direction, force, tracerSize);
+        BulletTracer tracer = ObjectPool.Instance.GetPooledObject("BulletTracer", true).GetComponent<BulletTracer>();
+        tracer.SetupTracer(firePoint.position, endPos, hit, tracerSize);
     }
 
     public float GetCamShakeAmount()
@@ -281,5 +302,18 @@ public class Weapon : MonoBehaviour
             layerNumber++;
         }
         return layerNumber - 1;
+    }
+
+    private Transform GetTopmostParent(Transform child)
+    {
+        Transform parent = child.parent;
+
+        while (parent != null)
+        {
+            child = parent;
+            parent = child.parent;
+        }
+
+        return child;
     }
 }

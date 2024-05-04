@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: PistolShell
+  poolAmount: 10
 --- !u!54 &8036348577984869624
 Rigidbody:
   m_ObjectHideFlags: 0
