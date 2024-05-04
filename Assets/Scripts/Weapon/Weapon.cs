@@ -20,8 +20,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected WeaponData weaponData;
     [SerializeField] protected Transform firePoint;
     [SerializeField] protected LayerMask targetLayer;
-    [SerializeField] private int hiddenLayer;
-    [SerializeField] private int weaponLayer;
+    [SerializeField] private LayerMask hiddenLayer;
+    [SerializeField] private LayerMask weaponLayer;
 
     [SerializeField] private Vector3 unADSPos;
     [SerializeField] private Quaternion unADSRotation;
@@ -33,6 +33,8 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] private Transform shellSpawnPoint;
     [SerializeField] private float shellLifetime;
+
+    [SerializeField] protected ParticleSystemEmitter muzzleFlash;
 
     private bool isADS = false;
     private bool invokeSwapEvent = true;
@@ -56,7 +58,7 @@ public class Weapon : MonoBehaviour
                 weaponAnimator.SetTrigger("hide");
                 break;
             case WeaponState.SHOW:
-                SetGameLayerRecursive(gameObject, weaponLayer);
+                SetGameLayerRecursive(gameObject, LayerMaskToLayerNumber(weaponLayer));
                 weaponAnimator.SetTrigger("show");
                 break;
             case WeaponState.READY:
@@ -149,7 +151,23 @@ public class Weapon : MonoBehaviour
 
     public virtual void ReloadWeapon() { }
 
-    public virtual void UseWeapon() { }
+    public virtual void UseWeapon() { ammoCount--; muzzleFlash.PlayPS(); }
+
+    protected void DoRaycast(float tracerSize)
+    {
+        Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
+        Ray ray = new Ray(Camera.main.transform.position, shootDir);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            Stats stat = hit.collider.GetComponent<Stats>();
+            if (stat != null)
+                stat.DealDamage(weaponData.damagePerBullet);
+        }
+
+        ShootTracer(shootDir, 100f, tracerSize);
+    }
 
     public void Swap()
     {
@@ -159,7 +177,7 @@ public class Weapon : MonoBehaviour
         if (invokeSwapEvent)
             SwapWeaponEvent.Invoke();
 
-        SetGameLayerRecursive(gameObject, hiddenLayer);
+        SetGameLayerRecursive(gameObject, LayerMaskToLayerNumber(hiddenLayer));
         invokeSwapEvent = true;
     }
 
@@ -184,6 +202,12 @@ public class Weapon : MonoBehaviour
         shell.SetupShell(shellSpawnPoint.position, weaponData.shellEjectForce, weaponData.shellEjectUpwardForce, new Vector3(GetRandomTorque(), GetRandomTorque(), 0), shellLifetime);
     }
 
+    protected void ShootTracer(Vector3 direction, float force, float tracerSize)
+    {
+        BulletTracer tracer = ObjectPool.Instance.GetPooledObject("BulletTracer", false).GetComponent<BulletTracer>();
+        tracer.SetupTracer(firePoint, direction, force, tracerSize);
+    }
+
     public float GetCamShakeAmount()
     {
         if (isADS)
@@ -203,7 +227,7 @@ public class Weapon : MonoBehaviour
     protected Vector3 GetShotDirection(Vector3 direction)
     {
         Vector3 BSAOffset = new Vector3(GetRandomOffsetBSA(), GetRandomOffsetBSA(), 0);
-        return direction + BSAOffset.normalized;
+        return (direction + BSAOffset).normalized;
     }
 
     private float GetRandomOffsetBSA()
@@ -245,5 +269,17 @@ public class Weapon : MonoBehaviour
             if (_HasChildren != null)
                 SetGameLayerRecursive(child.gameObject, layer);
         }
+    }
+
+    private int LayerMaskToLayerNumber(LayerMask layerMask)
+    {
+        int maskValue = layerMask.value;
+        int layerNumber = 0;
+        while (maskValue > 0)
+        {
+            maskValue >>= 1;
+            layerNumber++;
+        }
+        return layerNumber - 1;
     }
 }

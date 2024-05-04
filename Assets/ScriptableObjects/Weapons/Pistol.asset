@@ -18,8 +18,8 @@ MonoBehaviour:
   ammoPerMag: 10
   ADSRecoil: 0
   unADSRecoil: 0
-  ADSBulletSpreadAccuracy: 0
-  unADSBulletSpreadAccuracy: 0
+  ADSBulletSpreadAccuracy: 0.01
+  unADSBulletSpreadAccuracy: 0.03
   unADSSway: 10
   ADSSway: 1
   ADSCamShake: 1

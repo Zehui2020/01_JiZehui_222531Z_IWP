@@ -7,9 +7,9 @@ public class PlayerController : PlayerStats
     public static PlayerController Instance;
     private MovementController movementController;
     private WeaponController weaponController;
-    private AnimationManager animationManager;
     private UIController uiController;
     private CameraController cameraController;
+    [SerializeField] private KnifeController knifeController;
 
     [SerializeField] private MovementData movementData;
     private Rigidbody playerRB;
@@ -22,7 +22,6 @@ public class PlayerController : PlayerStats
         Instance = this;
 
         // Get player components
-        animationManager = GetComponent<AnimationManager>();
         movementController = GetComponent<MovementController>();
         weaponController = GetComponent<WeaponController>();
         uiController = GetComponent<UIController>();
@@ -30,10 +29,10 @@ public class PlayerController : PlayerStats
         playerRB = GetComponent<Rigidbody>();
 
         // Initialize components
-        animationManager.InitAnimationManager();
         movementController.IntializeMovementController();
         weaponController.InitWeaponController();
         cameraController.InitCameraController();
+        knifeController.InitKnifeController();
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -67,6 +66,12 @@ public class PlayerController : PlayerStats
         if (Input.GetKeyDown(KeyCode.E))
             weaponController.SwitchWeapon();
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (knifeController.Knife())
+                weaponController.HideCurrentWeapon();
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (weaponController.UseWeapon())
@@ -85,7 +90,6 @@ public class PlayerController : PlayerStats
                 cameraController.Zoom(60, weaponController.GetWeaponZoomDuration());
         }
 
-        movementController.UpdateAnimation();
         weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);
 
         uiController.UpdateStaminaBar(movementController.stamina, movementData.maxStamina);
@@ -125,5 +129,10 @@ public class PlayerController : PlayerStats
     public Vector3 GetVelocity()
     {
         return playerRB.velocity;
+    }
+
+    public void ShowCurrentWeapon()
+    {
+        weaponController.ShowCurrentWeapon();
     }
 }

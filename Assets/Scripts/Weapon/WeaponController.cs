@@ -97,6 +97,16 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    public void HideCurrentWeapon()
+    {
+        weapons[currentWeapon].HideWeaponWithoutSwap();
+    }
+
+    public void ShowCurrentWeapon()
+    {
+        weapons[currentWeapon].OnShow();
+    }
+
     public void UpdateCurrentWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
     {
         weapons[currentWeapon].UpdateWeapon(horizontal, vertical, mouseX, mouseY, isGrounded);

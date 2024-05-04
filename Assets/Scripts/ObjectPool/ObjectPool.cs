@@ -71,6 +71,7 @@ namespace DesignPatterns.ObjectPool
                     if (pooledObject.objectName == objectName)
                     {
                         PooledObject newInstance = Instantiate(pooledObject);
+                        newInstance.Init();
                         newInstance.Pool = this;
                         return newInstance;
                     }

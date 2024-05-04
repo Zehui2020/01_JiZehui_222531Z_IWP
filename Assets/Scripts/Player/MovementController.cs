@@ -17,13 +17,9 @@ public class MovementController : MonoBehaviour
     private bool useStamina = true;
     private bool canJump = true;
 
-    private AnimationManager animationManager;
-
     // Start is called before the first frame update
     public void IntializeMovementController()
     {
-        animationManager = AnimationManager.Instance;
-
         moveSpeed = movementData.walkSpeed;
         playerCol = GetComponent<CapsuleCollider>();
         playerRB = GetComponent<Rigidbody>();
@@ -130,10 +126,6 @@ public class MovementController : MonoBehaviour
         //    AudioManager.Instance.Stop("Sprint");
         //}
 
-        // Set player to falling if falling
-        if (playerRB.velocity.y <= -0.5f)
-            animationManager.ChangeAnimation(animationManager.Falling, 0.1f, 0, 0);
-
         // If run out of stamina
         if (stamina <= 0f && isSprinting)
         {
@@ -168,28 +160,7 @@ public class MovementController : MonoBehaviour
         playerRB.velocity = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
         playerRB.AddForce(transform.up * movementData.baseJumpForce, ForceMode.Impulse);
 
-        animationManager.ChangeAnimation(animationManager.Jump, 0f, 0, 0);
-
         //AudioManager.Instance.Play("Jump");
-    }
-
-    public void UpdateAnimation()
-    {
-        if (!isGrounded)
-            return;
-
-        if (isMoving)
-        {
-            if (!isSprinting && !isCrouching) animationManager.ChangeAnimation(animationManager.Walk, 0.15f, 0, 0);
-            if (isSprinting && !isCrouching) animationManager.ChangeAnimation(animationManager.Sprint, 0.15f, 0, 0);
-            if (!isSprinting && isCrouching) animationManager.ChangeAnimation(animationManager.CrouchWalk, 0.15f, 0, 0);
-
-        }
-        else
-        {
-            if (!isCrouching) animationManager.ChangeAnimation(animationManager.Idle, 0.15f, 0, 0);
-            if (isCrouching) animationManager.ChangeAnimation(animationManager.CrouchIdle, 0.15f, 0, 0);
-        }
     }
 
     public void MovePlayer()

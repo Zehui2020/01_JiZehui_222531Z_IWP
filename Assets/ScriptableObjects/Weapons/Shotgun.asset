@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: 1
   weaponType: 1
-  damagePerBullet: 30
-  recoil: 20
+  damagePerBullet: 6
   ammoPerMag: 7
+  ADSRecoil: 0
+  unADSRecoil: 0
+  ADSBulletSpreadAccuracy: 0.03
+  unADSBulletSpreadAccuracy: 0.1
   unADSSway: 10
   ADSSway: 1
   ADSCamShake: 2

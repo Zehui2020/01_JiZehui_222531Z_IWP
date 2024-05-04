@@ -22,17 +22,33 @@ public class AINavigation : MonoBehaviour
     public void SetNavMeshTarget(Vector3 target, float speed)
     {
         this.target = target;
+
+        if (!navMeshAgent.enabled)
+            return;
+
         navMeshAgent.speed = speed;
         navMeshAgent.destination = target;
     }
 
     public void StopNavigation()
     {
+        if (!navMeshAgent.enabled)
+            return;
+
         navMeshAgent.speed = 0;
         navMeshAgent.isStopped = true;
     }
+
     public void ResumeNavigation()
     {
+        if (!navMeshAgent.enabled)
+            return;
+
         navMeshAgent.isStopped = false;
+    }
+
+    public void SetNavMeshAgent(bool active)
+    {
+        navMeshAgent.enabled = active;
     }
 }
