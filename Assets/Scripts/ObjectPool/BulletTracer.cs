@@ -36,11 +36,12 @@ public class BulletTracer : PooledObject
         while (remainingDist > 0)
         {
             transform.position = Vector3.Lerp(startPoint, endPoint, Mathf.Clamp01(1 - (remainingDist / distance)));
-            remainingDist -= Time.deltaTime * 100f;
+            remainingDist -= Time.deltaTime * 200f;
             yield return null;
         }
 
         transform.position = endPoint;
+        Deactivate();
     }
 
     private IEnumerator DeactivateRoutine()

@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: 2
   weaponType: 1
+  fireType: 0
   damagePerBullet: 50
   headshotMultiplier: 1.5
   ammoPerMag: 10
-  ADSRecoil: 0
-  unADSRecoil: 0
+  ADSRecoilX: -10
+  ADSRecoilY: 5
+  unADSRecoilX: -20
+  unADSRecoilY: 10
   ADSBulletSpreadAccuracy: 0
-  unADSBulletSpreadAccuracy: 0
+  unADSBulletSpreadAccuracy: 0.008
   unADSSway: 10
   ADSSway: 1
   ADSCamShake: 3
@@ -28,7 +31,7 @@ MonoBehaviour:
   ADSCamShakeDuration: 0.2
   unADSCamShakeDuration: 0.3
   ADSZoomAmount: 40
-  ADSZoomDuration: 1.5
+  ADSZoomDuration: 2
   shellEjectForce: 1.5
   shellEjectUpwardForce: 1.5
   shellEjectTorque: 20

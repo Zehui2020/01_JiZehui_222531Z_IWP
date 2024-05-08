@@ -112,6 +112,11 @@ public class WeaponController : MonoBehaviour
         weapons[currentWeapon].UpdateWeapon(horizontal, vertical, mouseX, mouseY, isGrounded);
     }
 
+    public WeaponData.FireType GetFireType()
+    {
+        return weapons[currentWeapon].GetFireType();
+    }
+
     public float GetWeaponCamShakeAmount()
     {
         return weapons[currentWeapon].GetCamShakeAmount();

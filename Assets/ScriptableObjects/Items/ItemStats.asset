@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98ae2d371433104a831c166b4d5648e, type: 3}
   m_Name: ItemStats
   m_EditorClassIdentifier: 
-  critRate: 1
+  critRate: 100
   critDamage: 200

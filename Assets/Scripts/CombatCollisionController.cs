@@ -54,15 +54,26 @@ public class CombatCollisionController : MonoBehaviour
 
                 for (int i = 0; i < numColliders; i++)
                 {
-                    GameObject hitGameObject = hitColliders[i].gameObject;
-                    Stats stats = GetTopmostParent(hitGameObject.transform).GetComponent<Stats>();
+                    Collider hitCollider = hitColliders[i];
+                    Vector3 closestPoint = hitCollider.ClosestPointOnBounds(collider.transform.position);
 
-                    if (stats == null)
-                        continue;
+                    GameObject hitGameObject = hitCollider.gameObject;
 
-                    stats.TakeDamage(damage, out bool crit);
-                    StopDamageCheck();
-                    yield break;
+                    EnemyStats enemyStats = GetTopmostParent(hitGameObject.transform).GetComponent<EnemyStats>();
+                    PlayerStats playerStats = GetTopmostParent(hitGameObject.transform).GetComponent<PlayerStats>();
+
+                    if (enemyStats != null)
+                    {
+                        enemyStats.TakeDamage(damage, closestPoint, DamagePopup.ColorType.WHITE);
+                        StopDamageCheck();
+                        yield break;
+                    }
+                    else if (playerStats != null)
+                    {
+                        playerStats.TakeDamage(damage);
+                        StopDamageCheck();
+                        yield break;
+                    }
                 }
             }
 

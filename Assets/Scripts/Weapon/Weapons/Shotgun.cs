@@ -9,11 +9,14 @@ public class Shotgun : Weapon
     public override void UseWeapon()
     {
         base.UseWeapon();
+        muzzleFlash.PlayPS();
 
         for (int i = 0; i < bulletsPerShot; i++)
         {
             DoRaycast(0.1f);
         }
+
+        ApplyRecoil();
     }
 
     public override void ReloadWeapon()

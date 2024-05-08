@@ -5,13 +5,14 @@ using UnityEngine;
 public class Stats : MonoBehaviour
 {
     public int health;
+    public int maxHealth;
 
-    public virtual int TakeDamage(int damage, out bool crit)
+    public virtual void TakeDamage(int damage)
     {
-        crit = false;
         health -= damage;
-        return damage;
     }
+
+    public virtual void TakeDamage(int damage, Vector3 position, DamagePopup.ColorType color) { }
 
     public virtual void Heal(int amount)
     {

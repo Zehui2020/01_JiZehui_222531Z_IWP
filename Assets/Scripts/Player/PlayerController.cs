@@ -39,6 +39,8 @@ public class PlayerController : PlayerStats
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
+
+        itemStats.ResetStats();
     }
 
     // Update is called once per frame
@@ -75,10 +77,15 @@ public class PlayerController : PlayerStats
                 weaponController.HideCurrentWeapon();
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (weaponController.GetFireType() == WeaponData.FireType.SemiAuto)
         {
-            if (weaponController.UseWeapon())
-                cameraController.ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeDuration());
+            if (Input.GetMouseButtonDown(0))
+                UseCurrentWeapon();
+        }
+        else if (weaponController.GetFireType() == WeaponData.FireType.FullAuto)
+        {
+            if (Input.GetMouseButton(0))
+                UseCurrentWeapon();
         }
 
         if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
@@ -96,6 +103,7 @@ public class PlayerController : PlayerStats
         weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);
 
         uiController.UpdateStaminaBar(movementController.stamina, movementData.maxStamina);
+        uiController.UpdateHealthBar(health, maxHealth);
 
         transform.forward = Camera.main.transform.forward;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
@@ -104,6 +112,17 @@ public class PlayerController : PlayerStats
     private void FixedUpdate()
     {
         movementController.MovePlayer();
+    }
+
+    private void UseCurrentWeapon()
+    {
+        if (weaponController.UseWeapon())
+            cameraController.ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeDuration());
+    }
+
+    public void ApplyRecoil(float recoilX, float recoilY)
+    {
+        cameraController.ApplyRecoil(recoilX, recoilY);
     }
 
     public void SetDontUseStamina(float duration)
@@ -121,6 +140,7 @@ public class PlayerController : PlayerStats
     public void AddItem(Item item)
     {
         itemManager.AddItem(item);
+        uiController.OnPickupItem(item, itemManager.itemList);
     }
 
     private void OnCollisionEnter(Collision col)
@@ -132,11 +152,6 @@ public class PlayerController : PlayerStats
     private void OnCollisionExit(Collision col)
     {
         movementController.ExitCollision(col);
-    }
-
-    private void OnApplicationQuit()
-    {
-        itemStats.ResetStats();
     }
 
     public Vector3 GetVelocity()

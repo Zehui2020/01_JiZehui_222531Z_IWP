@@ -9,8 +9,10 @@ public class Pistol : Weapon
         base.UseWeapon();
 
         EjectShell("PistolShell");
+        muzzleFlash.PlayPS();
 
         DoRaycast(0.07f);
+        ApplyRecoil();
     }
 
     public override void ReloadWeapon()

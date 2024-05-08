@@ -5,18 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    public enum Weapon { Pistol, Shotgun, Rifle }
+    public enum Weapon { Pistol, Shotgun, Rifle, LMG, AK47, Flamethrower, SawnOff, GrenadeLauncher }
     public Weapon weapon;
 
     public enum WeaponType { Melee, Ranged }
     public WeaponType weaponType;
 
+    public enum FireType { SemiAuto, FullAuto }
+    public FireType fireType;
+
     public int damagePerBullet;
     public float headshotMultiplier;
     public int ammoPerMag;
 
-    public float ADSRecoil;
-    public float unADSRecoil;
+    public float ADSRecoilX;
+    public float ADSRecoilY;
+    public float unADSRecoilX;
+    public float unADSRecoilY;
 
     public float ADSBulletSpreadAccuracy;
     public float unADSBulletSpreadAccuracy;

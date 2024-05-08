@@ -22,15 +22,9 @@ public class CameraController : MonoBehaviour
             shakeRoutine = StartCoroutine(StartShakeCamera(intensity, timer));
     }
 
-    public void Zoom(float zoomAmount, float zoomDuration)
+    public void ApplyRecoil(float recoilX, float recoilY)
     {
-        if (zoomRoutine != null)
-        {
-            StopCoroutine(zoomRoutine);
-            zoomRoutine = null;
-        }
-
-        zoomRoutine = StartCoroutine(StartZoom(zoomAmount, zoomDuration));
+        cinemachineVirtualCamera.GetComponent<RecoilExtension>().ApplyRecoil(recoilX, recoilY);
     }
 
     private IEnumerator StartShakeCamera(float intensity, float timer)
@@ -51,6 +45,17 @@ public class CameraController : MonoBehaviour
 
         cinemachinePerlin.m_AmplitudeGain = 0f;
         shakeRoutine = null;
+    }
+
+    public void Zoom(float zoomAmount, float zoomDuration)
+    {
+        if (zoomRoutine != null)
+        {
+            StopCoroutine(zoomRoutine);
+            zoomRoutine = null;
+        }
+
+        zoomRoutine = StartCoroutine(StartZoom(zoomAmount, zoomDuration));
     }
 
     private IEnumerator StartZoom(float zoomAmount, float zoomDuration)

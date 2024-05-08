@@ -19,6 +19,7 @@ public class Weapon : MonoBehaviour
     protected Animator weaponAnimator;
     [SerializeField] protected WeaponData weaponData;
     [SerializeField] protected Transform firePoint;
+    [SerializeField] private LayerMask playerLayer;
     [SerializeField] protected LayerMask targetLayer;
     [SerializeField] private LayerMask hiddenLayer;
     [SerializeField] private LayerMask weaponLayer;
@@ -41,14 +42,14 @@ public class Weapon : MonoBehaviour
     private bool returnToPool = false;
     private System.Action SwapWeaponEvent;
 
-    public void InitWeapon(System.Action swapEvent)
+    public virtual void InitWeapon(System.Action swapEvent)
     {
         SwapWeaponEvent = swapEvent;
         weaponSway = GetComponent<WeaponSway>();
         weaponAnimator = GetComponent<Animator>();
     }
 
-    public void ChangeState(WeaponState newState)
+    public virtual void ChangeState(WeaponState newState)
     {
         currentState = newState;
 
@@ -61,8 +62,6 @@ public class Weapon : MonoBehaviour
                 SetGameLayerRecursive(gameObject, LayerMaskToLayerNumber(weaponLayer));
                 weaponAnimator.SetTrigger("show");
                 break;
-            case WeaponState.READY:
-                break;
             case WeaponState.USE:
                 weaponAnimator.SetTrigger("use");
                 break;
@@ -74,7 +73,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
+    public virtual void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
     {
         if (weaponSway == null)
             return;
@@ -151,15 +150,15 @@ public class Weapon : MonoBehaviour
 
     public virtual void ReloadWeapon() { }
 
-    public virtual void UseWeapon() { ammoCount--; muzzleFlash.PlayPS(); }
+    public virtual void UseWeapon() { ammoCount--; }
 
-    protected void DoRaycast(float tracerSize)
+    public virtual void DoRaycast(float tracerSize)
     {
         Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
         Ray ray = new Ray(Camera.main.transform.position, shootDir);
         RaycastHit hit;
 
-        if (!Physics.Raycast(ray, out hit))
+        if (!Physics.Raycast(ray, out hit, Mathf.Infinity, ~playerLayer))
         {
             ShootTracer(firePoint.position + (shootDir * 500f), new RaycastHit(), tracerSize);
             return;
@@ -167,9 +166,12 @@ public class Weapon : MonoBehaviour
             
         ShootTracer(hit.point, hit, tracerSize);
 
-        Stats stat = GetTopmostParent(hit.collider.transform).GetComponent<Stats>();
-        if (stat == null)
+        EnemyStats enemyStats = GetTopmostParent(hit.collider.transform).GetComponent<EnemyStats>();
+        if (enemyStats == null)
+        {
+            ObjectPool.Instance.GetPooledObject("StoneHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -hit.normal);
             return;
+        }
 
         int damage = weaponData.damagePerBullet;
         DamagePopup.ColorType colorType;
@@ -182,12 +184,9 @@ public class Weapon : MonoBehaviour
         else
             colorType = DamagePopup.ColorType.WHITE;
 
-        damage = stat.TakeDamage(damage, out bool crit);
-        if (crit)
-            colorType = DamagePopup.ColorType.RED;
+        ObjectPool.Instance.GetPooledObject("BloodHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -Camera.main.transform.forward);
 
-        DamagePopup damagePopup = ObjectPool.Instance.GetPooledObject("DamagePopup", true).GetComponent<DamagePopup>();
-        damagePopup.SetupPopup(damage, hit.point, colorType);
+        enemyStats.TakeDamage(damage, hit.point, colorType);
     }
 
     public void Swap()
@@ -227,6 +226,19 @@ public class Weapon : MonoBehaviour
     {
         BulletTracer tracer = ObjectPool.Instance.GetPooledObject("BulletTracer", true).GetComponent<BulletTracer>();
         tracer.SetupTracer(firePoint.position, endPos, hit, tracerSize);
+    }
+
+    protected void ApplyRecoil()
+    {
+        PlayerController.Instance.ApplyRecoil(GetRecoil().x, GetRecoil().y);
+    }
+
+    public Vector2 GetRecoil()
+    {
+        if (isADS)
+            return new Vector2(weaponData.ADSRecoilX, weaponData.ADSRecoilY);
+        else
+            return new Vector2(weaponData.unADSRecoilX, weaponData.unADSRecoilY);
     }
 
     public float GetCamShakeAmount()
@@ -272,6 +284,11 @@ public class Weapon : MonoBehaviour
     public WeaponData.Weapon GetWeapon()
     {
         return weaponData.weapon;
+    }
+
+    public WeaponData.FireType GetFireType()
+    {
+        return weaponData.fireType;
     }
 
     protected float GetRandomTorque()

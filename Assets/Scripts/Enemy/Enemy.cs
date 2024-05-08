@@ -14,6 +14,10 @@ public class Enemy : EnemyStats
     [SerializeField] protected Collider[] enemyCols;
     private CombatCollisionController collisionController;
 
+    [SerializeField] private ParticleSystemEmitter firePS;
+
+    private Coroutine burnRoutine;
+
     private void Awake()
     {
         InitEnemy();
@@ -42,6 +46,35 @@ public class Enemy : EnemyStats
             aiNavigation.ResumeNavigation();
             return true;
         }
+    }
+
+    public void BurnEnemy(float duration, float interval, int damage)
+    {
+        if (burnRoutine != null)
+            StopCoroutine(burnRoutine);
+
+        firePS.PlayLoopingPS();
+        burnRoutine = StartCoroutine(StartBurning(duration, interval, damage));
+    }
+
+    private IEnumerator StartBurning(float duration, float interval, int damage)
+    {
+        float timeRemaining = duration;
+
+        while (timeRemaining > 0)
+        {
+            TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE);
+            yield return new WaitForSeconds(interval);
+            timeRemaining -= interval;
+        }
+
+        firePS.StopLoopingPS();
+        burnRoutine = null;
+    }
+
+    public bool IsAlive()
+    {
+        return health > 0;
     }
 
     public void OnDamageEventStart(int col)

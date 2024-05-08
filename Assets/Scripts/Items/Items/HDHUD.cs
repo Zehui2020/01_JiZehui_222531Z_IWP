@@ -8,8 +8,6 @@ public class HDHUD : Item
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.critRate += 10;
-        itemStats.critDamage += 5;
     }
 
     public override void IncrementStack()
