@@ -5,4 +5,5 @@ using UnityEngine;
 public class PlayerStats : Stats
 {
     public int knifeDamage;
+    public int points;
 }

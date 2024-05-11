@@ -32,6 +32,6 @@ MonoBehaviour:
   unADSCamShakeDuration: 0.2
   ADSZoomAmount: 50
   ADSZoomDuration: 2
-  shellEjectForce: 1.2
-  shellEjectUpwardForce: 1.2
+  shellEjectForce: 1
+  shellEjectUpwardForce: 2
   shellEjectTorque: 50

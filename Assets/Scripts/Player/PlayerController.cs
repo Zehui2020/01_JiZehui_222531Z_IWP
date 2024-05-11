@@ -36,6 +36,7 @@ public class PlayerController : PlayerStats
         weaponController.InitWeaponController();
         cameraController.InitCameraController();
         knifeController.InitKnifeController();
+        uiController.InitUIController();
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -152,6 +153,16 @@ public class PlayerController : PlayerStats
     private void OnCollisionExit(Collision col)
     {
         movementController.ExitCollision(col);
+    }
+
+    public void AddPoints(int amount)
+    {
+        points += amount;
+    }
+
+    public void RemovePoints(int amount)
+    {
+        points -= amount;
     }
 
     public Vector3 GetVelocity()

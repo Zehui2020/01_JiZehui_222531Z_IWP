@@ -17,6 +17,18 @@ public class UIController : MonoBehaviour
     [SerializeField] private Transform itemUIParent;
     private List<ItemUI> itemUIs = new List<ItemUI>();
 
+    [SerializeField] private TextMeshProUGUI waveAlertText;
+    private Animator waveAlertAnimator;
+    [SerializeField] private TextMeshProUGUI waveNumberText;
+
+    public void InitUIController()
+    {
+        waveAlertAnimator = waveAlertText.GetComponent<Animator>();
+
+        EnemySpawner.WaveStarted += OnWaveStart;
+        EnemySpawner.WaveEnded += OnWaveEnd;
+    }
+
     public void UpdateStaminaBar(float currentStamina, float maxStamina)
     {
         staminaBar.value = currentStamina;
@@ -59,5 +71,19 @@ public class UIController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void OnWaveStart(int waveNumber)
+    {
+        waveNumberText.text = waveNumber.ToString();
+        waveAlertText.text = "Wave " + waveNumber;
+
+        waveAlertAnimator.SetTrigger("show");
+    }
+
+    public void OnWaveEnd()
+    {
+        waveAlertText.text = "Wave Cleared";
+        waveAlertAnimator.SetTrigger("show");
     }
 }

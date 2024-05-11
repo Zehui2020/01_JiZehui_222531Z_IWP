@@ -18,11 +18,6 @@ public class Enemy : EnemyStats
 
     private Coroutine burnRoutine;
 
-    private void Awake()
-    {
-        InitEnemy();
-    }
-
     public virtual void InitEnemy()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -30,6 +25,12 @@ public class Enemy : EnemyStats
         collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
         aiNavigation.InitNavMeshAgent();
+    }
+
+    public void SpawnEnemy(Vector3 spawnPos)
+    {
+        transform.position = spawnPos;
+        gameObject.SetActive(true);
     }
 
     public bool ChasePlayer()
