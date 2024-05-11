@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: HDHUD
   m_EditorClassIdentifier: 
   itemStats: {fileID: 11400000, guid: 1b71fc74fd7f8f94685194172023b3b2, type: 2}
+  itemRarity: 0
   itemType: 0
+  itemCatagory: 0
   spriteIcon: {fileID: 21300000, guid: b6753df8c36c6f74ba9aae8d49f7f730, type: 3}
   title: HD HUD
   description: Crit Rate +10%, Crit Damage +5%

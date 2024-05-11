@@ -23,9 +23,11 @@ public class EnemySpawner : MonoBehaviour
     public static event System.Action<int> WaveStarted;
     public static event System.Action WaveEnded;
 
-    private void Start()
+    public static EnemySpawner Instance;
+
+    private void Awake()
     {
-        StartWave(0f);
+        Instance = this;
     }
 
     private void Update()

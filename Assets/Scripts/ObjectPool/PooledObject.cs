@@ -9,6 +9,8 @@ namespace DesignPatterns.ObjectPool
         public string objectName;
         public int poolAmount;
 
+        public virtual void InitPrefab() { }
+
         public virtual void Init() { }
 
         public void Release()

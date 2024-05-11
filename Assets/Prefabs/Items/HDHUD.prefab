@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1169182967785111074}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 15.7, y: -6.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93,7 +93,6 @@ GameObject:
   m_Component:
   - component: {fileID: 960728535711437565}
   - component: {fileID: 2142154292330974090}
-  - component: {fileID: 1480185842883771384}
   m_Layer: 0
   m_Name: HDHUD
   m_TagString: Untagged
@@ -134,27 +133,7 @@ MonoBehaviour:
   objectName: HDHUD
   poolAmount: 3
   item: {fileID: 11400000, guid: 09b7920e7b1660a448296a5d51529f98, type: 2}
---- !u!65 &1480185842883771384
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5188633753064873226}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}
+  rotationSpeed: 40
 --- !u!1 &5259530861331395325
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +161,7 @@ Transform:
   m_GameObject: {fileID: 5259530861331395325}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 15.7, y: -6.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -265,7 +244,7 @@ Transform:
   m_GameObject: {fileID: 8456994974116281628}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 15.7, y: -6.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

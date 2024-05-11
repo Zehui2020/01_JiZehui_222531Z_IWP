@@ -7,11 +7,14 @@ public class Item : ScriptableObject
 {
     public ItemStats itemStats;
 
-    public enum Rarity { Common, Rare, Legendary, Special };
+    public enum Rarity { Common, Uncommon, Legendary, Special };
     public Rarity itemRarity;
 
     public enum ItemType { HDHUD };
     public ItemType itemType;
+
+    public enum ItemCatagory { Damage, Healing, Utility };
+    public ItemCatagory itemCatagory;
 
     public Sprite spriteIcon;
     [TextArea(3, 10)]

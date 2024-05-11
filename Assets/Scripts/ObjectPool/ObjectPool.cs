@@ -16,10 +16,6 @@ namespace DesignPatterns.ObjectPool
         private void Awake()
         {
             Instance = this;
-        }
-
-        private void Start()
-        {
             SetupPool();
         }
 
@@ -41,6 +37,7 @@ namespace DesignPatterns.ObjectPool
             {
                 for (int i = 0; i < pooledObject.poolAmount; i++)
                 {
+                    pooledObject.InitPrefab();
                     instance = Instantiate(pooledObject);
                     instance.Init();
                     instance.Pool = this;

@@ -6,15 +6,23 @@ using DesignPatterns.ObjectPool;
 public class ItemPickup : PooledObject
 {
     [SerializeField] private Item item;
+    [SerializeField] private float rotationSpeed;
 
-    private void OnTriggerEnter(Collider col)
+    public override void InitPrefab()
     {
-        if (!col.CompareTag("Player"))
-            return;
+        objectName = item.title;
+    }
 
+    public void PickupItem()
+    {
         PlayerController.Instance.AddItem(item);
 
         Release();
         gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
     }
 }

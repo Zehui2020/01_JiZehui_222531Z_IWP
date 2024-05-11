@@ -18,6 +18,7 @@ public class PlayerController : PlayerStats
 
     private bool isDisabled = false;
     private bool isADS = false;
+    private IInteractable collidedInteractable;
 
     private void Awake()
     {
@@ -37,6 +38,7 @@ public class PlayerController : PlayerStats
         cameraController.InitCameraController();
         knifeController.InitKnifeController();
         uiController.InitUIController();
+        EnemySpawner.Instance.StartWave(0f);
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -72,10 +74,16 @@ public class PlayerController : PlayerStats
         if (Input.GetKeyDown(KeyCode.E))
             weaponController.SwitchWeapon();
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             if (knifeController.Knife())
                 weaponController.HideCurrentWeapon();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (collidedInteractable != null)
+                collidedInteractable.OnInteract();
         }
 
         if (weaponController.GetFireType() == WeaponData.FireType.SemiAuto)
@@ -155,6 +163,29 @@ public class PlayerController : PlayerStats
         movementController.ExitCollision(col);
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.TryGetComponent<IInteractable>(out IInteractable interactable))
+        {
+            collidedInteractable = interactable;
+            interactable.OnEnterRange();
+        }
+    }
+
+    private void OnTriggerExit(Collider col)
+    {
+        if (col.TryGetComponent<IInteractable>(out IInteractable interactable))
+        {
+            collidedInteractable = null;
+            interactable.OnExitRange();
+        }
+    }
+
+    public int GetPoints()
+    {
+        return points;
+    }
+
     public void AddPoints(int amount)
     {
         points += amount;
@@ -173,5 +204,15 @@ public class PlayerController : PlayerStats
     public void ShowCurrentWeapon()
     {
         weaponController.ShowCurrentWeapon();
+    }
+
+    public Weapon GetRandomWeapon()
+    {
+        return weaponController.GetRandomWeaponFromPool();
+    }
+    
+    public void ReplaceWeapon(WeaponData.Weapon weapon)
+    {
+        weaponController.ReplaceWeapon(weapon);
     }
 }

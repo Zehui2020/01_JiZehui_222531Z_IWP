@@ -17,7 +17,7 @@ public class Weapon : MonoBehaviour
 
     private WeaponSway weaponSway;
     protected Animator weaponAnimator;
-    [SerializeField] protected WeaponData weaponData;
+    public WeaponData weaponData;
     [SerializeField] protected Transform firePoint;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] protected LayerMask targetLayer;

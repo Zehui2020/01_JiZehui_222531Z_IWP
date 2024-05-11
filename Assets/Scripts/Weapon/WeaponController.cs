@@ -14,6 +14,9 @@ public class WeaponController : MonoBehaviour
     {
         SwapWeaponEvent += OnSwitchWeapon;
 
+        foreach (Weapon weapon in weapons)
+            weapon.InitWeapon(SwapWeaponEvent);
+
         foreach (Weapon weapon in weaponPool)
         {
             weapon.InitWeapon(SwapWeaponEvent);
@@ -21,6 +24,12 @@ public class WeaponController : MonoBehaviour
             if (weapon != weapons[currentWeapon])
                 weapon.gameObject.SetActive(false);
         }
+    }
+
+    public Weapon GetRandomWeaponFromPool()
+    {
+        int randNum = Random.Range(0, weaponPool.Count);
+        return weaponPool[randNum];
     }
 
     public bool UseWeapon()
