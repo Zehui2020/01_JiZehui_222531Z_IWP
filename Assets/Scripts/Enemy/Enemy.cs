@@ -67,7 +67,7 @@ public class Enemy : EnemyStats
 
         while (timeRemaining > 0)
         {
-            TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE);
+            TakeDamage((int)(damage * itemStats.burnDamageModifier), Vector3.zero, DamagePopup.ColorType.WHITE);
             yield return new WaitForSeconds(interval);
             timeRemaining -= interval;
         }

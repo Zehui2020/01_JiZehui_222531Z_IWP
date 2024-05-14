@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public Item[] allItems;
     public List<Item> itemList;
 
     public void InitItemManager()
     {
         itemList = new List<Item>();
-
-        foreach (Item item in allItems)
-            item.SetCount(0);
     }
 
     public void AddItem(Item itemToAdd)

@@ -10,7 +10,7 @@ public class Item : ScriptableObject
     public enum Rarity { Common, Uncommon, Legendary, Special };
     public Rarity itemRarity;
 
-    public enum ItemType { HDHUD, AdrenalineShot };
+    public enum ItemType { HDHUD, AdrenalineShot, Gasoline };
     public ItemType itemType;
 
     public enum ItemCatagory { Damage, Healing, Utility };

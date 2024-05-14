@@ -3,7 +3,22 @@ guid: 75ee2d0cdb7d70149a6ad1687ed0b9c5
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: polySurface2Mat
+    second: {fileID: 2100000, guid: e370855ba7c3aa049a396ec19b9d114f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: polySurface4Mat
+    second: {fileID: 2100000, guid: 786d2a760e8a90a40bf2d6363e3427d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: textureEditorIsolateSelectSet_polySurface4Mat
+    second: {fileID: 2100000, guid: 7505388755d31a5419943b9bf486d7e6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

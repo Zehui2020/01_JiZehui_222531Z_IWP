@@ -20,12 +20,13 @@ public class ChestManager : MonoBehaviour
     private void Start()
     {
         SetupChests();
+
+        foreach (Item item in items)
+            item.SetCount(0);
     }
 
     public void SetupChests()
     {
-        
-
         int spawnCount = chestSpawnPoints.Length;
 
         int normalChestCount = Mathf.CeilToInt(spawnCount * 0.6f);
