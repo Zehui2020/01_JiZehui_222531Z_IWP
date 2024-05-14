@@ -29,8 +29,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Vector3 ADSPos;
     [SerializeField] private Quaternion ADSRotation;
 
-    [SerializeField] protected int ammoCount;
-    [SerializeField] protected int totalAmmo;
+    public int ammoCount;
+    public int totalAmmo;
 
     [SerializeField] private Transform shellSpawnPoint;
     [SerializeField] private float shellLifetime;
@@ -40,11 +40,13 @@ public class Weapon : MonoBehaviour
     private bool isADS = false;
     private bool invokeSwapEvent = true;
     private bool returnToPool = false;
-    private System.Action SwapWeaponEvent;
 
-    public virtual void InitWeapon(System.Action swapEvent)
+    public event System.Action<Weapon> UseWeaponEvent;
+    public event System.Action<Weapon> ReloadWeaponEvent;
+    public event System.Action<Weapon> SwapWeaponEvent;
+
+    public virtual void InitWeapon()
     {
-        SwapWeaponEvent = swapEvent;
         weaponSway = GetComponent<WeaponSway>();
         weaponAnimator = GetComponent<Animator>();
     }
@@ -128,7 +130,8 @@ public class Weapon : MonoBehaviour
     public void OnReload()
     {
         if (currentState != WeaponState.RELOAD && 
-            ammoCount < weaponData.ammoPerMag)
+            ammoCount < weaponData.ammoPerMag &&
+            totalAmmo > 0)
             ChangeState(WeaponState.RELOAD);
     }
 
@@ -148,9 +151,9 @@ public class Weapon : MonoBehaviour
         ChangeState(WeaponState.HIDE);
     }
 
-    public virtual void ReloadWeapon() { }
+    public virtual void ReloadWeapon() { ReloadWeaponEvent?.Invoke(this); }
 
-    public virtual void UseWeapon() { ammoCount--; }
+    public virtual void UseWeapon() { ammoCount--; UseWeaponEvent?.Invoke(this); }
 
     public virtual void DoRaycast(float tracerSize)
     {
@@ -195,7 +198,7 @@ public class Weapon : MonoBehaviour
             return;
 
         if (invokeSwapEvent)
-            SwapWeaponEvent.Invoke();
+            SwapWeaponEvent?.Invoke(this);
 
         SetGameLayerRecursive(gameObject, LayerMaskToLayerNumber(hiddenLayer));
         invokeSwapEvent = true;

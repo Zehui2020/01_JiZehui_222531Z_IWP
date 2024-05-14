@@ -6,24 +6,33 @@ public class WeaponController : MonoBehaviour
 {
     [SerializeField] private List<Weapon> weapons;
     [SerializeField] private List<Weapon> weaponPool;
+    private UIController uiController;
     private int currentWeapon;
-
-    public event System.Action SwapWeaponEvent;
 
     public void InitWeaponController()
     {
-        SwapWeaponEvent += OnSwitchWeapon;
+        uiController = GetComponent<UIController>();
 
         foreach (Weapon weapon in weapons)
-            weapon.InitWeapon(SwapWeaponEvent);
+        {
+            weapon.InitWeapon();
+            weapon.SwapWeaponEvent += OnSwitchWeapon;
+            weapon.UseWeaponEvent += uiController.UpdateAmmoCount;
+            weapon.ReloadWeaponEvent += uiController.UpdateAmmoCount;
+        }
 
         foreach (Weapon weapon in weaponPool)
         {
-            weapon.InitWeapon(SwapWeaponEvent);
-
-            if (weapon != weapons[currentWeapon])
-                weapon.gameObject.SetActive(false);
+            weapon.InitWeapon();
+            weapon.gameObject.SetActive(false);
         }
+
+        uiController.SetWeaponCount(weapons.Count);
+
+        if (weapons.Count < 2)
+            uiController.SetWeaponUIs(weapons[currentWeapon], null);
+        else
+            uiController.SetWeaponUIs(weapons[currentWeapon], weapons[(currentWeapon + 1) % (weapons.Count - 1)]);
     }
 
     public Weapon GetRandomWeaponFromPool()
@@ -62,16 +71,22 @@ public class WeaponController : MonoBehaviour
             weapons[currentWeapon].OnSwap();
     }
 
-    public void OnSwitchWeapon()
+    public void OnSwitchWeapon(Weapon weapon)
     {
+        Weapon prevWeapon = weapons[currentWeapon];
+
         currentWeapon++;
         if (currentWeapon > weapons.Count - 1)
             currentWeapon = 0;
 
-        if (!weapons[currentWeapon].gameObject.activeInHierarchy)
-            weapons[currentWeapon].gameObject.SetActive(true);
+        Weapon newWeapon = weapons[currentWeapon];
+
+        if (!newWeapon.gameObject.activeInHierarchy)
+            newWeapon.gameObject.SetActive(true);
         else
-            weapons[currentWeapon].OnShow();
+            newWeapon.OnShow();
+
+        uiController.SetWeaponUIs(newWeapon, prevWeapon);
     }
 
     public void ReplaceWeapon(WeaponData.Weapon newWeapon)
@@ -97,13 +112,25 @@ public class WeaponController : MonoBehaviour
         else
         {
             weapons[currentWeapon].OnReturnToPool();
+            weapons[currentWeapon].SwapWeaponEvent -= OnSwitchWeapon;
+            weapons[currentWeapon].UseWeaponEvent -= uiController.UpdateAmmoCount;
+            weapons[currentWeapon].ReloadWeaponEvent -= uiController.UpdateAmmoCount;
+
             weaponPool.Add(weapons[currentWeapon]);
 
             weapons[currentWeapon] = targetWeapon;
             weaponPool.Remove(targetWeapon);
 
             targetWeapon.gameObject.SetActive(true);
+
+            uiController.OnReplaceWeapon(targetWeapon);
         }
+
+        targetWeapon.SwapWeaponEvent += OnSwitchWeapon;
+        targetWeapon.UseWeaponEvent += uiController.UpdateAmmoCount;
+        targetWeapon.ReloadWeaponEvent += uiController.UpdateAmmoCount;
+
+        uiController.SetWeaponCount(weapons.Count);
     }
 
     public void HideCurrentWeapon()

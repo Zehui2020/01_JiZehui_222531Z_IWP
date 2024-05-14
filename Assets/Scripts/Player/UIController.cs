@@ -21,6 +21,9 @@ public class UIController : MonoBehaviour
     private Animator waveAlertAnimator;
     [SerializeField] private TextMeshProUGUI waveNumberText;
 
+    [SerializeField] private WeaponUI mainWeaponUI;
+    [SerializeField] private WeaponUI secondaryWeaponUI;
+
     public void InitUIController()
     {
         waveAlertAnimator = waveAlertText.GetComponent<Animator>();
@@ -42,35 +45,27 @@ public class UIController : MonoBehaviour
         healthText.text = currentHealth + " / " + maxHealth;
     }
 
-    public void OnPickupItem(Item item, List<Item> itemList)
+    public void OnPickupItem(Item item)
     {
         itemPickupAlert.DisplayAlert(item);
 
-        if (!FindItemInList(item))
+        foreach (ItemUI itemUI in itemUIs)
         {
-            ItemUI itemUI = Instantiate(itemUIPrefab, itemUIParent);
-            itemUI.SetupItemUI(item);
-            itemUIs.Add(itemUI);
+            if (itemUI.item.itemType == item.itemType)
+            {
+                itemUI.AddItemCount();
+                return;
+            }
         }
+
+        ItemUI newItemUI = Instantiate(itemUIPrefab, itemUIParent);
+        newItemUI.SetupItemUI(item);
+        itemUIs.Add(newItemUI);
     }
 
     public void OnADS(bool isADS)
     {
         crossHair.SetActive(!isADS);
-    }
-
-    public bool FindItemInList(Item item)
-    {
-        foreach (ItemUI itemUI in itemUIs)
-        {
-            if (itemUI.item.itemType != item.itemType)
-                continue;
-
-            itemUI.AddItemCount();
-            return true;
-        }
-
-        return false;
     }
 
     public void OnWaveStart(int waveNumber)
@@ -85,5 +80,31 @@ public class UIController : MonoBehaviour
     {
         waveAlertText.text = "Wave Cleared";
         waveAlertAnimator.SetTrigger("show");
+    }
+
+    public void SetWeaponCount(int weaponCount)
+    {
+        if (weaponCount < 2)
+            secondaryWeaponUI.gameObject.SetActive(false);
+        else
+            secondaryWeaponUI.gameObject.SetActive(true);
+    }
+
+    public void OnReplaceWeapon(Weapon newWeapon)
+    {
+        mainWeaponUI.SetWeaponUI(newWeapon);
+    }
+
+    public void SetWeaponUIs(Weapon mainWeapon, Weapon secondaryWeapon)
+    {
+        mainWeaponUI.SetWeaponUI(mainWeapon);
+
+        if (secondaryWeapon != null)
+            secondaryWeaponUI.SetWeaponUI(secondaryWeapon);
+    }
+
+    public void UpdateAmmoCount(Weapon weapon)
+    {
+        mainWeaponUI.UpdateAmmoCount(weapon.ammoCount, weapon.totalAmmo);
     }
 }

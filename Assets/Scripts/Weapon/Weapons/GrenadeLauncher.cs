@@ -22,7 +22,9 @@ public class GrenadeLauncher : Weapon
         ammoCount++;
         totalAmmo--;
 
-        if (ammoCount >= weaponData.ammoPerMag)
+        if (ammoCount >= weaponData.ammoPerMag || totalAmmo <= 0)
             weaponAnimator.SetTrigger("finishReloading");
+
+        base.ReloadWeapon();
     }
 }

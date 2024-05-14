@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5069522a5e918284797d68e99654e33c, type: 3}
   m_Name: SawnOff
   m_EditorClassIdentifier: 
+  weaponIcon: {fileID: 21300000, guid: 85c5e38874e9b8b44ac1a283881b8a4a, type: 3}
   weapon: 6
   weaponType: 1
   fireType: 0

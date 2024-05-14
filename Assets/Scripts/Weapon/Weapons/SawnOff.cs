@@ -32,7 +32,17 @@ public class SawnOff : Weapon
 
     public override void ReloadWeapon()
     {
-        totalAmmo -= weaponData.ammoPerMag - ammoCount;
-        ammoCount = weaponData.ammoPerMag;
+        if (totalAmmo <= weaponData.ammoPerMag)
+        {
+            ammoCount = totalAmmo;
+            totalAmmo = 0;
+        }
+        else
+        {
+            totalAmmo -= weaponData.ammoPerMag - ammoCount;
+            ammoCount = weaponData.ammoPerMag;
+        }
+
+        base.ReloadWeapon();
     }
 }

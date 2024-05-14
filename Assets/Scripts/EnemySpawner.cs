@@ -141,7 +141,8 @@ public class EnemySpawner : MonoBehaviour
             if (enemy.gameObject.activeInHierarchy)
                 continue;
 
-            enemy.SpawnEnemy(spawnPoints[0].position);
+            int randIndex = Random.Range(0, spawnPoints.Length);
+            enemy.SpawnEnemy(spawnPoints[randIndex].position);
             return;
         }
     }

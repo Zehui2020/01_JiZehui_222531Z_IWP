@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemStats: {fileID: 11400000, guid: 1b71fc74fd7f8f94685194172023b3b2, type: 2}
   itemRarity: 0
-  itemType: 0
+  itemType: 1
   itemCatagory: 2
   spriteIcon: {fileID: 21300000, guid: 5cb945d2eac5df645804c2665229bacd, type: 3}
   title: Adrenaline Shot
-  description: +15% sprint speed
+  description: +15% sprint speed (+10% / stack)
   itemStack: 0

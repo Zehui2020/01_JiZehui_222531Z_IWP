@@ -10,23 +10,20 @@ public class Flamethrower : Weapon
     [SerializeField] private float baseBurnDuration;
     [SerializeField] private float baseBurnInterval;
 
-    public override void InitWeapon(Action swapEvent)
-    {
-        base.InitWeapon(swapEvent);
-    }
-
     public override void UseWeapon()
     {
         base.UseWeapon();
         muzzleFlash.PlayLoopingPS();
 
-        for (int i = 0; i < flamethrowerRadius.enemiesInRadius.Count; i++)
-        {
-            if (i >= flamethrowerRadius.enemiesInRadius.Count)
-                break;
+        List<Enemy> enemiesCopy = new List<Enemy>(flamethrowerRadius.enemiesInRadius);
 
-            flamethrowerRadius.enemiesInRadius[i].TakeDamage(weaponData.damagePerBullet, Vector3.zero, DamagePopup.ColorType.WHITE);
-            flamethrowerRadius.enemiesInRadius[i].BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet / 2f));
+        foreach (Enemy enemy in enemiesCopy)
+        {
+            if (!flamethrowerRadius.enemiesInRadius.Contains(enemy))
+                continue;
+
+            enemy.TakeDamage(weaponData.damagePerBullet, Vector3.zero, DamagePopup.ColorType.WHITE);
+            enemy.BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet / 2f));
         }
     }
 
@@ -47,7 +44,17 @@ public class Flamethrower : Weapon
 
     public override void ReloadWeapon()
     {
-        totalAmmo -= weaponData.ammoPerMag - ammoCount;
-        ammoCount = weaponData.ammoPerMag;
+        if (totalAmmo <= weaponData.ammoPerMag)
+        {
+            ammoCount = totalAmmo;
+            totalAmmo = 0;
+        }
+        else
+        {
+            totalAmmo -= weaponData.ammoPerMag - ammoCount;
+            ammoCount = weaponData.ammoPerMag;
+        }
+
+        base.ReloadWeapon();
     }
 }

@@ -17,6 +17,7 @@ public class GrenadeProjectile : PooledObject
     public void SetupProjectile(Vector3 spawnPos, Vector3 shootDir, float ejectForce, int damage)
     {
         transform.position = spawnPos;
+        transform.forward = shootDir;
         this.damage = damage;
 
         gameObject.SetActive(true);

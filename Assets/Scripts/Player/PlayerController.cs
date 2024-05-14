@@ -38,6 +38,7 @@ public class PlayerController : PlayerStats
         cameraController.InitCameraController();
         knifeController.InitKnifeController();
         uiController.InitUIController();
+        itemManager.InitItemManager();
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -150,7 +151,7 @@ public class PlayerController : PlayerStats
     public void AddItem(Item item)
     {
         itemManager.AddItem(item);
-        uiController.OnPickupItem(item, itemManager.itemList);
+        uiController.OnPickupItem(item);
     }
 
     private void OnCollisionEnter(Collision col)

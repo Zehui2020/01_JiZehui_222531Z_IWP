@@ -8,11 +8,13 @@ public class ItemStats : ScriptableObject
     public int critRate;
     public int critDamage;
     public float sprintSpeedModifier;
+    public float burnDamageModifier;
 
     public void ResetStats()
     {
         critRate = 1;
         critDamage = 200;
         sprintSpeedModifier = 1;
+        burnDamageModifier = 1;
     }
 }

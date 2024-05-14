@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WeaponData")]
 public class WeaponData : ScriptableObject
 {
+    public Sprite weaponIcon;
+
     public enum Weapon { Pistol, Shotgun, Rifle, LMG, AK47, Flamethrower, SawnOff, GrenadeLauncher }
     public Weapon weapon;
 
