@@ -30,23 +30,6 @@ public class EnemySpawner : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
-    {
-        for (int i = 0; i < enemyList.Count; i++)
-        {
-            if (!enemyList[i].gameObject.activeInHierarchy)
-                continue;
-
-            if (!enemyList[i].IsAlive())
-            {
-                enemyList.Remove(enemyList[i]);
-
-                if (enemyList.Count == 0)
-                    EndWave();
-            }
-        }
-    }
-
     public void StartWave(float delay)
     {
         StartCoroutine(DoStartWave(delay));
@@ -91,7 +74,7 @@ public class EnemySpawner : MonoBehaviour
         int enemiesPerBurst = spawnAmount / burstsPerWave;
         int burstCount = 0;
 
-        while (burstCount < burstsPerWave)
+        while (burstCount < burstsPerWave || enemyList.Count > 0)
         {
             burstCount++;
 
@@ -144,7 +127,10 @@ public class EnemySpawner : MonoBehaviour
         {
             Enemy enemy = GetRandomEnemyOfType(enemyType);
             if (enemy != null)
+            {
                 enemyList.Add(enemy);
+                enemy.EnemyDied += OnEnemyDied;
+            }
         }
     }
 
@@ -190,5 +176,14 @@ public class EnemySpawner : MonoBehaviour
             list[i] = list[randomIndex];
             list[randomIndex] = temp;
         }
+    }
+
+    private void OnEnemyDied(Enemy enemy)
+    {
+        enemy.EnemyDied -= OnEnemyDied;
+        enemyList.Remove(enemy);
+
+        if (enemyList.Count == 0)
+            EndWave();
     }
 }

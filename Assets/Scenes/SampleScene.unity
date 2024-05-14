@@ -39183,7 +39183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gain a temporary barrier upon kill for 20 health (+20 / stack)
+  m_text: +15% move speed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -39210,15 +39210,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.05
-  m_fontSizeBase: 20
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -54255,7 +54255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Topaz Brooch
+  m_text: Adrenaline Shot
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -54282,10 +54282,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.7
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -64633,6 +64633,7 @@ MonoBehaviour:
   - {fileID: 7073662160633480189, guid: eec85447a37bf08438a89bd3c151776d, type: 3}
   - {fileID: 1159046703867312410, guid: c3acd9b81d29aca40a7b4926184c86f9, type: 3}
   - {fileID: 2142154292330974090, guid: d43e61394586c5f4d9182efe617d519b, type: 3}
+  - {fileID: 8935328251566897647, guid: aee2350da532f6a48b90ca3a4cb5f8ec, type: 3}
   - {fileID: 6409823374401450125, guid: c9c24a4a782fa3442bf471707d4b0de1, type: 3}
   - {fileID: 5050269549887794390, guid: 4a58d50323d4868418a13e4128e6c6fa, type: 3}
   - {fileID: 1294587799088437096, guid: d65c4c576dae56d4393ea72fa6a89b19, type: 3}
@@ -79778,7 +79779,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -85275,14 +85276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - {fileID: 11400000, guid: 09b7920e7b1660a448296a5d51529f98, type: 2}
-  - {fileID: 11400000, guid: ff241127f6e01b5469668f8efd1e883e, type: 2}
-  - {fileID: 11400000, guid: 8be83e92e14be834691605a1266147b0, type: 2}
-  - {fileID: 11400000, guid: d32639526f2eb364dae4e6f9c35f7593, type: 2}
-  - {fileID: 11400000, guid: d40ef9a4d8a3cfd4283aa94d71d39892, type: 2}
-  - {fileID: 11400000, guid: ba96d8f9460995447a4c1959b2bcebca, type: 2}
-  - {fileID: 11400000, guid: 348cafc7e96ad154d9bb527682f769aa, type: 2}
-  - {fileID: 11400000, guid: 3022eeea5c92902408972a9f1168ad32, type: 2}
-  - {fileID: 11400000, guid: 348cafc7e96ad154d9bb527682f769aa, type: 2}
+  - {fileID: 11400000, guid: 12fab06a09d44b04096ea0aa318c8e55, type: 2}
   chestSpawnPoints:
   - {fileID: 703818608}
   - {fileID: 1796650059}
@@ -113016,7 +113010,7 @@ MonoBehaviour:
   unADSRotation: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: -0.49999997}
   ADSPos: {x: -0.3193952, y: -0.758, z: -0.025}
   ADSRotation: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: -0.49999997}
-  ammoCount: 10
+  ammoCount: 16
   totalAmmo: 100
   shellSpawnPoint: {fileID: 1910710578}
   shellLifetime: 3
@@ -113529,7 +113523,7 @@ MonoBehaviour:
   unADSRotation: {x: 0.4930083, y: 0.52887243, z: -0.5053185, w: -0.47105202}
   ADSPos: {x: -0.5263963, y: -0.759, z: -0.1}
   ADSRotation: {x: 0.49920085, y: 0.50079787, z: -0.49920085, w: -0.50079787}
-  ammoCount: 5
+  ammoCount: 20
   totalAmmo: 100
   shellSpawnPoint: {fileID: 1336372839}
   shellLifetime: 3
@@ -115775,6 +115769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementData: {fileID: 11400000, guid: 353281b84db7c8a46a4ed228c5112139, type: 2}
+  itemStats: {fileID: 11400000, guid: 1b71fc74fd7f8f94685194172023b3b2, type: 2}
   isGrounded: 1
   stamina: 100
 --- !u!4 &1757434278898464099
@@ -117104,6 +117099,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons:
   - {fileID: 919132147503985780}
+  - {fileID: 919132148382089666}
+  - {fileID: 919132148517021229}
+  - {fileID: 919132148841642534}
+  - {fileID: 919132147552212195}
+  - {fileID: 919132147801041988}
+  - {fileID: 919132147576182280}
+  - {fileID: 919132148762683202}
   weaponPool:
   - {fileID: 919132148382089666}
   - {fileID: 919132148517021229}

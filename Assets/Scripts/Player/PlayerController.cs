@@ -38,12 +38,13 @@ public class PlayerController : PlayerStats
         cameraController.InitCameraController();
         knifeController.InitKnifeController();
         uiController.InitUIController();
-        EnemySpawner.Instance.StartWave(0f);
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
 
         itemStats.ResetStats();
+
+        EnemySpawner.Instance.StartWave(0f);
     }
 
     // Update is called once per frame

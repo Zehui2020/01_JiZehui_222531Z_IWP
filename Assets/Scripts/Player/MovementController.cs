@@ -3,6 +3,7 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     [SerializeField] private MovementData movementData;
+    [SerializeField] private ItemStats itemStats;
     private CapsuleCollider playerCol;
     private Rigidbody playerRB;
 
@@ -41,7 +42,7 @@ public class MovementController : MonoBehaviour
 
         if (isSprinting)
         {
-            moveSpeed = movementData.sprintSpeed;
+            moveSpeed = movementData.sprintSpeed * itemStats.sprintSpeedModifier;
 
             //AudioManager.Instance.Stop("Walk");
         }
@@ -169,13 +170,11 @@ public class MovementController : MonoBehaviour
             return;
 
         Vector3 force;
-
         // Adjust drag & force
         if (isGrounded)
             force = direction * moveSpeed * 10f;
         else if (!isGrounded)
             force = direction * moveSpeed * 10f * movementData.airMultiplier;
-
         else
             force = Vector3.zero;
 

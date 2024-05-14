@@ -16,6 +16,8 @@ public class Enemy : EnemyStats
 
     [SerializeField] private ParticleSystemEmitter firePS;
 
+    public event System.Action<Enemy> EnemyDied;
+
     private Coroutine burnRoutine;
 
     public virtual void InitEnemy()
@@ -25,6 +27,7 @@ public class Enemy : EnemyStats
         collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
         aiNavigation.InitNavMeshAgent();
+        TakeDamageEvent += OnTakeDamage;
     }
 
     public void SpawnEnemy(Vector3 spawnPos)
@@ -73,11 +76,6 @@ public class Enemy : EnemyStats
         burnRoutine = null;
     }
 
-    public bool IsAlive()
-    {
-        return health > 0;
-    }
-
     public void OnDamageEventStart(int col)
     {
         collisionController.EnableCollider(col);
@@ -94,5 +92,13 @@ public class Enemy : EnemyStats
     {
         foreach (Collider col in enemyCols)
             col.enabled = active;
+    }
+
+    private void OnTakeDamage()
+    {
+        if (health > 0)
+            return;
+
+        EnemyDied?.Invoke(this);
     }
 }

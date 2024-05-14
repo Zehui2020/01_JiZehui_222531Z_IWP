@@ -8,6 +8,8 @@ public class EnemyStats : Stats
     [SerializeField] protected ItemStats itemStats;
     [SerializeField] private Transform damageSpawnPoint;
 
+    public event System.Action TakeDamageEvent;
+
     public override void TakeDamage(int damage, Vector3 position, DamagePopup.ColorType color)
     {
         // Check for crit
@@ -25,5 +27,6 @@ public class EnemyStats : Stats
             damagePopup.SetupPopup(damage, damageSpawnPoint.position, color);
 
         base.TakeDamage(damage);
+        TakeDamageEvent?.Invoke();
     }
 }

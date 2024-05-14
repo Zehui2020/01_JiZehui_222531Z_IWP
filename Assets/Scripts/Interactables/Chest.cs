@@ -17,6 +17,7 @@ public class Chest : PooledObject, IInteractable
     public Item.ItemCatagory itemCatagory;
 
     [SerializeField] private int chestCost;
+    [SerializeField] private Light spotLight;
     private bool isOpened = false;
 
     [SerializeField] private Transform itemParent;
@@ -98,6 +99,14 @@ public class Chest : PooledObject, IInteractable
         weaponPickup = ObjectPool.Instance.GetPooledObject(PlayerController.Instance.GetRandomWeapon().weaponData.weapon.ToString(), true).GetComponent<WeaponPickup>();
         weaponPickup.transform.SetParent(itemParent);
         weaponPickup.transform.localPosition = Vector3.zero;
+    }
+
+    public void SetLights(int active)
+    {
+        if (active == 0)
+            spotLight.enabled = false;
+        else
+            spotLight.enabled = true;
     }
 
     public void OnEnterRange()

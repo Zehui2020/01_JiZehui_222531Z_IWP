@@ -20,17 +20,19 @@ public class Flamethrower : Weapon
         base.UseWeapon();
         muzzleFlash.PlayLoopingPS();
 
-        foreach (Enemy enemy in flamethrowerRadius.enemiesInRadius)
+        for (int i = 0; i < flamethrowerRadius.enemiesInRadius.Count; i++)
         {
-            enemy.TakeDamage(weaponData.damagePerBullet, Vector3.zero, DamagePopup.ColorType.WHITE);
-            enemy.BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet / 2f));
+            if (i >= flamethrowerRadius.enemiesInRadius.Count)
+                break;
+
+            flamethrowerRadius.enemiesInRadius[i].TakeDamage(weaponData.damagePerBullet, Vector3.zero, DamagePopup.ColorType.WHITE);
+            flamethrowerRadius.enemiesInRadius[i].BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet / 2f));
         }
     }
 
     public override void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
     {
         base.UpdateWeapon(horizontal, vertical, mouseX, mouseY, isGrounded);
-        flamethrowerRadius.CheckEnemyAlive();
 
         if (ammoCount <= 0 || Input.GetMouseButtonUp(0))
             weaponAnimator.SetTrigger("stopUse");

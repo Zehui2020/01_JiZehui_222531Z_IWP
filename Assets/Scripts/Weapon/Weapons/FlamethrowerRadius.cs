@@ -18,23 +18,24 @@ public class FlamethrowerRadius : MonoBehaviour
     private void OnTriggerEnter(Collider col)
     {
         if (GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy) && col.enabled)
+        {
             enemiesInRadius.Add(enemy);
+            enemy.EnemyDied += OnEnemyDied;
+        }
     }
 
     private void OnTriggerExit(Collider col)
     {
         if (GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy) && col.enabled)
+        {
             enemiesInRadius.Remove(enemy);
+            enemy.EnemyDied -= OnEnemyDied;
+        }
     }
 
-    public void CheckEnemyAlive()
+    private void OnEnemyDied(Enemy enemy)
     {
-        for (int i = enemiesInRadius.Count - 1; i >= 0; i--)
-        {
-            Enemy enemy = enemiesInRadius[i];
-            if (!enemy.IsAlive())
-                enemiesInRadius.RemoveAt(i);
-        }
+        enemiesInRadius.Remove(enemy);
     }
 
     private Transform GetTopmostParent(Transform child)
