@@ -19,6 +19,7 @@ MonoBehaviour:
   damagePerBullet: 15
   headshotMultiplier: 1.5
   ammoPerMag: 2
+  maxAmmo: 100
   ADSRecoilX: -10
   ADSRecoilY: 2
   unADSRecoilX: -20
@@ -26,7 +27,7 @@ MonoBehaviour:
   ADSBulletSpreadAccuracy: 0.003
   unADSBulletSpreadAccuracy: 0.01
   unADSSway: 10
-  ADSSway: 1
+  ADSSway: 0
   ADSCamShake: 2
   unADSCamShake: 4
   ADSCamShakeDuration: 0.2

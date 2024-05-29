@@ -18,8 +18,10 @@ public class ItemManager : MonoBehaviour
             itemToAdd.Initialize();
             itemList.Add(itemToAdd);
         }
-
-        itemToAdd.IncrementStack();
+        else
+        {
+            itemToAdd.IncrementStack();
+        }
     }
 
     public void DecreaseStack(Item itemToRemove)

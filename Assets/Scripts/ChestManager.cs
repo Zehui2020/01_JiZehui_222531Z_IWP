@@ -7,9 +7,10 @@ public class ChestManager : MonoBehaviour
 {
     public static ChestManager Instance;
 
-    [SerializeField] private List<Item> items = new List<Item>();
+    public List<Item> items = new List<Item>();
     [SerializeField] private Transform[] chestSpawnPoints;
 
+    [SerializeField] List<PooledObject> startingChests = new List<PooledObject>();
     [SerializeField] List<PooledObject> chests = new List<PooledObject>();
 
     private void Awake()
@@ -23,6 +24,9 @@ public class ChestManager : MonoBehaviour
 
         foreach (Item item in items)
             item.SetCount(0);
+
+        foreach (PooledObject chest in startingChests)
+            chest.Init();
     }
 
     public void SetupChests()
@@ -54,12 +58,24 @@ public class ChestManager : MonoBehaviour
 
         Shuffle(chests);
 
+        List<PooledObject> removedChests = Utility.Instance.SetListSize(chests, chestSpawnPoints.Length);
+        foreach (PooledObject removedChest in removedChests)
+        {
+            removedChest.Release();
+            removedChest.gameObject.SetActive(false);
+        }
+
         foreach (PooledObject chest in chests)
-            chest.gameObject.SetActive(false);
+        {
+            Chest targetChest = chest as Chest;
+            targetChest.gameObject.SetActive(false);
+            targetChest.OnInteractEvent += CheckAllChestsOpened;
+        }
 
         for (int i = 0; i < chestSpawnPoints.Length; i++)
         {
             chests[i].transform.position = chestSpawnPoints[i].position;
+            chests[i].transform.forward = chestSpawnPoints[i].forward;
             chests[i].gameObject.SetActive(true);
         }
     }
@@ -131,5 +147,32 @@ public class ChestManager : MonoBehaviour
         }
 
         return filteredItems;
+    }
+
+    private void CheckAllChestsOpened()
+    {
+        foreach (PooledObject pooledObject in chests)
+        {
+            Chest chest = pooledObject as Chest;
+            if (chest != null && !chest.isOpened)
+                return;
+        }
+
+        StartCoroutine(RespawnChests());
+    }
+
+    private IEnumerator RespawnChests()
+    {
+        yield return new WaitForSeconds(10f);
+
+        foreach (PooledObject pooledObject in chests)
+        {
+            Chest chest = pooledObject as Chest;
+            chest.ResetChest();
+        }
+
+        chests.Clear();
+
+        SetupChests();
     }
 }

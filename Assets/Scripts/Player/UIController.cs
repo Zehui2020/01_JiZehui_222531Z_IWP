@@ -24,12 +24,15 @@ public class UIController : MonoBehaviour
     [SerializeField] private WeaponUI mainWeaponUI;
     [SerializeField] private WeaponUI secondaryWeaponUI;
 
+    [SerializeField] private TextMeshProUGUI pointText;
+
     public void InitUIController()
     {
         waveAlertAnimator = waveAlertText.GetComponent<Animator>();
 
         EnemySpawner.WaveStarted += OnWaveStart;
         EnemySpawner.WaveEnded += OnWaveEnd;
+        PlayerController.OnUpdatePoints += UpdatePointCount;
     }
 
     public void UpdateStaminaBar(float currentStamina, float maxStamina)
@@ -106,5 +109,10 @@ public class UIController : MonoBehaviour
     public void UpdateAmmoCount(Weapon weapon)
     {
         mainWeaponUI.UpdateAmmoCount(weapon.ammoCount, weapon.totalAmmo);
+    }
+
+    public void UpdatePointCount(int points)
+    {
+        pointText.text = points.ToString() + "P";
     }
 }

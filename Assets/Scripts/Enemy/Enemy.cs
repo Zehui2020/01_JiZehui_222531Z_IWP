@@ -67,7 +67,11 @@ public class Enemy : EnemyStats
 
         while (timeRemaining > 0)
         {
-            TakeDamage((int)(damage * itemStats.burnDamageModifier), Vector3.zero, DamagePopup.ColorType.WHITE);
+            if (health <= 0)
+                break;
+
+            TakeDamage((int)(damage * itemStats.burnDamageModifier), Vector3.zero, DamagePopup.ColorType.WHITE, true);
+            PlayerController.Instance.AddPoints(3);
             yield return new WaitForSeconds(interval);
             timeRemaining -= interval;
         }
@@ -100,5 +104,22 @@ public class Enemy : EnemyStats
             return;
 
         EnemyDied?.Invoke(this);
+        SetEnemyColliders(false);
+        CheckDeathExplosion();
+    }
+
+    private void CheckDeathExplosion()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, itemStats.dynamiteExplodeRadius);
+
+        foreach (var hitCollider in hitColliders)
+        {
+            Enemy enemy = Utility.Instance.GetTopmostParent(hitCollider.transform).GetComponent<Enemy>();
+            if (enemy == null || enemy == this)
+                continue;
+
+            enemy.TakeDamage(itemStats.dynamiteExplodeDamage, Vector3.zero, DamagePopup.ColorType.WHITE, false);
+            enemy.BurnEnemy(5f, 0.5f, (int)(itemStats.dynamiteExplodeDamage * itemStats.dynamiteBurnDamageModifier));
+        }
     }
 }

@@ -31,11 +31,14 @@ public class Weapon : MonoBehaviour
 
     public int ammoCount;
     public int totalAmmo;
+    private float fireRate;
+    private float reloadRate;
 
     [SerializeField] private Transform shellSpawnPoint;
     [SerializeField] private float shellLifetime;
 
     [SerializeField] protected ParticleSystemEmitter muzzleFlash;
+    [SerializeField] protected ItemStats itemStats;
 
     private bool isADS = false;
     private bool invokeSwapEvent = true;
@@ -44,11 +47,18 @@ public class Weapon : MonoBehaviour
     public event System.Action<Weapon> UseWeaponEvent;
     public event System.Action<Weapon> ReloadWeaponEvent;
     public event System.Action<Weapon> SwapWeaponEvent;
+    public event System.Action<Weapon> RestockWeaponEvent;
 
     public virtual void InitWeapon()
     {
         weaponSway = GetComponent<WeaponSway>();
         weaponAnimator = GetComponent<Animator>();
+        ammoCount = weaponData.ammoPerMag;
+        fireRate = 1f;
+        reloadRate = 1f;
+
+        ColdOne.IncreaseFireRate += IncreaseFireRate;
+        WarmOne.IncreaseReloadRate += IncreaseReloadRate;
     }
 
     public virtual void ChangeState(WeaponState newState)
@@ -92,11 +102,13 @@ public class Weapon : MonoBehaviour
         }
 
         weaponSway.UpdateWeaponSway(horizontal, vertical, mouseX, mouseY, isGrounded);
+        weaponAnimator.SetFloat("fireRate", fireRate);
+        weaponAnimator.SetFloat("reloadRate", reloadRate);
     }
 
-    public void ToggleADS()
+    public void SetADS(bool ADS)
     {
-        isADS = !isADS;
+        isADS = ADS;
 
         if (isADS)
             weaponSway.smooth = weaponData.ADSSway;
@@ -127,12 +139,17 @@ public class Weapon : MonoBehaviour
         return false;
     }
 
-    public void OnReload()
+    public bool OnReload()
     {
         if (currentState != WeaponState.RELOAD && 
             ammoCount < weaponData.ammoPerMag &&
             totalAmmo > 0)
+        {
             ChangeState(WeaponState.RELOAD);
+            return true;
+        }
+
+        return false;
     }
 
     public void OnSwap()
@@ -155,41 +172,75 @@ public class Weapon : MonoBehaviour
 
     public virtual void UseWeapon() { ammoCount--; UseWeaponEvent?.Invoke(this); }
 
-    public virtual void DoRaycast(float tracerSize)
+    public virtual bool DoRaycast(float tracerSize, int numberOfRaycasts)
     {
-        Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
-        Ray ray = new Ray(Camera.main.transform.position, shootDir);
-        RaycastHit hit;
+        bool isHit = false;
+        bool headshot = false;
 
-        if (!Physics.Raycast(ray, out hit, Mathf.Infinity, ~playerLayer))
+        Dictionary<EnemyStats, bool> enemyHits = new Dictionary<EnemyStats, bool>();
+
+        for (int i = 0; i < numberOfRaycasts; i++)
         {
-            ShootTracer(firePoint.position + (shootDir * 500f), new RaycastHit(), tracerSize);
-            return;
-        }
-            
-        ShootTracer(hit.point, hit, tracerSize);
+            Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
+            Ray ray = new Ray(Camera.main.transform.position, shootDir);
+            RaycastHit hit;
 
-        EnemyStats enemyStats = GetTopmostParent(hit.collider.transform).GetComponent<EnemyStats>();
-        if (enemyStats == null)
+            if (!Physics.Raycast(ray, out hit, Mathf.Infinity, ~playerLayer))
+            {
+                ShootTracer(firePoint.position + (shootDir * 500f), new RaycastHit(), tracerSize);
+                continue;
+            }
+
+            ShootTracer(hit.point, hit, tracerSize);
+
+            EnemyStats enemyStats = Utility.Instance.GetTopmostParent(hit.transform).GetComponent<EnemyStats>();
+
+            if (enemyStats == null)
+            {
+                ObjectPool.Instance.GetPooledObject("StoneHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -hit.normal);
+                continue;
+            }
+
+            int damage = weaponData.damagePerBullet;
+            DamagePopup.ColorType colorType;
+
+            if (hit.collider.CompareTag("Head"))
+            {
+                colorType = DamagePopup.ColorType.YELLOW;
+                damage = (int)(damage * weaponData.headshotMultiplier);
+                headshot = true;
+            }
+            else
+                colorType = DamagePopup.ColorType.WHITE;
+
+            ObjectPool.Instance.GetPooledObject("BloodHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -Camera.main.transform.forward);
+
+            float distance = Vector3.Distance(PlayerController.Instance.transform.position, hit.point);
+            if (distance <= itemStats.minDistance)
+                damage = (int)(damage * itemStats.distanceDamageModifier);
+
+            if (!enemyHits.ContainsKey(enemyStats))
+                enemyHits.Add(enemyStats, headshot);
+
+            enemyStats.TakeDamage(damage, hit.point, colorType, true);
+
+            isHit = true;
+        }
+
+        foreach (KeyValuePair<EnemyStats, bool> enemyStat in enemyHits)
         {
-            ObjectPool.Instance.GetPooledObject("StoneHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -hit.normal);
-            return;
+            if (enemyStat.Key.health < 0)
+            {
+                if (enemyStat.Value)
+                    PlayerController.Instance.AddPoints(100);
+                else
+                    PlayerController.Instance.AddPoints(60);
+            }
+            else
+                PlayerController.Instance.AddPoints(10);
         }
 
-        int damage = weaponData.damagePerBullet;
-        DamagePopup.ColorType colorType;
-
-        if (hit.collider.CompareTag("Head"))
-        {
-            colorType = DamagePopup.ColorType.YELLOW;
-            damage = (int)(damage * weaponData.headshotMultiplier);
-        }
-        else
-            colorType = DamagePopup.ColorType.WHITE;
-
-        ObjectPool.Instance.GetPooledObject("BloodHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -Camera.main.transform.forward);
-
-        enemyStats.TakeDamage(damage, hit.point, colorType);
+        return isHit;
     }
 
     public void Swap()
@@ -324,16 +375,47 @@ public class Weapon : MonoBehaviour
         return layerNumber - 1;
     }
 
-    private Transform GetTopmostParent(Transform child)
+    public void SetCanADS(int allow)
     {
-        Transform parent = child.parent;
+        if (allow == 0)
+            PlayerController.Instance.SetCanADS(false);
+        else
+            PlayerController.Instance.SetCanADS(true);
+    }
 
-        while (parent != null)
+    private void IncreaseFireRate()
+    {
+        fireRate = itemStats.fireRateModifier;
+    }
+
+    private void IncreaseReloadRate()
+    {
+        reloadRate = itemStats.relaodRateModifier;
+    }
+
+    protected void CheckGivePoints(EnemyStats enemyHit, bool headshot)
+    {
+        if (enemyHit == null)
+            return;
+
+        if (enemyHit.health > 0)
+            PlayerController.Instance.AddPoints(10);
+        else
         {
-            child = parent;
-            parent = child.parent;
+            if (headshot)
+                PlayerController.Instance.AddPoints(100);
+            else
+                PlayerController.Instance.AddPoints(60);
         }
+    }
 
-        return child;
+    public bool RestockWeapon()
+    {
+        if (totalAmmo == weaponData.maxAmmo)
+            return false;
+
+        totalAmmo = weaponData.maxAmmo;
+        RestockWeaponEvent?.Invoke(this);
+        return true;
     }
 }

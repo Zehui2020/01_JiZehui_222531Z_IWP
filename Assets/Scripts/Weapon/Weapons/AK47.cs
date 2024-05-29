@@ -10,8 +10,7 @@ public class AK47 : Weapon
 
         EjectShell("PistolShell");
         muzzleFlash.PlayPS();
-
-        DoRaycast(0.07f);
+        DoRaycast(0.07f, 1);
         ApplyRecoil();
     }
 

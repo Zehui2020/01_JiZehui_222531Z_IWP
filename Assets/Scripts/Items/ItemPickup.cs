@@ -5,6 +5,14 @@ using DesignPatterns.ObjectPool;
 
 public class ItemPickup : PooledObject
 {
+    public enum RotateAxis
+    {
+        Up,
+        Forward,
+        Right
+    }
+    public RotateAxis rotateAxis;
+
     [SerializeField] private Item item;
     [SerializeField] private float rotationSpeed;
 
@@ -23,6 +31,17 @@ public class ItemPickup : PooledObject
 
     private void Update()
     {
-        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+        switch (rotateAxis)
+        {
+            case RotateAxis.Up:
+                transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+                break;
+            case RotateAxis.Forward:
+                transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+                break;
+            case RotateAxis.Right:
+                transform.Rotate(Vector3.right * rotationSpeed * Time.deltaTime);
+                break;
+        }
     }
 }

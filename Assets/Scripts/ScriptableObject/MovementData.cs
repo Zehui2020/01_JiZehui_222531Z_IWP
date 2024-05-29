@@ -18,4 +18,7 @@ public class MovementData : ScriptableObject
     public float jumpStaminaCost;
     public float maxStamina;
     public float staminaRegenRate;
+
+    public float maxSlopeAngle;
+    public float minGroundDist;
 }

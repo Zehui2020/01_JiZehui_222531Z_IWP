@@ -13,12 +13,11 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private int waveNumber = 0;
     [SerializeField] private float waveInterval = 10;
-    [SerializeField] private int spawnAmount = 15;
-    [SerializeField] private int burstsPerWave = 5;
+    [SerializeField] private int spawnAmount = 0;
+    [SerializeField] private int burstsAmount = 1;
     [SerializeField] private float burstInterval = 10;
 
     [SerializeField] private List<Enemy> enemyList = new List<Enemy>();
-    private List<int> spawnFibonacci = new List<int>();
 
     public static event System.Action<int> WaveStarted;
     public static event System.Action WaveEnded;
@@ -40,6 +39,7 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         waveNumber++;
+        IncreaseSpawnAmount();
 
         SetupSpawnSequence();
         StartCoroutine(DoSpawning());
@@ -49,8 +49,6 @@ public class EnemySpawner : MonoBehaviour
 
     public void EndWave()
     {
-        IncreaseSpawnAmount();
-
         minibossAmount = 0;
         bossAmount = 0;
 
@@ -61,24 +59,23 @@ public class EnemySpawner : MonoBehaviour
 
     private void IncreaseSpawnAmount()
     {
-        spawnFibonacci.Add(spawnAmount);
-
-        if (spawnFibonacci.Count < 2)
-            spawnAmount++;
+        if (waveNumber < 20)
+            spawnAmount += 3;
         else
-            spawnAmount = spawnFibonacci[spawnFibonacci.Count - 1] + spawnFibonacci[spawnFibonacci.Count - 2];
+            spawnAmount = Mathf.Min((int)(0.09 * waveNumber * waveNumber - 0.0029 * waveNumber + 23.9580), 100);
+
+        burstInterval = Mathf.Max(2 * Mathf.Pow(0.95f, waveNumber - 1), 0.1f);
     }
 
     private IEnumerator DoSpawning()
     {
-        int enemiesPerBurst = spawnAmount / burstsPerWave;
         int burstCount = 0;
 
-        while (burstCount < burstsPerWave || enemyList.Count > 0)
+        while (burstCount < burstsAmount || enemyList.Count > 0)
         {
             burstCount++;
 
-            for (int i = 0; i < enemiesPerBurst; i++)
+            for (int i = 0; i < burstsAmount; i++)
                 SpawnEnemy();
 
             yield return new WaitForSeconds(burstInterval);

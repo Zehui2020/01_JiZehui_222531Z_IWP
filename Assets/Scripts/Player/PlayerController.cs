@@ -12,13 +12,15 @@ public class PlayerController : PlayerStats
     private ItemManager itemManager;
     [SerializeField] private KnifeController knifeController;
 
-    [SerializeField] private ItemStats itemStats;
     [SerializeField] private MovementData movementData;
     private Rigidbody playerRB;
 
     private bool isDisabled = false;
     private bool isADS = false;
+    private bool canADS = true;
     private IInteractable collidedInteractable;
+
+    public static event System.Action<int> OnUpdatePoints;
 
     private void Awake()
     {
@@ -45,13 +47,24 @@ public class PlayerController : PlayerStats
 
         itemStats.ResetStats();
 
-        EnemySpawner.Instance.StartWave(0f);
+        EnemySpawner.Instance.StartWave(5f);
+    }
+
+    private void Start()
+    {
+        OnUpdatePoints?.Invoke(points);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isDisabled)
+        if (Input.GetKeyDown(KeyCode.Tab))
+            ConsoleManager.Instance.SetConsole();
+
+        if (Input.GetKeyDown(KeyCode.Return))
+            ConsoleManager.Instance.OnInputCommand();
+
+        if (isDisabled || Time.timeScale == 0)
             return;
             
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -59,6 +72,7 @@ public class PlayerController : PlayerStats
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
+        movementController.CheckGroundCollision();
         movementController.HandleMovment(horizontal, vertical);
 
         if (Input.GetKeyUp(KeyCode.Space))
@@ -71,10 +85,20 @@ public class PlayerController : PlayerStats
             movementController.ToggleSprint();
 
         if (Input.GetKeyDown(KeyCode.R))
-            weaponController.ReloadWeapon();
+        {
+            if (weaponController.ReloadWeapon())
+            {
+                SetADS(false);
+                SetCanADS(false);
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.E))
+        {
+            SetCanADS(true);
+            SetADS(false);
             weaponController.SwitchWeapon();
+        }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -99,17 +123,10 @@ public class PlayerController : PlayerStats
                 UseCurrentWeapon();
         }
 
-        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
-        {
-            isADS = !isADS;
-            weaponController.ADSWeapon();
-            uiController.OnADS(isADS);
-
-            if (isADS)
-                cameraController.Zoom(weaponController.GetWeaponZoomAmount(), weaponController.GetWeaponZoomDuration());
-            else
-                cameraController.Zoom(60, weaponController.GetWeaponZoomDuration());
-        }
+        if (Input.GetMouseButtonDown(1))
+            SetADS(true);
+        else if (Input.GetMouseButtonUp(1))
+            SetADS(false);
 
         weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);
 
@@ -123,6 +140,32 @@ public class PlayerController : PlayerStats
     private void FixedUpdate()
     {
         movementController.MovePlayer();
+    }
+
+    private void SetADS(bool ADS)
+    {
+        if (isADS == ADS || !canADS)
+            return;
+
+        isADS = ADS;
+        weaponController.ADSWeapon(isADS);
+        uiController.OnADS(isADS);
+
+        if (isADS)
+        {
+            cameraController.Zoom(weaponController.GetWeaponZoomAmount(), weaponController.GetWeaponZoomDuration());
+            movementController.SetCanSprint(false);
+        }
+        else
+        {
+            movementController.SetCanSprint(true);
+            cameraController.Zoom(60, weaponController.GetWeaponZoomDuration());
+        }
+    }
+
+    public void SetCanADS(bool ads)
+    {
+        canADS = ads;
     }
 
     private void UseCurrentWeapon()
@@ -154,17 +197,6 @@ public class PlayerController : PlayerStats
         uiController.OnPickupItem(item);
     }
 
-    private void OnCollisionEnter(Collision col)
-    {
-        if (movementController != null)
-            movementController.EnterCollision(col);
-    }
-
-    private void OnCollisionExit(Collision col)
-    {
-        movementController.ExitCollision(col);
-    }
-
     private void OnTriggerEnter(Collider col)
     {
         if (col.TryGetComponent<IInteractable>(out IInteractable interactable))
@@ -191,11 +223,13 @@ public class PlayerController : PlayerStats
     public void AddPoints(int amount)
     {
         points += amount;
+        OnUpdatePoints?.Invoke(points);
     }
 
-    public void RemovePoints(int amount)
+    public void DeductPoints(int amount)
     {
         points -= amount;
+        OnUpdatePoints?.Invoke(points);
     }
 
     public Vector3 GetVelocity()
@@ -216,5 +250,10 @@ public class PlayerController : PlayerStats
     public void ReplaceWeapon(WeaponData.Weapon weapon)
     {
         weaponController.ReplaceWeapon(weapon);
+    }
+
+    public bool RestockCurrentWeapon()
+    {
+        return weaponController.RestockWeapon();
     }
 }

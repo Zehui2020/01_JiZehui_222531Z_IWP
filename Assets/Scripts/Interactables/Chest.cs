@@ -18,13 +18,17 @@ public class Chest : PooledObject, IInteractable
 
     [SerializeField] private int chestCost;
     [SerializeField] private Light spotLight;
-    private bool isOpened = false;
+    [SerializeField] private bool isStartingChest;
+    [SerializeField] private string closeAnimState;
+    public bool isOpened = false;
 
     [SerializeField] private Transform itemParent;
     [SerializeField] private TextMeshProUGUI cost;
     private ItemPickup itemPickup;
     private WeaponPickup weaponPickup;
     private Animator animator;
+
+    public event System.Action OnInteractEvent;
 
     public override void Init()
     {
@@ -34,18 +38,13 @@ public class Chest : PooledObject, IInteractable
     public void InitInteractable()
     {
         animator = GetComponent<Animator>();
-        cost.text = chestCost.ToString();
+        cost.text = chestCost.ToString() + "P";
         cost.gameObject.SetActive(false);
-    }
-
-    public void SetChestCost(int newCost)
-    {
-        chestCost = newCost;
     }
 
     public void OnInteract()
     {
-        if (PlayerController.Instance.GetPoints() > chestCost)
+        if (PlayerController.Instance.GetPoints() < chestCost)
             return;
 
         if (isOpened && (itemPickup != null || weaponPickup != null))
@@ -56,6 +55,9 @@ public class Chest : PooledObject, IInteractable
             weaponPickup?.PickupWeapon();
             weaponPickup = null;
 
+            if (isStartingChest)
+                Destroy(gameObject);
+
             return;
         }
 
@@ -64,8 +66,10 @@ public class Chest : PooledObject, IInteractable
 
         isOpened = true;
         animator.SetTrigger("open");
-        PlayerController.Instance.RemovePoints(chestCost);
+        PlayerController.Instance.DeductPoints(chestCost);
         cost.gameObject.SetActive(false);
+
+        OnInteractEvent?.Invoke();
 
         switch (chestType)
         {
@@ -99,6 +103,7 @@ public class Chest : PooledObject, IInteractable
         weaponPickup = ObjectPool.Instance.GetPooledObject(PlayerController.Instance.GetRandomWeapon().weaponData.weapon.ToString(), true).GetComponent<WeaponPickup>();
         weaponPickup.transform.SetParent(itemParent);
         weaponPickup.transform.localPosition = Vector3.zero;
+        weaponPickup.transform.forward = transform.forward;
     }
 
     public void SetLights(int active)
@@ -119,5 +124,33 @@ public class Chest : PooledObject, IInteractable
     {
         if (!isOpened)
             cost.gameObject.SetActive(false);
+    }
+
+    public void SetCost(int newCost)
+    {
+        chestCost = newCost;
+        cost.text = chestCost.ToString() + "P";
+    }
+
+    public void ResetChest()
+    {
+        animator.Play(Animator.StringToHash(closeAnimState), 0, 0);
+
+        isOpened = false;
+        cost.gameObject.SetActive(false);
+
+        if (weaponPickup != null)
+        {
+            weaponPickup.Release();
+            weaponPickup.gameObject.SetActive(false);
+        }
+        if (itemPickup != null)
+        {
+            itemPickup.Release();
+            itemPickup.gameObject.SetActive(false);
+        }
+
+        Release();
+        gameObject.SetActive(false);
     }
 }

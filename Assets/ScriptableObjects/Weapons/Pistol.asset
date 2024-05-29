@@ -16,21 +16,22 @@ MonoBehaviour:
   weapon: 0
   weaponType: 1
   fireType: 0
-  damagePerBullet: 15
+  damagePerBullet: 25
   headshotMultiplier: 1.5
   ammoPerMag: 16
-  ADSRecoilX: -6
+  maxAmmo: 200
+  ADSRecoilX: -5
   ADSRecoilY: 0
-  unADSRecoilX: -12
+  unADSRecoilX: -10
   unADSRecoilY: 2
   ADSBulletSpreadAccuracy: 0.005
   unADSBulletSpreadAccuracy: 0.01
   unADSSway: 10
-  ADSSway: 1
-  ADSCamShake: 1
-  unADSCamShake: 1.5
-  ADSCamShakeDuration: 0.1
-  unADSCamShakeDuration: 0.2
+  ADSSway: 0
+  ADSCamShake: 0
+  unADSCamShake: 0.3
+  ADSCamShakeDuration: 0.15
+  unADSCamShakeDuration: 0.25
   ADSZoomAmount: 50
   ADSZoomDuration: 2
   shellEjectForce: 1

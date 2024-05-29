@@ -59,12 +59,15 @@ public class CombatCollisionController : MonoBehaviour
 
                     GameObject hitGameObject = hitCollider.gameObject;
 
-                    EnemyStats enemyStats = GetTopmostParent(hitGameObject.transform).GetComponent<EnemyStats>();
-                    PlayerStats playerStats = GetTopmostParent(hitGameObject.transform).GetComponent<PlayerStats>();
+                    EnemyStats enemyStats = Utility.Instance.GetTopmostParent(hitGameObject.transform).GetComponent<EnemyStats>();
+                    PlayerStats playerStats = hitGameObject.GetComponent<PlayerStats>();
 
                     if (enemyStats != null)
                     {
-                        enemyStats.TakeDamage(damage, closestPoint, DamagePopup.ColorType.WHITE);
+                        enemyStats.TakeDamage(damage, closestPoint, DamagePopup.ColorType.WHITE, true);
+                        if (enemyStats.health <= 0)
+                            PlayerController.Instance.AddPoints(130);
+
                         StopDamageCheck();
                         yield break;
                     }
@@ -79,18 +82,5 @@ public class CombatCollisionController : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private Transform GetTopmostParent(Transform child)
-    {
-        Transform parent = child.parent;
-
-        while (parent != null)
-        {
-            child = parent;
-            parent = child.parent;
-        }
-
-        return child;
     }
 }

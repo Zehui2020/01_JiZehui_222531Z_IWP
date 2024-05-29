@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: GrenadeProjectile
   poolAmount: 10
+  itemStats: {fileID: 11400000, guid: 1b71fc74fd7f8f94685194172023b3b2, type: 2}
   explosionRadius: 3
   damage: 0
 --- !u!54 &-8500639469565382715

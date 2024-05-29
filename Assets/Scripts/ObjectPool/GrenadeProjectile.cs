@@ -6,6 +6,7 @@ using DesignPatterns.ObjectPool;
 public class GrenadeProjectile : PooledObject
 {
     private Rigidbody projectileRB;
+    [SerializeField] private ItemStats itemStats;
     [SerializeField] private float explosionRadius;
     [SerializeField] private int damage;
 
@@ -22,8 +23,8 @@ public class GrenadeProjectile : PooledObject
 
         gameObject.SetActive(true);
 
-        projectileRB.AddForce(shootDir * ejectForce, ForceMode.Impulse);
         projectileRB.velocity = PlayerController.Instance.GetVelocity();
+        projectileRB.AddForce(shootDir * ejectForce, ForceMode.Impulse);
     }
 
     public void Explode()
@@ -31,13 +32,23 @@ public class GrenadeProjectile : PooledObject
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider col in colliders)
         {
-            PlayerStats playerStats = GetTopmostParent(col.transform).GetComponent<PlayerStats>();
-            EnemyStats enemyStats = GetTopmostParent(col.transform).GetComponent<EnemyStats>();
+            PlayerStats playerStats = col.GetComponent<PlayerStats>();
+            EnemyStats enemyStats = Utility.Instance.GetTopmostParent(col.transform).GetComponent<EnemyStats>();
+
+            float distance = Vector3.Distance(PlayerController.Instance.transform.position, col.transform.position);
+            if (distance <= itemStats.minDistance)
+                damage = (int)(damage * itemStats.distanceDamageModifier);
 
             if (playerStats != null)
                 playerStats.TakeDamage((int)(damage / 2f));
             else if (enemyStats != null)
-                enemyStats.TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE);
+            {
+                enemyStats.TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE, false);
+                if (enemyStats.health <= 0)
+                    PlayerController.Instance.AddPoints(100);
+                else
+                    PlayerController.Instance.AddPoints(50);
+            }
         }
 
         PooledPS pooledPS = ObjectPool.Instance.GetPooledObject("SmallExplosion", true).GetComponent<PooledPS>();
@@ -50,19 +61,6 @@ public class GrenadeProjectile : PooledObject
     private void OnCollisionEnter(Collision collision)
     {
         Explode();
-    }
-
-    private Transform GetTopmostParent(Transform child)
-    {
-        Transform parent = child.parent;
-
-        while (parent != null)
-        {
-            child = parent;
-            parent = child.parent;
-        }
-
-        return child;
     }
 
     private void OnDrawGizmosSelected()

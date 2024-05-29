@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class Shotgun : Weapon
 {
-    [SerializeField] private float bulletsPerShot;
+    [SerializeField] private int bulletsPerShot;
 
     public override void UseWeapon()
     {
         base.UseWeapon();
         muzzleFlash.PlayPS();
-
-        for (int i = 0; i < bulletsPerShot; i++)
-        {
-            DoRaycast(0.1f);
-        }
-
+        DoRaycast(0.07f, bulletsPerShot);
         ApplyRecoil();
     }
 

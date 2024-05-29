@@ -4,6 +4,7 @@ public class MovementController : MonoBehaviour
 {
     [SerializeField] private MovementData movementData;
     [SerializeField] private ItemStats itemStats;
+    [SerializeField] private LayerMask groundLayer;
     private CapsuleCollider playerCol;
     private Rigidbody playerRB;
 
@@ -12,11 +13,14 @@ public class MovementController : MonoBehaviour
     private bool isCrouching = false;
     public bool isGrounded = true;
 
+    private bool canSprint = true;
+
     private Vector3 direction;
     public float stamina = 100;
     private float moveSpeed;
     private bool useStamina = true;
     private bool canJump = true;
+    private RaycastHit slopeHit;
 
     // Start is called before the first frame update
     public void IntializeMovementController()
@@ -35,7 +39,7 @@ public class MovementController : MonoBehaviour
 
     public void ToggleSprint()
     {
-        if (!isMoving || !isGrounded || isCrouching)
+        if (!isMoving || !isGrounded || isCrouching || !canSprint)
             return;
 
         isSprinting = !isSprinting;
@@ -51,6 +55,16 @@ public class MovementController : MonoBehaviour
             moveSpeed = movementData.walkSpeed;
 
             //AudioManager.Instance.Stop("Sprint");
+        }
+    }
+
+    public void SetCanSprint(bool sprint)
+    {
+        canSprint = sprint;
+        if (!sprint)
+        {
+            isSprinting = sprint;
+            moveSpeed = movementData.walkSpeed;
         }
     }
 
@@ -95,7 +109,7 @@ public class MovementController : MonoBehaviour
             //if (!isSprinting && isGrounded)
             //    AudioManager.Instance.OnlyPlayAfterSoundEnds("Walk");
             // If player is sprinting and is moving
-            if (isSprinting && playerRB.velocity.magnitude > 0.1f && useStamina)
+            if (isSprinting && playerRB.velocity.magnitude > 0.1f && useStamina && canSprint)
             {
                 stamina -= movementData.sprintStaminaCost * Time.deltaTime;
 
@@ -179,8 +193,33 @@ public class MovementController : MonoBehaviour
             force = Vector3.zero;
 
         // Move player
-        playerRB.AddForce(force, ForceMode.Force);
+        if (OnSlope())
+            playerRB.AddForce(GetSlopeMoveDir() * moveSpeed * 10f, ForceMode.Force);
+        else
+            playerRB.AddForce(force, ForceMode.Force);
+
         SpeedControl();
+    }
+
+    public void CheckGroundCollision()
+    {
+        RaycastHit groundHit;
+        if (!Physics.Raycast(transform.position, Vector3.down, out groundHit, 100, groundLayer))
+            return;
+
+        float dist = Vector3.Distance(transform.position, groundHit.point);
+        if (dist <= movementData.minGroundDist)
+        {
+            isGrounded = true;
+            canJump = true;
+            playerRB.drag = movementData.groundDrag;
+        }
+        else if (dist > movementData.minGroundDist)
+        {
+            isGrounded = false;
+            canJump = false;
+            playerRB.drag = 0;
+        }
     }
 
     public void StopPlayer()
@@ -193,31 +232,31 @@ public class MovementController : MonoBehaviour
     {
         Vector3 currentVel = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
 
-        if (currentVel.magnitude > moveSpeed)
+        if (OnSlope())
+        {
+            if (playerRB.velocity.magnitude > movementData.walkSpeed)
+                playerRB.velocity = playerRB.velocity.normalized * movementData.walkSpeed;
+        }
+        else if (currentVel.magnitude > moveSpeed)
         {
             Vector3 limitVel = currentVel.normalized * moveSpeed;
             playerRB.velocity = new Vector3(limitVel.x, playerRB.velocity.y, limitVel.z);
         }
     }
 
-    public void EnterCollision(Collision col)
+    private bool OnSlope()
     {
-        if (LayerMask.LayerToName(col.gameObject.layer) == "Ground")
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 100))
         {
-            isGrounded = true;
-            canJump = true;
-            playerRB.drag = movementData.groundDrag;
-
-            //AudioManager.Instance.Play("Land");
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < movementData.maxSlopeAngle && angle != 0;
         }
+
+        return false;
     }
 
-    public void ExitCollision(Collision col)
+    private Vector3 GetSlopeMoveDir()
     {
-        if (LayerMask.LayerToName(col.gameObject.layer) == "Ground")
-        {
-            isGrounded = false;
-            playerRB.drag = 0;
-        }
+        return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
 }

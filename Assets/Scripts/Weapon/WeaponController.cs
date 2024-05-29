@@ -19,6 +19,7 @@ public class WeaponController : MonoBehaviour
             weapon.SwapWeaponEvent += OnSwitchWeapon;
             weapon.UseWeaponEvent += uiController.UpdateAmmoCount;
             weapon.ReloadWeaponEvent += uiController.UpdateAmmoCount;
+            weapon.RestockWeaponEvent += uiController.UpdateAmmoCount;
         }
 
         foreach (Weapon weapon in weaponPool)
@@ -49,20 +50,20 @@ public class WeaponController : MonoBehaviour
         return weapons[currentWeapon].OnUse();
     }
 
-    public void ADSWeapon()
+    public void ADSWeapon(bool isADS)
     {
         if (weapons.Count == 0)
             return;
 
-        weapons[currentWeapon].ToggleADS();
+        weapons[currentWeapon].SetADS(isADS);
     }
 
-    public void ReloadWeapon()
+    public bool ReloadWeapon()
     {
         if (weapons.Count == 0)
-            return;
+            return false;
 
-        weapons[currentWeapon].OnReload();
+        return weapons[currentWeapon].OnReload();
     }
 
     public void SwitchWeapon()
@@ -112,9 +113,11 @@ public class WeaponController : MonoBehaviour
         else
         {
             weapons[currentWeapon].OnReturnToPool();
+
             weapons[currentWeapon].SwapWeaponEvent -= OnSwitchWeapon;
             weapons[currentWeapon].UseWeaponEvent -= uiController.UpdateAmmoCount;
             weapons[currentWeapon].ReloadWeaponEvent -= uiController.UpdateAmmoCount;
+            weapons[currentWeapon].RestockWeaponEvent -= uiController.UpdateAmmoCount;
 
             weaponPool.Add(weapons[currentWeapon]);
 
@@ -129,6 +132,7 @@ public class WeaponController : MonoBehaviour
         targetWeapon.SwapWeaponEvent += OnSwitchWeapon;
         targetWeapon.UseWeaponEvent += uiController.UpdateAmmoCount;
         targetWeapon.ReloadWeaponEvent += uiController.UpdateAmmoCount;
+        targetWeapon.RestockWeaponEvent += uiController.UpdateAmmoCount;
 
         uiController.SetWeaponCount(weapons.Count);
     }
@@ -171,5 +175,10 @@ public class WeaponController : MonoBehaviour
     public float GetWeaponZoomDuration()
     {
         return weapons[currentWeapon].GetWeaponZoomDuration();
+    }
+
+    public bool RestockWeapon()
+    {
+        return weapons[currentWeapon].RestockWeapon();
     }
 }

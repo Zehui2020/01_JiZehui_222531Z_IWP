@@ -70,7 +70,7 @@ MonoBehaviour:
   objectName: DamagePopup
   poolAmount: 10
   textMesh: {fileID: 3487472606104044034}
-  driftDistance: 0.3
+  driftDistance: 0.7
 --- !u!1 &3487472606104044032
 GameObject:
   m_ObjectHideFlags: 0
