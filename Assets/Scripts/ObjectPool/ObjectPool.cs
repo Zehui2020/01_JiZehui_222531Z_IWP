@@ -37,8 +37,8 @@ namespace DesignPatterns.ObjectPool
             {
                 for (int i = 0; i < pooledObject.poolAmount; i++)
                 {
-                    pooledObject.InitPrefab();
                     instance = Instantiate(pooledObject);
+                    instance.InitPrefab();
                     instance.Init();
                     instance.Pool = this;
                     instance.gameObject.SetActive(false);

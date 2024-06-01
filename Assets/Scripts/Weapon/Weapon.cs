@@ -418,4 +418,10 @@ public class Weapon : MonoBehaviour
         RestockWeaponEvent?.Invoke(this);
         return true;
     }
+
+    public void RefillAmmoClip()
+    {
+        ammoCount = weaponData.ammoPerMag;
+        RestockWeaponEvent?.Invoke(this);
+    }
 }

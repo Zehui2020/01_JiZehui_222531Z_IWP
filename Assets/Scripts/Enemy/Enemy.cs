@@ -107,6 +107,10 @@ public class Enemy : EnemyStats
         EnemyDied?.Invoke(this);
         SetEnemyColliders(false);
         CheckDeathExplosion();
+
+        int randNum = Random.Range(0, 100);
+        if (randNum <= itemStats.drumReloadPercentage)
+            PlayerController.Instance.RefillAmmoClip();
     }
 
     private void CheckDeathExplosion()

@@ -85,6 +85,9 @@ public class Zombie : Enemy
 
     private void GetStunned()
     {
+        if (health <= 0)
+            return;
+
         ChangeState(ZombieState.STUN);
     }
 

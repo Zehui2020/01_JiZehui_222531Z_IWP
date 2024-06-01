@@ -25,5 +25,6 @@ MonoBehaviour:
   dynamiteBurnDamageModifier: 0
   fireRateModifier: 1
   relaodRateModifier: 1
-  stunGrenadeRadius: 100
+  stunGrenadeRadius: 0
   stunGrenadeDuration: 2
+  shungiteHealing: 0

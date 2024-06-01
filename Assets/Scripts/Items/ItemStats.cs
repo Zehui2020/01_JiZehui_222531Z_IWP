@@ -26,6 +26,12 @@ public class ItemStats : ScriptableObject
     public float stunGrenadeRadius;
     public float stunGrenadeDuration;
 
+    public float shungiteHealing;
+
+    public int drumReloadPercentage;
+
+    public int healingBonus;
+
     public void ResetStats()
     {
         critRate = 1;
@@ -48,5 +54,11 @@ public class ItemStats : ScriptableObject
 
         stunGrenadeRadius = 0;
         stunGrenadeDuration = 2;
+
+        shungiteHealing = 0;
+
+        drumReloadPercentage = 0;
+
+        healingBonus = 1;
     }
 }

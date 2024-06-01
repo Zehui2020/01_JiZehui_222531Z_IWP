@@ -8,7 +8,7 @@ public class MovementController : MonoBehaviour
     private CapsuleCollider playerCol;
     private Rigidbody playerRB;
 
-    private bool isMoving = false;
+    public bool isMoving = false;
     private bool isSprinting = false;
     private bool isCrouching = false;
     public bool isGrounded = true;

@@ -94,7 +94,7 @@ public class ChestManager : MonoBehaviour
     public ItemPickup GetItemPickup(Item.ItemCatagory? itemCatagory, float commonRarity, float uncommonRarity, float legenaryRarity)
     {
         int randNum = Random.Range(0, 100);
-        ItemPickup itemPickup = null;
+        ItemPickup itemPickup = GetRandomItemFromCatagory(itemCatagory, Item.Rarity.Uncommon);
 
         if (randNum < commonRarity)
             itemPickup = GetRandomItemFromCatagory(itemCatagory, Item.Rarity.Common);
@@ -169,6 +169,7 @@ public class ChestManager : MonoBehaviour
         {
             Chest chest = pooledObject as Chest;
             chest.ResetChest();
+            chest.OnInteractEvent -= CheckAllChestsOpened;
         }
 
         chests.Clear();

@@ -21,6 +21,8 @@ public class PlayerController : PlayerStats
     private IInteractable collidedInteractable;
 
     public static event System.Action<int> OnUpdatePoints;
+    private Coroutine OnMoveRoutine;
+    private Coroutine ShungiteHealingRoutine;
 
     private void Awake()
     {
@@ -132,6 +134,21 @@ public class PlayerController : PlayerStats
 
         transform.forward = Camera.main.transform.forward;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
+        if (itemStats.shungiteHealing == 0)
+            return;
+
+        if (OnMoveRoutine == null && !movementController.isMoving)
+            OnMoveRoutine = StartCoroutine(OnStopMoving());
+
+        if (movementController.isMoving)
+        {
+            if (OnMoveRoutine != null) StopCoroutine(OnMoveRoutine);
+            if (ShungiteHealingRoutine != null) StopCoroutine(ShungiteHealingRoutine);
+
+            OnMoveRoutine = null;
+            ShungiteHealingRoutine = null;
+        }
     }
 
     private void FixedUpdate()
@@ -267,5 +284,25 @@ public class PlayerController : PlayerStats
     public bool RestockCurrentWeapon()
     {
         return weaponController.RestockWeapon();
+    }
+
+    public void RefillAmmoClip()
+    {
+        weaponController.RefillAmmoClip();
+    }
+
+    private IEnumerator OnStopMoving()
+    {
+        yield return new WaitForSeconds(3f);
+        ShungiteHealingRoutine = StartCoroutine(DoShungiteHealing());
+    }
+
+    private IEnumerator DoShungiteHealing()
+    {
+        while (true)
+        {
+            Heal((int)(maxHealth * itemStats.shungiteHealing));
+            yield return new WaitForSeconds(1f);
+        }
     }
 }

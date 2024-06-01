@@ -181,4 +181,9 @@ public class WeaponController : MonoBehaviour
     {
         return weapons[currentWeapon].RestockWeapon();
     }
+
+    public void RefillAmmoClip()
+    {
+        weapons[currentWeapon].RefillAmmoClip();
+    }
 }
