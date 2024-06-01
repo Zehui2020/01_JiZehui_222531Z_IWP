@@ -87,10 +87,7 @@ public class PlayerController : PlayerStats
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (weaponController.ReloadWeapon())
-            {
-                SetADS(false);
-                SetCanADS(false);
-            }
+                OnReload();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -160,6 +157,21 @@ public class PlayerController : PlayerStats
         {
             movementController.SetCanSprint(true);
             cameraController.Zoom(60, weaponController.GetWeaponZoomDuration());
+        }
+    }
+
+    private void OnReload()
+    {
+        SetADS(false);
+        SetCanADS(false);
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, itemStats.stunGrenadeRadius);
+        foreach (Collider col in colliders)
+        {
+            if (!Utility.Instance.GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy))
+                continue;
+
+            enemy.StunEnenmy();
         }
     }
 

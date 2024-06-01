@@ -23,6 +23,9 @@ public class ItemStats : ScriptableObject
     public float fireRateModifier;
     public float relaodRateModifier;
 
+    public float stunGrenadeRadius;
+    public float stunGrenadeDuration;
+
     public void ResetStats()
     {
         critRate = 1;
@@ -42,5 +45,8 @@ public class ItemStats : ScriptableObject
 
         fireRateModifier = 1;
         relaodRateModifier = 1;
+
+        stunGrenadeRadius = 0;
+        stunGrenadeDuration = 2;
     }
 }

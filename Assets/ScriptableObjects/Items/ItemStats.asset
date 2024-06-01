@@ -12,5 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98ae2d371433104a831c166b4d5648e, type: 3}
   m_Name: ItemStats
   m_EditorClassIdentifier: 
-  critRate: 100
+  critRate: 1
   critDamage: 200
+  sprintSpeedModifier: 1
+  burnDamageModifier: 1
+  distanceDamageModifier: 1
+  minDistance: 3
+  critHealAmount: 0
+  blockChance: 0
+  dynamiteExplodeDamage: 0
+  dynamiteExplodeRadius: 0
+  dynamiteBurnDamageModifier: 0
+  fireRateModifier: 1
+  relaodRateModifier: 1
+  stunGrenadeRadius: 100
+  stunGrenadeDuration: 2

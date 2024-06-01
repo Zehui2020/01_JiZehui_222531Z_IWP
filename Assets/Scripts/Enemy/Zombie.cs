@@ -9,16 +9,29 @@ public class Zombie : Enemy
         SPAWN,
         CHASE,
         ATTACK,
+        STUN,
         DIE
     }
     public ZombieState currentState = ZombieState.SPAWN;
 
     public readonly int Run = Animator.StringToHash("ZombieRun");
     public readonly int Attack = Animator.StringToHash("ZombieAttack");
+    public readonly int Stun = Animator.StringToHash("ZombieStun");
     public readonly int Die = Animator.StringToHash("ZombieDie");
+
+    private Coroutine stunRoutine;
+
+    public override void InitEnemy()
+    {
+        base.InitEnemy();
+        StunEvent += GetStunned;
+    }
 
     public void ChangeState(ZombieState newState)
     {
+        if (stunRoutine != null)
+            return;
+
         currentState = newState;
 
         switch (newState)
@@ -43,6 +56,12 @@ public class Zombie : Enemy
                 animator.CrossFade(Die, 0.1f);
                 break;
 
+            case ZombieState.STUN:
+                if (stunRoutine == null)
+                    stunRoutine = StartCoroutine(OnStun());
+                animator.CrossFade(Stun, 0.1f);
+                break;
+
             default:
                 break;
         }
@@ -62,5 +81,21 @@ public class Zombie : Enemy
             default:
                 break;
         }
+    }
+
+    private void GetStunned()
+    {
+        ChangeState(ZombieState.STUN);
+    }
+
+    protected IEnumerator OnStun()
+    {
+        aiNavigation.StopNavigation();
+
+        yield return new WaitForSeconds(itemStats.stunGrenadeDuration);
+
+        aiNavigation.ResumeNavigation();
+        stunRoutine = null;
+        ChangeState(ZombieState.CHASE);
     }
 }

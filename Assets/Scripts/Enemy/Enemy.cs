@@ -17,6 +17,7 @@ public class Enemy : EnemyStats
     [SerializeField] private ParticleSystemEmitter firePS;
 
     public event System.Action<Enemy> EnemyDied;
+    protected event System.Action StunEvent;
 
     private Coroutine burnRoutine;
 
@@ -121,5 +122,10 @@ public class Enemy : EnemyStats
             enemy.TakeDamage(itemStats.dynamiteExplodeDamage, Vector3.zero, DamagePopup.ColorType.WHITE, false);
             enemy.BurnEnemy(5f, 0.5f, (int)(itemStats.dynamiteExplodeDamage * itemStats.dynamiteBurnDamageModifier));
         }
+    }
+
+    public void StunEnenmy()
+    {
+        StunEvent?.Invoke();
     }
 }

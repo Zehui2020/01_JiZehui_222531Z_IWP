@@ -15,7 +15,7 @@ MonoBehaviour:
   itemStats: {fileID: 11400000, guid: 1b71fc74fd7f8f94685194172023b3b2, type: 2}
   itemRarity: 0
   itemType: 8
-  itemCatagory: 2
+  itemCatagory: 0
   spriteIcon: {fileID: 21300000, guid: 4786f47b05bbc9a45aeda13d13791b7b, type: 3}
   title: Warm One
   description: Reload speed +10%.
