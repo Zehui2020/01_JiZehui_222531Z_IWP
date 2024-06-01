@@ -18,5 +18,5 @@ MonoBehaviour:
   itemCatagory: 2
   spriteIcon: {fileID: 21300000, guid: 1c251fa83e5800141914e22505a75b75, type: 3}
   title: Holo Die
-  description: +15% block chance (+10% / stack)
+  description: +15%(+10%/stack) block chance.
   itemStack: 0

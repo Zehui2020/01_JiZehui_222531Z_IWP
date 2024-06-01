@@ -19,4 +19,4 @@ MonoBehaviour:
   spriteIcon: {fileID: 21300000, guid: 4786f47b05bbc9a45aeda13d13791b7b, type: 3}
   title: Warm One
   description: Reload speed +10%.
-  itemStack: 4
+  itemStack: 0

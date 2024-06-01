@@ -18,5 +18,5 @@ MonoBehaviour:
   itemCatagory: 0
   spriteIcon: {fileID: 21300000, guid: 5b9e274fd3ce96246bf7806eca39e2f3, type: 3}
   title: Cold One
-  description: +15% weapon fire rate
+  description: +15% weapon fire rate.
   itemStack: 0

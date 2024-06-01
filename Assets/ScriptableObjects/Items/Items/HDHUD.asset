@@ -18,5 +18,5 @@ MonoBehaviour:
   itemCatagory: 0
   spriteIcon: {fileID: 21300000, guid: b6753df8c36c6f74ba9aae8d49f7f730, type: 3}
   title: HD HUD
-  description: Crit Rate +10%, Crit Damage +5%
+  description: Crit Rate +10%, Crit Damage +5%.
   itemStack: 0

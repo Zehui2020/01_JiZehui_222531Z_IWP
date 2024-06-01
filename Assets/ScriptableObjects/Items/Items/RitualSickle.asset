@@ -18,5 +18,5 @@ MonoBehaviour:
   itemCatagory: 1
   spriteIcon: {fileID: 21300000, guid: c2b0196a1fd5fea44a7a82efe2755195, type: 3}
   title: Ritualist's Sickles
-  description: Gain +5% crit rate. Crit hits heal for 4 health. (+2 health / stack)
-  itemStack: 1
+  description: Gain +5% crit rate. Crit hits heal for 4 health(+2 health/stack).
+  itemStack: 0

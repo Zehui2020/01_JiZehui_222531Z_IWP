@@ -18,5 +18,5 @@ MonoBehaviour:
   itemCatagory: 0
   spriteIcon: {fileID: 21300000, guid: 79a5a1abff1ff9c4492e92dc68a2f8e8, type: 3}
   title: Gasoline
-  description: Doubles burn damage (1.5x / stack)
+  description: Doubles burn damage (1.5x/stack).
   itemStack: 0

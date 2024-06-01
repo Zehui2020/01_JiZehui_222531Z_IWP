@@ -18,5 +18,5 @@ MonoBehaviour:
   itemCatagory: 2
   spriteIcon: {fileID: 21300000, guid: 5cb945d2eac5df645804c2665229bacd, type: 3}
   title: Adrenaline Shot
-  description: +15% sprint speed (+10% / stack)
+  description: +15%(+10%/stack) sprint speed.
   itemStack: 0
