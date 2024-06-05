@@ -97,8 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e191eaf7fd604696068186c160703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: HoloDie
+  objectName: Holo Die
   poolAmount: 3
+  rotateAxis: 0
   item: {fileID: 11400000, guid: d39763b5cc23d154a81a952f21506d30, type: 2}
   rotationSpeed: 40
 --- !u!1 &6033545730339900245

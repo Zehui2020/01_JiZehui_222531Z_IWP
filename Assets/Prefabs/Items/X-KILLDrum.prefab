@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e191eaf7fd604696068186c160703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: X-KILLDrum
+  objectName: X-KILL Drum
   poolAmount: 3
   rotateAxis: 0
   item: {fileID: 11400000, guid: 87986aa480dd50d489acedd15586ecc2, type: 2}

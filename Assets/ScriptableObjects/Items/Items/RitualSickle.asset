@@ -20,3 +20,6 @@ MonoBehaviour:
   title: Ritualist's Sickles
   description: Gain +5% crit rate. Crit hits heal for 4 health(+2 health/stack).
   itemStack: 0
+  baseCritRate: 5
+  baseCritHeal: 4
+  stackCritHeal: 2

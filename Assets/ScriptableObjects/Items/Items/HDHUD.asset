@@ -20,3 +20,5 @@ MonoBehaviour:
   title: HD HUD
   description: Crit Rate +10%, Crit Damage +5%.
   itemStack: 0
+  critRate: 10
+  critDmg: 5

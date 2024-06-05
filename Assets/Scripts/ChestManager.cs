@@ -91,16 +91,16 @@ public class ChestManager : MonoBehaviour
         }
     }
 
-    public ItemPickup GetItemPickup(Item.ItemCatagory? itemCatagory, float commonRarity, float uncommonRarity, float legenaryRarity)
+    public ItemPickup GetItemPickup(Item.ItemCatagory? itemCatagory, float commonRarity, float uncommonRarity, float legendaryRarity)
     {
         int randNum = Random.Range(0, 100);
-        ItemPickup itemPickup = GetRandomItemFromCatagory(itemCatagory, Item.Rarity.Uncommon);
+        ItemPickup itemPickup = null;
 
         if (randNum < commonRarity)
             itemPickup = GetRandomItemFromCatagory(itemCatagory, Item.Rarity.Common);
         else if (randNum < commonRarity + uncommonRarity)
             itemPickup = GetRandomItemFromCatagory(itemCatagory, Item.Rarity.Uncommon);
-        else if (randNum < uncommonRarity + legenaryRarity)
+        else if (randNum < commonRarity + uncommonRarity + legendaryRarity)
             itemPickup = GetRandomItemFromCatagory(itemCatagory, Item.Rarity.Legendary);
 
         return itemPickup;

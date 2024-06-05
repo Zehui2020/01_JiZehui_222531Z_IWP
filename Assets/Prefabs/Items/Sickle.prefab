@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e191eaf7fd604696068186c160703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: RitualSickle
+  objectName: Ritualist's Sickles
   poolAmount: 3
   rotateAxis: 2
   item: {fileID: 11400000, guid: fad6d17dfe291c94b9337ba52fccd6e4, type: 2}

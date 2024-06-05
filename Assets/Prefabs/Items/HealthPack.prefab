@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e191eaf7fd604696068186c160703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: HealthPack
+  objectName: '"Health Pack"'
   poolAmount: 3
   rotateAxis: 1
   item: {fileID: 11400000, guid: 74cb4d207a5493d44b196f3d54ee528c, type: 2}

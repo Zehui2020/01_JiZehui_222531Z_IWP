@@ -27,6 +27,11 @@ public class CameraController : MonoBehaviour
         cinemachineVirtualCamera.GetComponent<RecoilExtension>().ApplyRecoil(recoilX, recoilY);
     }
 
+    public void SetADS(bool isADS)
+    {
+        cinemachineVirtualCamera.GetComponent<SensitivityExtension>().OnToggleADS(isADS);
+    }
+
     private IEnumerator StartShakeCamera(float intensity, float timer)
     {
         float duration = timer;

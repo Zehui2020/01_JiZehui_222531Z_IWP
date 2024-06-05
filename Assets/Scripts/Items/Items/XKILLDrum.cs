@@ -5,15 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/X-KILL Drum")]
 public class XKILLDrum : Item
 {
+    [SerializeField] private int baseChance;
+    [SerializeField] private int sackChance;
+
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.drumReloadPercentage += 20;
+        itemStats.drumReloadPercentage += baseChance;
     }
 
     public override void IncrementStack()
     {
         base.IncrementStack();
-        itemStats.drumReloadPercentage += 10;
+        itemStats.drumReloadPercentage += sackChance;
     }
 }

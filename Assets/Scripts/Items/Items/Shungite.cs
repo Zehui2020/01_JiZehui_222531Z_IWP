@@ -5,15 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Shungite")]
 public class Shungite : Item
 {
+    [SerializeField] private float baseHeal;
+    [SerializeField] private float stackHeal;
+
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.shungiteHealing += 0.03f;
+        itemStats.shungiteHealing += baseHeal;
     }
 
     public override void IncrementStack()
     {
         base.IncrementStack();
-        itemStats.shungiteHealing += 0.03f;
+        itemStats.shungiteHealing += stackHeal;
     }
 }

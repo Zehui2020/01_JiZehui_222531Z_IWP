@@ -111,6 +111,14 @@ public class Enemy : EnemyStats
         int randNum = Random.Range(0, 100);
         if (randNum <= itemStats.drumReloadPercentage)
             PlayerController.Instance.RefillAmmoClip();
+
+        StartCoroutine(OnDie());
+    }
+
+    private IEnumerator OnDie()
+    {
+        yield return new WaitForSeconds(10f);
+        Destroy(gameObject);
     }
 
     private void CheckDeathExplosion()

@@ -20,3 +20,6 @@ MonoBehaviour:
   title: Crude Knife
   description: "Deal x2 damage at close range \n(+1.5x damage, +2m range/stack)."
   itemStack: 0
+  baseDistMod: 2
+  stackDistMod: 1.5
+  stackMinDistance: 2

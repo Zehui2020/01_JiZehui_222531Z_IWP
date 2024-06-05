@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e191eaf7fd604696068186c160703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: ColdOne
+  objectName: Cold One
   poolAmount: 3
   rotateAxis: 1
   item: {fileID: 11400000, guid: 0ae550ff55534e3428b546da7d4465e5, type: 2}

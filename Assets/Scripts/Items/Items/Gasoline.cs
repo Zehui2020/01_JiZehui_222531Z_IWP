@@ -5,15 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Gasoline")]
 public class Gasoline : Item
 {
+    [SerializeField] private float baseBurnDamage;
+    [SerializeField] private float stackBurnDamage;
+
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.burnDamageModifier *= 2;
+        itemStats.burnDamageModifier *= baseBurnDamage;
     }
 
     public override void IncrementStack()
     {
         base.IncrementStack();
-        itemStats.burnDamageModifier *= 1.5f;
+        itemStats.burnDamageModifier *= stackBurnDamage;
     }
 }

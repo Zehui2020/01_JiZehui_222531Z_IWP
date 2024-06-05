@@ -20,3 +20,5 @@ MonoBehaviour:
   title: Adrenaline Shot
   description: +15%(+10%/stack) sprint speed.
   itemStack: 0
+  baseModifier: 0.15
+  stackModifier: 0.1

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7580a6ef0fc724286c93568c1e6c69, type: 3}
   m_Name: MovementData
   m_EditorClassIdentifier: 
-  walkSpeed: 4
-  crouchSpeed: 3
-  sprintSpeed: 6
+  walkSpeed: 3
+  crouchSpeed: 2
+  sprintSpeed: 4
   baseJumpForce: 4.5
   airMultiplier: 0.4
   groundDrag: 5

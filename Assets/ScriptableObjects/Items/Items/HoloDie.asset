@@ -20,3 +20,5 @@ MonoBehaviour:
   title: Holo Die
   description: +15%(+10%/stack) block chance.
   itemStack: 0
+  baseBlockChance: 15
+  stackBlockChance: 10

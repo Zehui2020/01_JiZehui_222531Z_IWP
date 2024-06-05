@@ -6,18 +6,20 @@ using UnityEngine;
 public class WarmOne : Item
 {
     public static event System.Action IncreaseReloadRate;
+    [SerializeField] private float baseReloadMod;
+    [SerializeField] private float stackReloadMod;
 
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.relaodRateModifier += 0.15f;
+        itemStats.relaodRateModifier += baseReloadMod;
         IncreaseReloadRate?.Invoke();
     }
 
     public override void IncrementStack()
     {
         base.IncrementStack();
-        itemStats.relaodRateModifier += 0.15f;
+        itemStats.relaodRateModifier += stackReloadMod;
         IncreaseReloadRate?.Invoke();
     }
 }

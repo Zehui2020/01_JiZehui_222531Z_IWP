@@ -5,16 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/RitualSickle")]
 public class RitualSickle : Item
 {
+    [SerializeField] private int baseCritRate;
+    [SerializeField] private int baseCritHeal;
+
+    [SerializeField] private int stackCritHeal;
+
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.critRate += 5;
-        itemStats.critHealAmount += 4;
+        itemStats.critRate += baseCritRate;
+        itemStats.critHealAmount += baseCritHeal;
     }
 
     public override void IncrementStack()
     {
         base.IncrementStack();
-        itemStats.critHealAmount += 2;
+        itemStats.critHealAmount += stackCritHeal;
     }
 }

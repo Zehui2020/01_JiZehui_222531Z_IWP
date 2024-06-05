@@ -142,6 +142,8 @@ public class Weapon : MonoBehaviour
     public bool OnReload()
     {
         if (currentState != WeaponState.RELOAD && 
+            currentState != WeaponState.HIDE &&
+            currentState != WeaponState.SHOW &&
             ammoCount < weaponData.ammoPerMag &&
             totalAmmo > 0)
         {

@@ -20,3 +20,5 @@ MonoBehaviour:
   title: Warm One
   description: Reload speed +10%.
   itemStack: 0
+  baseReloadMod: 0.15
+  stackReloadMod: 0.15

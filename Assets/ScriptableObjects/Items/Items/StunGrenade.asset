@@ -20,4 +20,6 @@ MonoBehaviour:
   title: Stun Grenade
   description: 'Drop a stun on reload, stunning all enemies in 10m(+5m/stack) for
     2s. '
-  itemStack: 10
+  itemStack: 0
+  baseStunRadius: 10
+  stackStunRadius: 5

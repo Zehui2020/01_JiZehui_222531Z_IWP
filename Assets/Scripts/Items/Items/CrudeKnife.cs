@@ -5,16 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/CrudeKnife")]
 public class CrudeKnife : Item
 {
+    [SerializeField] private float baseDistMod;
+
+    [SerializeField] private float stackDistMod;
+    [SerializeField] private int stackMinDistance;
+
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.distanceDamageModifier *= 2;
+        itemStats.distanceDamageModifier *= baseDistMod;
     }
 
     public override void IncrementStack()
     {
         base.IncrementStack();
-        itemStats.distanceDamageModifier *= 1.5f;
-        itemStats.minDistance += 2;
+        itemStats.distanceDamageModifier *= stackDistMod;
+        itemStats.minDistance += stackMinDistance;
     }
 }

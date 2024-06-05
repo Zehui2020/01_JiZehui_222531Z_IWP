@@ -20,3 +20,5 @@ MonoBehaviour:
   title: Gasoline
   description: Doubles burn damage (1.5x/stack).
   itemStack: 0
+  baseBurnDamage: 2
+  stackBurnDamage: 1.5

@@ -20,3 +20,5 @@ MonoBehaviour:
   title: Cold One
   description: +15% weapon fire rate.
   itemStack: 0
+  baseFireRate: 0.15
+  stackFireRate: 0.15

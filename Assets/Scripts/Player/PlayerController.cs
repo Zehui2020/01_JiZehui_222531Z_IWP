@@ -123,9 +123,15 @@ public class PlayerController : PlayerStats
         }
 
         if (Input.GetMouseButtonDown(1))
+        {
             SetADS(true);
+            cameraController.SetADS(true);
+        }
         else if (Input.GetMouseButtonUp(1))
+        {
             SetADS(false);
+            cameraController.SetADS(false);
+        }
 
         weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);
 

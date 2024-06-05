@@ -40,7 +40,7 @@ public class GrenadeProjectile : PooledObject
                 damage = (int)(damage * itemStats.distanceDamageModifier);
 
             if (playerStats != null)
-                playerStats.TakeDamage((int)(damage / 2f));
+                playerStats.TakeDamage(20);
             else if (enemyStats != null)
             {
                 enemyStats.TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE, false);

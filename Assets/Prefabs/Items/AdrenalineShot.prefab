@@ -132,5 +132,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Adrenaline Shot
   poolAmount: 3
+  rotateAxis: 0
   item: {fileID: 11400000, guid: 12fab06a09d44b04096ea0aa318c8e55, type: 2}
   rotationSpeed: 40

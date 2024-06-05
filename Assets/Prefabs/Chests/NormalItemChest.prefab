@@ -144,10 +144,11 @@ MonoBehaviour:
   itemCatagory: 0
   chestCost: 100
   spotLight: {fileID: 507264494966706187}
+  isStartingChest: 0
+  closeAnimState: ItemChestStatic
   isOpened: 0
   itemParent: {fileID: 3961502693040605180}
   cost: {fileID: 6830054958466096222}
-  closeAnimState: ItemChestStatic
 --- !u!65 &6435000271023987574
 BoxCollider:
   m_ObjectHideFlags: 0

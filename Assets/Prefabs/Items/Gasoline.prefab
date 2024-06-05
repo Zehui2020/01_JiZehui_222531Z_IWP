@@ -130,5 +130,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Gasoline
   poolAmount: 3
+  rotateAxis: 0
   item: {fileID: 11400000, guid: 748c9533e5c97874785626cb42f35ad2, type: 2}
   rotationSpeed: 40

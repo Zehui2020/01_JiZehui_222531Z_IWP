@@ -21,3 +21,9 @@ MonoBehaviour:
   description: Enemies explode for 50 damage upon death, burning all enemies within
     3m for 20% damage.
   itemStack: 0
+  baseExplodeDamage: 40
+  baseBurnDamage: 0.2
+  baseExplodeRadius: 3
+  stackExplodeDamage: 25
+  stackBurnDamage: 0.2
+  stackExplodeRadius: 2

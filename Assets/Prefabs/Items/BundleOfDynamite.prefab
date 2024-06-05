@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e191eaf7fd604696068186c160703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: BundleOfDynamite
+  objectName: Bundle O' Dynamite
   poolAmount: 3
   rotateAxis: 1
   item: {fileID: 11400000, guid: 20d8b57ff5e2e5c45bb2272e21fdc62b, type: 2}

@@ -16,7 +16,7 @@ MonoBehaviour:
   weapon: 7
   weaponType: 1
   fireType: 0
-  damagePerBullet: 50
+  damagePerBullet: 85
   headshotMultiplier: 1
   ammoPerMag: 6
   maxAmmo: 50

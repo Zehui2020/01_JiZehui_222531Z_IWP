@@ -98,5 +98,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Crude Knife
   poolAmount: 3
+  rotateAxis: 0
   item: {fileID: 11400000, guid: 6310b7cb4a447e8429317755fe605391, type: 2}
   rotationSpeed: 40

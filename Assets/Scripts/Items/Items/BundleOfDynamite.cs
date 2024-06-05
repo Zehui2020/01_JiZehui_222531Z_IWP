@@ -5,19 +5,27 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/BundleOfDynamite")]
 public class BundleOfDynamite : Item
 {
+    [SerializeField] private int baseExplodeDamage;
+    [SerializeField] private float baseBurnDamage;
+    [SerializeField] private float baseExplodeRadius;
+
+    [SerializeField] private int stackExplodeDamage;
+    [SerializeField] private float stackBurnDamage;
+    [SerializeField] private float stackExplodeRadius;
+
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.dynamiteExplodeDamage += 40;
-        itemStats.dynamiteBurnDamageModifier += 0.2f;
-        itemStats.dynamiteExplodeRadius += 3;
+        itemStats.dynamiteExplodeDamage += baseExplodeDamage;
+        itemStats.dynamiteBurnDamageModifier += baseBurnDamage;
+        itemStats.dynamiteExplodeRadius += baseExplodeRadius;
     }
 
     public override void IncrementStack()
     {
         base.IncrementStack();
-        itemStats.dynamiteExplodeDamage += 25;
-        itemStats.dynamiteBurnDamageModifier += 0.2f;
-        itemStats.dynamiteExplodeRadius += 2;
+        itemStats.dynamiteExplodeDamage += stackExplodeDamage;
+        itemStats.dynamiteBurnDamageModifier += stackBurnDamage;
+        itemStats.dynamiteExplodeRadius += stackExplodeRadius;
     }
 }
