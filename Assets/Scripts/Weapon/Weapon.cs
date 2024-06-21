@@ -33,6 +33,7 @@ public class Weapon : MonoBehaviour
     public int totalAmmo;
     private float fireRate;
     private float reloadRate;
+    protected float upgradeDamageModifier = 1f;
 
     [SerializeField] private Transform shellSpawnPoint;
     [SerializeField] private float shellLifetime;
@@ -173,6 +174,7 @@ public class Weapon : MonoBehaviour
     public virtual void ReloadWeapon() { ReloadWeaponEvent?.Invoke(this); }
 
     public virtual void UseWeapon() { ammoCount--; UseWeaponEvent?.Invoke(this); }
+    public virtual void UpgradeWeapon() { upgradeDamageModifier += 0.25f; }
 
     public virtual bool DoRaycast(float tracerSize, int numberOfRaycasts)
     {
@@ -203,7 +205,7 @@ public class Weapon : MonoBehaviour
                 continue;
             }
 
-            int damage = weaponData.damagePerBullet;
+            int damage = (int)(weaponData.damagePerBullet * upgradeDamageModifier);
             DamagePopup.ColorType colorType;
 
             if (hit.collider.CompareTag("Head"))

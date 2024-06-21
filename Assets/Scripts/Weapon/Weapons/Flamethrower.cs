@@ -22,10 +22,10 @@ public class Flamethrower : Weapon
             if (!flamethrowerRadius.enemiesInRadius.Contains(enemy))
                 continue;
 
-            int damage = weaponData.damagePerBullet;
+            int damage = (int)(weaponData.damagePerBullet * upgradeDamageModifier);
             float distance = Vector3.Distance(PlayerController.Instance.transform.position, enemy.transform.position);
             if (distance <= itemStats.minDistance)
-                damage = (int)(weaponData.damagePerBullet * itemStats.distanceDamageModifier);
+                damage = (int)(weaponData.damagePerBullet * itemStats.distanceDamageModifier * upgradeDamageModifier);
 
             enemy.TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE, true);
             if (enemy.health <= 0)

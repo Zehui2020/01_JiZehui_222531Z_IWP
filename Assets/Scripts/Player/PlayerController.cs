@@ -287,6 +287,11 @@ public class PlayerController : PlayerStats
         weaponController.ReplaceWeapon(weapon);
     }
 
+    public void UpgradeCurrentWeapon()
+    {
+        weaponController.UpgradeWeapon();
+    }
+
     public bool RestockCurrentWeapon()
     {
         return weaponController.RestockWeapon();

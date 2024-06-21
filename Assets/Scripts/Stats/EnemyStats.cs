@@ -23,6 +23,7 @@ public class EnemyStats : Stats
         if (health <= 0)
         {
             damageRoutine = null;
+            TakeDamageEvent?.Invoke();
             yield break;
         }
 

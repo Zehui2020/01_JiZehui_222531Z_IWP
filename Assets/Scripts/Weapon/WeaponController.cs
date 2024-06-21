@@ -186,4 +186,9 @@ public class WeaponController : MonoBehaviour
     {
         weapons[currentWeapon].RefillAmmoClip();
     }
+
+    public void UpgradeWeapon()
+    {
+        weapons[currentWeapon].UpgradeWeapon();
+    }
 }

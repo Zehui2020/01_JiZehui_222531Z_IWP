@@ -12,7 +12,7 @@ public class GrenadeLauncher : Weapon
 
         Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
         GrenadeProjectile grenadeProjectile = ObjectPool.Instance.GetPooledObject("GrenadeProjectile", false).GetComponent<GrenadeProjectile>();
-        grenadeProjectile.SetupProjectile(firePoint.position, shootDir, weaponData.shellEjectForce, weaponData.damagePerBullet);
+        grenadeProjectile.SetupProjectile(firePoint.position, shootDir, weaponData.shellEjectForce, (int)(weaponData.damagePerBullet * upgradeDamageModifier));
 
         ApplyRecoil();
     }

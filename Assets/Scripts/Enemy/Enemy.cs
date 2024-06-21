@@ -11,6 +11,7 @@ public class Enemy : EnemyStats
     protected AINavigation aiNavigation;
     protected GameObject player;
     protected Animator animator;
+    protected RagdollController ragdollController;
     [SerializeField] protected Collider[] enemyCols;
     private CombatCollisionController collisionController;
 
@@ -20,15 +21,20 @@ public class Enemy : EnemyStats
     protected event System.Action StunEvent;
 
     private Coroutine burnRoutine;
+    protected Coroutine stunRoutine;
 
     public virtual void InitEnemy()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        ragdollController = GetComponent<RagdollController>();
         animator = GetComponent<Animator>();
         collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
         aiNavigation.InitNavMeshAgent();
         TakeDamageEvent += OnTakeDamage;
+        StunEvent += GetStunned;
+
+        ragdollController.DeactivateRagdoll();
     }
 
     public void SpawnEnemy(Vector3 spawnPos)
@@ -134,6 +140,20 @@ public class Enemy : EnemyStats
             enemy.TakeDamage(itemStats.dynamiteExplodeDamage, Vector3.zero, DamagePopup.ColorType.WHITE, false);
             enemy.BurnEnemy(5f, 0.5f, (int)(itemStats.dynamiteExplodeDamage * itemStats.dynamiteBurnDamageModifier));
         }
+    }
+
+    private void GetStunned()
+    {
+        if (health <= 0)
+            return;
+
+        if (stunRoutine == null)
+            stunRoutine = StartCoroutine(OnStun());
+    }
+
+    public virtual IEnumerator OnStun()
+    {
+        yield return null;
     }
 
     public void StunEnenmy()

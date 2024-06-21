@@ -19,14 +19,6 @@ public class Zombie : Enemy
     public readonly int Stun = Animator.StringToHash("ZombieStun");
     public readonly int Die = Animator.StringToHash("ZombieDie");
 
-    private Coroutine stunRoutine;
-
-    public override void InitEnemy()
-    {
-        base.InitEnemy();
-        StunEvent += GetStunned;
-    }
-
     public void ChangeState(ZombieState newState)
     {
         if (stunRoutine != null)
@@ -53,12 +45,11 @@ public class Zombie : Enemy
 
             case ZombieState.DIE:
                 aiNavigation.StopNavigation();
-                animator.CrossFade(Die, 0.1f);
+                animator.enabled = false;
+                ragdollController.ActivateRagdoll();
                 break;
 
             case ZombieState.STUN:
-                if (stunRoutine == null)
-                    stunRoutine = StartCoroutine(OnStun());
                 animator.CrossFade(Stun, 0.1f);
                 break;
 
@@ -83,16 +74,9 @@ public class Zombie : Enemy
         }
     }
 
-    private void GetStunned()
+    public override IEnumerator OnStun()
     {
-        if (health <= 0)
-            return;
-
         ChangeState(ZombieState.STUN);
-    }
-
-    protected IEnumerator OnStun()
-    {
         aiNavigation.StopNavigation();
 
         yield return new WaitForSeconds(itemStats.stunGrenadeDuration);

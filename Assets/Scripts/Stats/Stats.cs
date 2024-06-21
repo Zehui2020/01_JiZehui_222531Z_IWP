@@ -21,6 +21,9 @@ public class Stats : MonoBehaviour
 
     public virtual void Heal(int amount)
     {
+        if (health >= maxHealth)
+            return;
+
         health += amount * itemStats.healingBonus;
         if (health > maxHealth)
             health = maxHealth;

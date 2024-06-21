@@ -44,9 +44,6 @@ public class Chest : PooledObject, IInteractable
 
     public void OnInteract()
     {
-        if (PlayerController.Instance.GetPoints() < chestCost)
-            return;
-
         if (isOpened && (itemPickup != null || weaponPickup != null))
         {
             itemPickup?.PickupItem();
@@ -61,7 +58,7 @@ public class Chest : PooledObject, IInteractable
             return;
         }
 
-        if (isOpened)
+        if (isOpened || PlayerController.Instance.GetPoints() < chestCost)
             return;
 
         isOpened = true;
