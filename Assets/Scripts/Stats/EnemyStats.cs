@@ -8,22 +8,22 @@ public class EnemyStats : Stats
     [SerializeField] private Transform damageSpawnPoint;
     private Coroutine damageRoutine;
 
-    public event System.Action TakeDamageEvent;
+    public event System.Action<Vector3> TakeDamageEvent;
 
-    public override void TakeDamage(int damage, Vector3 position, DamagePopup.ColorType color, bool ignoreThreshold)
+    public void TakeDamage(int damage, Vector3 position, Vector3 direction, DamagePopup.ColorType color, bool ignoreThreshold)
     {
         if (damageRoutine == null && !ignoreThreshold)
-            damageRoutine = StartCoroutine(TakeDamageRoutine(damage, position, color));
+            damageRoutine = StartCoroutine(TakeDamageRoutine(damage, position, direction, color));
         else if (ignoreThreshold)
-            damageRoutine = StartCoroutine(TakeDamageRoutine(damage, position, color));
+            damageRoutine = StartCoroutine(TakeDamageRoutine(damage, position, direction, color));
     }
 
-    private IEnumerator TakeDamageRoutine(int damage, Vector3 position, DamagePopup.ColorType color)
+    private IEnumerator TakeDamageRoutine(int damage, Vector3 position, Vector3 direction, DamagePopup.ColorType color)
     {
         if (health <= 0)
         {
             damageRoutine = null;
-            TakeDamageEvent?.Invoke();
+            TakeDamageEvent?.Invoke(direction);
             yield break;
         }
 
@@ -43,7 +43,7 @@ public class EnemyStats : Stats
             damagePopup.SetupPopup(damage, damageSpawnPoint.position, color);
 
         base.TakeDamage(damage);
-        TakeDamageEvent?.Invoke();
+        TakeDamageEvent?.Invoke(direction);
 
         yield return null;
 

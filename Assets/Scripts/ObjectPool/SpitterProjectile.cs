@@ -7,6 +7,7 @@ public class SpitterProjectile : PooledObject
 {
     private Rigidbody projectileRB;
     [SerializeField] private int damage;
+    [SerializeField] private float lifetime;
 
     public override void Init()
     {
@@ -23,6 +24,7 @@ public class SpitterProjectile : PooledObject
 
         projectileRB.velocity = PlayerController.Instance.GetVelocity();
         projectileRB.AddForce(shootDir * ejectForce, ForceMode.Impulse);
+        StartCoroutine(DestroyRoutine());
     }
 
     private void OnTriggerEnter(Collider col)
@@ -31,5 +33,13 @@ public class SpitterProjectile : PooledObject
             return;
 
         playerController.TakeDamage(damage);
+        Release();
+    }
+
+    private IEnumerator DestroyRoutine()
+    {
+        yield return new WaitForSeconds(lifetime);
+
+        Release();
     }
 }

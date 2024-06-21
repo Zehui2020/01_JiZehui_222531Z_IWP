@@ -27,7 +27,7 @@ public class Flamethrower : Weapon
             if (distance <= itemStats.minDistance)
                 damage = (int)(weaponData.damagePerBullet * itemStats.distanceDamageModifier * upgradeDamageModifier);
 
-            enemy.TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE, true);
+            enemy.TakeDamage(damage, Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, true);
             if (enemy.health <= 0)
                 PlayerController.Instance.AddPoints(20);
 

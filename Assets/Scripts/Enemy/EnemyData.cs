@@ -8,4 +8,5 @@ public class EnemyData : ScriptableObject
     public float moveSpeed;
     public float attackRange;
     public int damage;
+    public float deathPushbackForce;
 }

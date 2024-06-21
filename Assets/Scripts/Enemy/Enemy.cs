@@ -77,7 +77,7 @@ public class Enemy : EnemyStats
             if (health <= 0)
                 break;
 
-            TakeDamage((int)(damage * itemStats.burnDamageModifier), Vector3.zero, DamagePopup.ColorType.WHITE, true);
+            TakeDamage((int)(damage * itemStats.burnDamageModifier), Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, true);
             PlayerController.Instance.AddPoints(3);
             yield return new WaitForSeconds(interval);
             timeRemaining -= interval;
@@ -105,7 +105,7 @@ public class Enemy : EnemyStats
             col.enabled = active;
     }
 
-    private void OnTakeDamage()
+    private void OnTakeDamage(Vector3 direction)
     {
         if (health > 0)
             return;
@@ -114,6 +114,9 @@ public class Enemy : EnemyStats
         SetEnemyColliders(false);
         CheckDeathExplosion();
 
+        if (direction != Vector3.zero)
+            ragdollController.ActivateRagdoll(direction, enemyData.deathPushbackForce);
+        
         int randNum = Random.Range(0, 100);
         if (randNum <= itemStats.drumReloadPercentage)
             PlayerController.Instance.RefillAmmoClip();
@@ -137,7 +140,8 @@ public class Enemy : EnemyStats
             if (enemy == null || enemy == this)
                 continue;
 
-            enemy.TakeDamage(itemStats.dynamiteExplodeDamage, Vector3.zero, DamagePopup.ColorType.WHITE, false);
+            Vector3 hitDir = (transform.position - hitCollider.transform.position).normalized;
+            enemy.TakeDamage(itemStats.dynamiteExplodeDamage, Vector3.zero, -hitDir, DamagePopup.ColorType.WHITE, false);
             enemy.BurnEnemy(5f, 0.5f, (int)(itemStats.dynamiteExplodeDamage * itemStats.dynamiteBurnDamageModifier));
         }
     }

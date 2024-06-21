@@ -17,8 +17,6 @@ public class Stats : MonoBehaviour
         health -= damage;
     }
 
-    public virtual void TakeDamage(int damage, Vector3 position, DamagePopup.ColorType color, bool ignoreTreshold) { }
-
     public virtual void Heal(int amount)
     {
         if (health >= maxHealth)

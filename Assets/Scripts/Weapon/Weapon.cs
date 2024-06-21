@@ -205,6 +205,11 @@ public class Weapon : MonoBehaviour
                 continue;
             }
 
+            ObjectPool.Instance.GetPooledObject("BloodHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -Camera.main.transform.forward);
+
+            if (enemyStats.health <= 0)
+                continue;
+
             int damage = (int)(weaponData.damagePerBullet * upgradeDamageModifier);
             DamagePopup.ColorType colorType;
 
@@ -217,8 +222,6 @@ public class Weapon : MonoBehaviour
             else
                 colorType = DamagePopup.ColorType.WHITE;
 
-            ObjectPool.Instance.GetPooledObject("BloodHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -Camera.main.transform.forward);
-
             float distance = Vector3.Distance(PlayerController.Instance.transform.position, hit.point);
             if (distance <= itemStats.minDistance)
                 damage = (int)(damage * itemStats.distanceDamageModifier);
@@ -226,7 +229,8 @@ public class Weapon : MonoBehaviour
             if (!enemyHits.ContainsKey(enemyStats))
                 enemyHits.Add(enemyStats, headshot);
 
-            enemyStats.TakeDamage(damage, hit.point, colorType, true);
+            Vector3 hitDir = (transform.position - hit.point).normalized;
+            enemyStats.TakeDamage(damage, hit.point, -hitDir, colorType, true);
 
             isHit = true;
         }

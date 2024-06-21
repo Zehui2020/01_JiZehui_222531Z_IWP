@@ -7,13 +7,28 @@ public class RagdollController : MonoBehaviour
     [SerializeField] private List<Rigidbody> ragdollRBs = new List<Rigidbody>();
     [SerializeField] private List<Collider> ragdollCols = new List<Collider>();
 
-    public void ActivateRagdoll()
+    public void ActivateRagdoll(Vector3 pushbackDirection, float pushbackForce)
+    {
+        foreach (Rigidbody rb in ragdollRBs)
+        {
+            rb.isKinematic = false;
+            rb.AddForce(pushbackDirection * pushbackForce, ForceMode.Impulse);
+        }
+
+        foreach (Collider col in ragdollCols)
+            col.enabled = true;
+    }
+
+    public void ExplosionRagdoll(float explosionForce, Vector3 explosionPosition, float explosionRadius)
     {
         foreach (Rigidbody rb in ragdollRBs)
             rb.isKinematic = false;
 
         foreach (Collider col in ragdollCols)
             col.enabled = true;
+
+        foreach (Rigidbody rb in ragdollRBs)
+            rb.AddExplosionForce(explosionForce, explosionPosition, explosionRadius);
     }
 
     public void DeactivateRagdoll()

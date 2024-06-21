@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DesignPatterns.ObjectPool;
 
 public class Spitter : Enemy
 {
@@ -13,10 +14,12 @@ public class Spitter : Enemy
     }
     public SpitterState currentState = SpitterState.CHASE;
 
-    public readonly int Run = Animator.StringToHash("ZombieRun");
-    public readonly int Spit = Animator.StringToHash("ZombieAttack");
-    public readonly int Stun = Animator.StringToHash("ZombieStun");
-    public readonly int Die = Animator.StringToHash("ZombieDie");
+    public readonly int Run = Animator.StringToHash("SpitterRun");
+    public readonly int Spit = Animator.StringToHash("SpitterSpit");
+    public readonly int Stun = Animator.StringToHash("SpitterStun");
+
+    [SerializeField] private Transform projectileSpawnPos;
+    [SerializeField] private float projectileEjectForce;
 
     public void ChangeState(SpitterState newState)
     {
@@ -45,7 +48,6 @@ public class Spitter : Enemy
             case SpitterState.DIE:
                 aiNavigation.StopNavigation();
                 animator.enabled = false;
-                ragdollController.ActivateRagdoll();
                 break;
 
             case SpitterState.STUN:
@@ -68,6 +70,10 @@ public class Spitter : Enemy
                 if (!ChasePlayer())
                     ChangeState(SpitterState.SPIT);
                 break;
+            case SpitterState.SPIT:
+                Vector3 lookDir = (projectileSpawnPos.position - player.transform.position).normalized;
+                transform.forward = Vector3.Lerp(transform.forward, -lookDir, Time.deltaTime * 10f);
+                break;
             default:
                 break;
         }
@@ -83,5 +89,13 @@ public class Spitter : Enemy
         aiNavigation.ResumeNavigation();
         stunRoutine = null;
         ChangeState(SpitterState.CHASE);
+    }
+
+    public void SpitProjectile()
+    {
+        Vector3 shootDir = (projectileSpawnPos.position - player.transform.position).normalized;
+
+        SpitterProjectile projectile = ObjectPool.Instance.GetPooledObject("SpitterProjectile", true).GetComponent<SpitterProjectile>();
+        projectile.SetupProjectile(projectileSpawnPos.position, -shootDir, projectileEjectForce, enemyData.damage);
     }
 }

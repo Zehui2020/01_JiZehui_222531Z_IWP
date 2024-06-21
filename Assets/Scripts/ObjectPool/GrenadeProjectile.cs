@@ -8,6 +8,7 @@ public class GrenadeProjectile : PooledObject
     private Rigidbody projectileRB;
     [SerializeField] private ItemStats itemStats;
     [SerializeField] private float explosionRadius;
+    [SerializeField] private float explosionForce;
     [SerializeField] private int damage;
 
     public override void Init()
@@ -33,7 +34,7 @@ public class GrenadeProjectile : PooledObject
         foreach (Collider col in colliders)
         {
             PlayerStats playerStats = col.GetComponent<PlayerStats>();
-            EnemyStats enemyStats = Utility.Instance.GetTopmostParent(col.transform).GetComponent<EnemyStats>();
+            Enemy enemy = Utility.Instance.GetTopmostParent(col.transform).GetComponent<Enemy>();
 
             float distance = Vector3.Distance(PlayerController.Instance.transform.position, col.transform.position);
             if (distance <= itemStats.minDistance)
@@ -41,11 +42,17 @@ public class GrenadeProjectile : PooledObject
 
             if (playerStats != null)
                 playerStats.TakeDamage(20);
-            else if (enemyStats != null)
+            else if (enemy != null)
             {
-                enemyStats.TakeDamage(damage, Vector3.zero, DamagePopup.ColorType.WHITE, false);
-                if (enemyStats.health <= 0)
+                if (enemy.health <= 0)
+                    continue;
+
+                enemy.TakeDamage(damage, Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, false);
+                if (enemy.health <= 0)
+                {
                     PlayerController.Instance.AddPoints(100);
+                    enemy.GetComponent<RagdollController>().ExplosionRagdoll(explosionForce, transform.position, explosionRadius);
+                }
                 else
                     PlayerController.Instance.AddPoints(50);
             }

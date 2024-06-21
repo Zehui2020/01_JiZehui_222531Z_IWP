@@ -64,7 +64,8 @@ public class CombatCollisionController : MonoBehaviour
 
                     if (enemyStats != null)
                     {
-                        enemyStats.TakeDamage(damage, closestPoint, DamagePopup.ColorType.WHITE, true);
+                        Vector3 hitDir = (transform.position - closestPoint).normalized;
+                        enemyStats.TakeDamage(damage, closestPoint, -hitDir, DamagePopup.ColorType.WHITE, true);
                         if (enemyStats.health <= 0)
                             PlayerController.Instance.AddPoints(130);
 

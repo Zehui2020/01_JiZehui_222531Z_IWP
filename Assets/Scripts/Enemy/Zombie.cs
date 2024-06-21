@@ -46,7 +46,6 @@ public class Zombie : Enemy
             case ZombieState.DIE:
                 aiNavigation.StopNavigation();
                 animator.enabled = false;
-                ragdollController.ActivateRagdoll();
                 break;
 
             case ZombieState.STUN:
