@@ -12,7 +12,10 @@ public class RagdollController : MonoBehaviour
         foreach (Rigidbody rb in ragdollRBs)
         {
             rb.isKinematic = false;
-            rb.AddForce(pushbackDirection * pushbackForce, ForceMode.Impulse);
+            if (!pushbackDirection.Equals(Vector3.zero))
+                rb.AddForce(pushbackDirection * pushbackForce, ForceMode.Impulse);
+            else
+                rb.AddForce(-transform.forward * pushbackForce / 5f, ForceMode.Impulse);
         }
 
         foreach (Collider col in ragdollCols)

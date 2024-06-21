@@ -114,9 +114,8 @@ public class Enemy : EnemyStats
         SetEnemyColliders(false);
         CheckDeathExplosion();
 
-        if (direction != Vector3.zero)
-            ragdollController.ActivateRagdoll(direction, enemyData.deathPushbackForce);
-        
+        ragdollController.ActivateRagdoll(Vector3.zero, enemyData.deathPushbackForce);
+
         int randNum = Random.Range(0, 100);
         if (randNum <= itemStats.drumReloadPercentage)
             PlayerController.Instance.RefillAmmoClip();
