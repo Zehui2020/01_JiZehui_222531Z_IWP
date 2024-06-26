@@ -27,6 +27,8 @@ public class PlayerController : PlayerStats
     private Coroutine OnMoveRoutine;
     private Coroutine ShungiteHealingRoutine;
 
+    public List<VehiclePart.VehiclePartType> vehicleParts = new List<VehiclePart.VehiclePartType>();
+
     private void Awake()
     {
         Instance = this;
@@ -360,5 +362,10 @@ public class PlayerController : PlayerStats
             Heal(passiveRegenAmount);
             yield return new WaitForSeconds(passiveRegenInterval);
         }
+    }
+
+    public void AddVehiclePart(VehiclePart vehiclePart)
+    {
+        vehicleParts.Add(vehiclePart.vehiclePartType);
     }
 }
