@@ -16,10 +16,10 @@ public class CameraController : MonoBehaviour
         cinemachinePerlin = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
-    public void ShakeCamera(float intensity, float timer)
+    public void ShakeCamera(float intensity, float frequency, float timer)
     {
         if (shakeRoutine == null)
-            shakeRoutine = StartCoroutine(StartShakeCamera(intensity, timer));
+            shakeRoutine = StartCoroutine(StartShakeCamera(intensity, frequency, timer));
     }
 
     public void ApplyRecoil(float recoilX, float recoilY)
@@ -32,23 +32,26 @@ public class CameraController : MonoBehaviour
         cinemachineVirtualCamera.GetComponent<SensitivityExtension>().OnToggleADS(isADS);
     }
 
-    private IEnumerator StartShakeCamera(float intensity, float timer)
+    private IEnumerator StartShakeCamera(float intensity, float frequency, float timer)
     {
         float duration = timer;
         float elapsedTime = 0f;
 
         cinemachinePerlin.m_AmplitudeGain = intensity;
+        cinemachinePerlin.m_FrequencyGain = frequency;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float lerpFactor = Mathf.Clamp01(elapsedTime / duration);
             cinemachinePerlin.m_AmplitudeGain = Mathf.Lerp(intensity, 0f, lerpFactor);
+            cinemachinePerlin.m_FrequencyGain = Mathf.Lerp(frequency, 0f, lerpFactor);
 
             yield return null;
         }
 
         cinemachinePerlin.m_AmplitudeGain = 0f;
+        cinemachinePerlin.m_FrequencyGain = 0;
         shakeRoutine = null;
     }
 

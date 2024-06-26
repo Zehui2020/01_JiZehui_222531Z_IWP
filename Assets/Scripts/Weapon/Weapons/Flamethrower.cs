@@ -19,6 +19,9 @@ public class Flamethrower : Weapon
 
         foreach (Enemy enemy in enemiesCopy)
         {
+            if (enemy == null)
+                continue;
+
             if (!flamethrowerRadius.enemiesInRadius.Contains(enemy))
                 continue;
 

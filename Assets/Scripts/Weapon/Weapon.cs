@@ -311,6 +311,14 @@ public class Weapon : MonoBehaviour
             return weaponData.unADSCamShake;
     }
 
+    public float GetCamShakeFrequency()
+    {
+        if (isADS)
+            return weaponData.ADSCamShakeFrequency;
+        else
+            return weaponData.unADSCamShakeFrequency;
+    }
+
     public float GetCamShakeDuration()
     {
         if (isADS)

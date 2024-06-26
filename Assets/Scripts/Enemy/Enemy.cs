@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : EnemyStats
 {
-    public enum EnemyType { Normal, Elite, MiniBoss, Boss }
+    public enum EnemyType { Normal, Elite, Boss }
     public EnemyType enemyType;
 
     [SerializeField] protected EnemyData enemyData;
@@ -14,14 +14,16 @@ public class Enemy : EnemyStats
     protected RagdollController ragdollController;
     [SerializeField] protected Collider[] enemyCols;
     private CombatCollisionController collisionController;
+    protected EnemyCanvas enemyCanvas;
 
     [SerializeField] private ParticleSystemEmitter firePS;
 
     public event System.Action<Enemy> EnemyDied;
-    protected event System.Action StunEvent;
 
     private Coroutine burnRoutine;
     protected Coroutine stunRoutine;
+
+    protected float speedModifier = 1;
 
     public virtual void InitEnemy()
     {
@@ -30,9 +32,9 @@ public class Enemy : EnemyStats
         animator = GetComponent<Animator>();
         collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
+        enemyCanvas = GetComponent<EnemyCanvas>();
         aiNavigation.InitNavMeshAgent();
         TakeDamageEvent += OnTakeDamage;
-        StunEvent += GetStunned;
 
         ragdollController.DeactivateRagdoll();
     }
@@ -43,11 +45,11 @@ public class Enemy : EnemyStats
         gameObject.SetActive(true);
     }
 
-    public bool ChasePlayer()
+    public bool ChasePlayer(float attackRange)
     {
-        aiNavigation.SetNavMeshTarget(player.transform.position, enemyData.moveSpeed);
+        aiNavigation.SetNavMeshTarget(player.transform.position, enemyData.moveSpeed * speedModifier);
 
-        if (aiNavigation.OnReachTarget(enemyData.attackRange))
+        if (aiNavigation.OnReachTarget(attackRange))
         {
             aiNavigation.StopNavigation();
             return false;
@@ -64,6 +66,7 @@ public class Enemy : EnemyStats
         if (burnRoutine != null)
             StopCoroutine(burnRoutine);
 
+        ApplyStatusEffect(StatusEffect.StatusEffectType.Burn, false, duration);
         firePS.PlayLoopingPS();
         burnRoutine = StartCoroutine(StartBurning(duration, interval, damage));
     }
@@ -77,6 +80,7 @@ public class Enemy : EnemyStats
             if (health <= 0)
                 break;
 
+            enemyCanvas.SetHealthBarActive(true);
             TakeDamage((int)(damage * itemStats.burnDamageModifier), Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, true);
             PlayerController.Instance.AddPoints(3);
             yield return new WaitForSeconds(interval);
@@ -89,14 +93,12 @@ public class Enemy : EnemyStats
 
     public void OnDamageEventStart(int col)
     {
-        collisionController.EnableCollider(col);
-        collisionController.StartDamageCheck(enemyData.damage);
+        collisionController.EnableCollider(enemyData.damage, col);
     }
 
     public void OnDamageEventEnd(int col)
     {
         collisionController.DisableCollider(col);
-        collisionController.StopDamageCheck();
     }
 
     protected void SetEnemyColliders(bool active)
@@ -107,12 +109,21 @@ public class Enemy : EnemyStats
 
     private void OnTakeDamage(Vector3 direction)
     {
+        enemyCanvas.SetHealthbar(health, maxHealth);
+
         if (health > 0)
             return;
+
+        if (burnRoutine != null)
+        {
+            StopCoroutine(burnRoutine);
+            burnRoutine = null;
+        }
 
         EnemyDied?.Invoke(this);
         SetEnemyColliders(false);
         CheckDeathExplosion();
+        enemyCanvas.OnEnemyDie();
 
         ragdollController.ActivateRagdoll(Vector3.zero, enemyData.deathPushbackForce);
 
@@ -145,13 +156,23 @@ public class Enemy : EnemyStats
         }
     }
 
-    private void GetStunned()
+    public void ApplyRoarBuff(float speedModifier, float duration)
     {
-        if (health <= 0)
-            return;
+        StartCoroutine(RoarBuffRoutine(speedModifier, duration));
+    }
 
-        if (stunRoutine == null)
-            stunRoutine = StartCoroutine(OnStun());
+    private IEnumerator RoarBuffRoutine(float speedMod, float duration)
+    {
+        speedModifier = speedMod;
+        aiNavigation.SetNavMeshTarget(player.transform.position, enemyData.moveSpeed * speedModifier);
+        ApplyStatusEffect(StatusEffect.StatusEffectType.MoveSpeed, true, duration);
+
+        animator.SetFloat("moveSpeed", speedModifier);
+
+        yield return new WaitForSeconds(duration);
+
+        speedModifier = 1;
+        animator.SetFloat("moveSpeed", speedModifier);
     }
 
     public virtual IEnumerator OnStun()
@@ -159,8 +180,37 @@ public class Enemy : EnemyStats
         yield return null;
     }
 
-    public void StunEnenmy()
+    public void StunEnemy(float duration)
     {
-        StunEvent?.Invoke();
+        if (health <= 0)
+            return;
+
+        if (stunRoutine == null)
+            stunRoutine = StartCoroutine(OnStun());
+
+        ApplyStatusEffect(StatusEffect.StatusEffectType.Stun, false, duration);
+    }
+
+    public void SetHealthbar(bool active)
+    {
+        if (health <= 0)
+        {
+            enemyCanvas.SetHealthBarActive(false);
+            return;
+        }
+
+        if (burnRoutine != null)
+            return;
+
+        enemyCanvas.SetHealthbar(health, maxHealth);
+        enemyCanvas.SetHealthBarActive(active);
+    }
+
+    private void ApplyStatusEffect(StatusEffect.StatusEffectType statusEffect, bool isBuff, float duration)
+    {
+        if (health > 0)
+            enemyCanvas.ApplyStatusEffect(statusEffect, isBuff, duration);
+        else
+            enemyCanvas.OnEnemyDie();
     }
 }

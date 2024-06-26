@@ -12,8 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a873b786a5c4a054dbd944314e77eec0, type: 3}
   m_Name: Mutant
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 3
   attackRange: 0
-  damage: 0
-  deathPushbackForce: 0
-  punchRange: 0
+  damage: 10
+  deathPushbackForce: 25
+  punchRange: 2
+  swipeRange: 2.5
+  jumpAttackRange: 7
+  punchesTillSwipe: 5
+  roarCooldown: 40
+  roarRadius: 7
+  roarSpeedModifier: 1.5
+  roarBuffDuration: 5
+  jumpAttackCooldown: 30
+  jumpAttackCamShakeIntensity: 6
+  jumpAttackCamShakeFrequency: 5
+  jumpAttackCamShakeDuration: 1

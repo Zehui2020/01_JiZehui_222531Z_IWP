@@ -4,84 +4,63 @@ using UnityEngine;
 
 public class CombatCollisionController : MonoBehaviour
 {
-    [SerializeField] private SphereCollider[] colliders;
+    [SerializeField] private CombatCollisionTrigger[] colliders;
     [SerializeField] LayerMask targetLayer;
 
-    private Coroutine checkDamageRoutine;
+    private int damage;
 
     private void Start()
     {
         foreach (var collider in colliders)
-            collider.enabled = false;
+        {
+            collider.TriggerEvent += TriggerEvent;
+            collider.SetCollider(false);
+        }
     }
 
-    public void EnableCollider(int col)
+    public void EnableCollider(int newDamage, int col)
     {
-        colliders[col].enabled = true;
+        damage = newDamage;
+        colliders[col].SetCollider(true);
     }
 
     public void DisableCollider(int col)
     {
-        colliders[col].enabled = false;
+        damage = 0;
+        colliders[col].SetCollider(false);
     }
 
-    public void StartDamageCheck(int damage)
+    public void DisableAllCollider()
     {
-        checkDamageRoutine = StartCoroutine(DamageTarget(damage));
+        damage = 0;
+        foreach (CombatCollisionTrigger col in colliders)
+            col.SetCollider(false);
     }
 
-    public void StopDamageCheck()
+    public void SetDamage(int newDamage)
     {
-        if (checkDamageRoutine == null)
+        damage = newDamage;
+    }
+
+    private void TriggerEvent(Collider col)
+    {
+        if (((1 << col.gameObject.layer) & targetLayer) == 0)
             return;
 
-        StopCoroutine(checkDamageRoutine);
-        checkDamageRoutine = null;
-    }
+        Vector3 closestPoint = col.ClosestPointOnBounds(transform.position);
 
-    private IEnumerator DamageTarget(int damage)
-    {
-        while (true)
+        GameObject hitGameObject = col.gameObject;
+        EnemyStats enemyStats = Utility.Instance.GetTopmostParent(hitGameObject.transform).GetComponent<EnemyStats>();
+        PlayerStats playerStats = hitGameObject.GetComponent<PlayerStats>();
+
+        if (enemyStats != null)
         {
-            foreach (var collider in colliders)
-            {
-                if (!collider.enabled)
-                    continue;
-
-                int maxColliders = 10;
-                Collider[] hitColliders = new Collider[maxColliders];
-                int numColliders = Physics.OverlapSphereNonAlloc(collider.transform.position, collider.radius, hitColliders, targetLayer.value);
-
-                for (int i = 0; i < numColliders; i++)
-                {
-                    Collider hitCollider = hitColliders[i];
-                    Vector3 closestPoint = hitCollider.ClosestPointOnBounds(collider.transform.position);
-
-                    GameObject hitGameObject = hitCollider.gameObject;
-
-                    EnemyStats enemyStats = Utility.Instance.GetTopmostParent(hitGameObject.transform).GetComponent<EnemyStats>();
-                    PlayerStats playerStats = hitGameObject.GetComponent<PlayerStats>();
-
-                    if (enemyStats != null)
-                    {
-                        Vector3 hitDir = (transform.position - closestPoint).normalized;
-                        enemyStats.TakeDamage(damage, closestPoint, -hitDir, DamagePopup.ColorType.WHITE, true);
-                        if (enemyStats.health <= 0)
-                            PlayerController.Instance.AddPoints(130);
-
-                        StopDamageCheck();
-                        yield break;
-                    }
-                    else if (playerStats != null)
-                    {
-                        playerStats.TakeDamage(damage);
-                        StopDamageCheck();
-                        yield break;
-                    }
-                }
-            }
-
-            yield return null;
+            Vector3 hitDir = (transform.position - closestPoint).normalized;
+            enemyStats.TakeDamage(damage, closestPoint, -hitDir, DamagePopup.ColorType.WHITE, true);
+            if (enemyStats.health <= 0)
+                PlayerController.Instance.AddPoints(130);
         }
+        else if (playerStats != null)
+            playerStats.TakeDamage(damage);
     }
 }

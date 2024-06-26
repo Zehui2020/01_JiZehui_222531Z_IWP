@@ -21,6 +21,11 @@ public class Spitter : Enemy
     [SerializeField] private Transform projectileSpawnPos;
     [SerializeField] private float projectileEjectForce;
 
+    private void Start()
+    {
+        InitEnemy();
+    }
+
     public void ChangeState(SpitterState newState)
     {
         if (stunRoutine != null)
@@ -31,11 +36,8 @@ public class Spitter : Enemy
         switch (newState)
         {
             case SpitterState.CHASE:
-                if (!ChasePlayer())
-                {
-                    ChangeState(SpitterState.SPIT);
+                if (CheckSpit())
                     return;
-                }
                 animator.CrossFade(Run, 0.1f);
                 break;
 
@@ -43,6 +45,7 @@ public class Spitter : Enemy
                 animator.Play(Spit, 0, 0f);
                 animator.CrossFade(Spit, 0.1f);
                 aiNavigation.StopNavigation();
+
                 break;
 
             case SpitterState.DIE:
@@ -67,8 +70,7 @@ public class Spitter : Enemy
         switch (currentState)
         {
             case SpitterState.CHASE:
-                if (!ChasePlayer())
-                    ChangeState(SpitterState.SPIT);
+                CheckSpit();
                 break;
             case SpitterState.SPIT:
                 Vector3 lookDir = (projectileSpawnPos.position - player.transform.position).normalized;
@@ -77,6 +79,30 @@ public class Spitter : Enemy
             default:
                 break;
         }
+    }
+
+    private bool CheckSpit()
+    {
+        aiNavigation.SetNavMeshTarget(player.transform.position, enemyData.moveSpeed * speedModifier);
+
+        if (aiNavigation.OnReachTarget(enemyData.attackRange))
+        {
+            Vector3 dir = (projectileSpawnPos.position - player.transform.position).normalized;
+            Physics.Raycast(projectileSpawnPos.position, -dir, out RaycastHit hit, enemyData.attackRange);
+
+            if (hit.collider == null || !hit.collider.CompareTag("Player"))
+            {
+                aiNavigation.ResumeNavigation();
+                return false;
+            }
+
+            aiNavigation.StopNavigation();
+            ChangeState(SpitterState.SPIT);
+            return true;
+        }
+
+        aiNavigation.ResumeNavigation();
+        return false;
     }
 
     public override IEnumerator OnStun()

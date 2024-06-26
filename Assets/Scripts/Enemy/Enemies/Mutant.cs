@@ -24,6 +24,23 @@ public class Mutant : Enemy
     public readonly int Roar = Animator.StringToHash("MutantRoar");
     public readonly int Stun = Animator.StringToHash("MutantStun");
 
+    [SerializeField] private Transform roarPosition;
+    [SerializeField] private GroundCrack groundCrack;
+    [SerializeField] private float groundCrackLifetime;
+
+    private int punchCounter;
+    private Coroutine jumpAttackRoutine;
+    private Coroutine roarRoutine;
+    private MutantData mutantData;
+
+    private void Start()
+    {
+        InitEnemy();
+
+        if (enemyData is MutantData)
+            mutantData = enemyData as MutantData;
+    }
+
     public void ChangeState(MutantState newState)
     {
         if (stunRoutine != null)
@@ -34,11 +51,9 @@ public class Mutant : Enemy
         switch (newState)
         {
             case MutantState.CHASE:
-                if (!ChasePlayer())
-                {
-                    //ChangeState(MutantState.SPIT);
+                if (!CheckChasePlayer())
                     return;
-                }
+
                 animator.CrossFade(Run, 0.1f);
                 break;
 
@@ -48,13 +63,31 @@ public class Mutant : Enemy
                 aiNavigation.StopNavigation();
                 break;
 
-            case MutantState.DIE:
+            case MutantState.SWIPE:
+                animator.Play(Swipe, 0, 0f);
+                animator.CrossFade(Swipe, 0.1f);
                 aiNavigation.StopNavigation();
-                animator.enabled = false;
+                break;
+
+            case MutantState.JUMP_ATTACK:
+                animator.Play(JumpAttack, 0, 0f);
+                animator.CrossFade(JumpAttack, 0.1f);
+                aiNavigation.StopNavigation();
+                break;
+
+            case MutantState.ROAR:
+                animator.Play(Roar, 0, 0f);
+                animator.CrossFade(Roar, 0.1f);
+                aiNavigation.StopNavigation();
                 break;
 
             case MutantState.STUN:
                 animator.CrossFade(Stun, 0.1f);
+                break;
+
+            case MutantState.DIE:
+                aiNavigation.StopNavigation();
+                animator.enabled = false;
                 break;
 
             default:
@@ -70,12 +103,92 @@ public class Mutant : Enemy
         switch (currentState)
         {
             case MutantState.CHASE:
-                //if (!ChasePlayer())
-                    //ChangeState(MutantState.SPIT);
+                CheckChasePlayer();
+                break;
+            case MutantState.PUNCH:
+            case MutantState.SWIPE:
+                Vector3 lookDir = (transform.position - player.transform.position).normalized;
+                transform.forward = Vector3.Lerp(transform.forward, -lookDir, Time.deltaTime * 10f);
                 break;
             default:
                 break;
         }
+    }
+
+    private bool CheckChasePlayer()
+    {
+        // Check swipe
+        if (punchCounter >= mutantData.punchesTillSwipe && !ChasePlayer(mutantData.swipeRange))
+        {
+            ChangeState(MutantState.SWIPE);
+            punchCounter = 0;
+            return false;
+        }
+
+        // Check Roar 
+        if (roarRoutine == null)
+        {
+            roarRoutine = StartCoroutine(RoarRoutine());
+            return false;
+        }
+
+        // Check Jump Attack
+        if (jumpAttackRoutine == null && !ChasePlayer(mutantData.jumpAttackRange))
+        {
+            jumpAttackRoutine = StartCoroutine(JumpAttackRoutine());
+            return false;
+        }
+
+        // Default to punch
+        if (!ChasePlayer(mutantData.punchRange))
+        {
+            ChangeState(MutantState.PUNCH);
+            punchCounter++;
+            return false;
+        }
+
+        return true;
+    }
+
+    public void OnRoar()
+    {
+        Collider[] cols = Physics.OverlapSphere(roarPosition.position, mutantData.roarRadius);
+
+        foreach (Collider col in cols)
+        {
+            if (!Utility.Instance.GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy))
+                continue;
+
+            enemy.ApplyRoarBuff(mutantData.roarSpeedModifier, mutantData.roarBuffDuration);
+        }
+    }
+
+    public void OnJumpAttackLand()
+    {
+        PlayerController.Instance.ShakeCamera(
+            mutantData.jumpAttackCamShakeIntensity, 
+            mutantData.jumpAttackCamShakeFrequency,
+            mutantData.jumpAttackCamShakeDuration);
+
+        Instantiate(groundCrack, transform.position, Quaternion.identity).SetupGroundCrack(groundCrackLifetime, Mathf.FloorToInt(enemyData.damage / 2f));
+    }
+
+    private IEnumerator JumpAttackRoutine()
+    {
+        ChangeState(MutantState.JUMP_ATTACK);
+
+        yield return new WaitForSeconds(mutantData.jumpAttackCooldown);
+
+        jumpAttackRoutine = null;
+    }
+
+    private IEnumerator RoarRoutine()
+    {
+        ChangeState(MutantState.ROAR);
+
+        yield return new WaitForSeconds(mutantData.roarCooldown);
+
+        roarRoutine = null;
     }
 
     public override IEnumerator OnStun()

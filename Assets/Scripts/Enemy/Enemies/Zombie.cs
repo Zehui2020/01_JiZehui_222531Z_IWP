@@ -29,7 +29,7 @@ public class Zombie : Enemy
         switch (newState)
         {
             case ZombieState.CHASE:
-                if (!ChasePlayer())
+                if (!ChasePlayer(enemyData.attackRange))
                 {
                     ChangeState(ZombieState.ATTACK);
                     return;
@@ -65,7 +65,7 @@ public class Zombie : Enemy
         switch (currentState)
         {
             case ZombieState.CHASE:
-                if (!ChasePlayer())
+                if (!ChasePlayer(enemyData.attackRange))
                     ChangeState(ZombieState.ATTACK);
                 break;
             default:

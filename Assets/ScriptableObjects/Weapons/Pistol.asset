@@ -30,6 +30,8 @@ MonoBehaviour:
   ADSSway: 0
   ADSCamShake: 0
   unADSCamShake: 0.3
+  ADSCamShakeFrequency: 0
+  unADSCamShakeFrequency: 0.3
   ADSCamShakeDuration: 0.15
   unADSCamShakeDuration: 0.25
   ADSZoomAmount: 50

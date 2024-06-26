@@ -35,6 +35,9 @@ public class WeaponData : ScriptableObject
     public float ADSCamShake;
     public float unADSCamShake;
 
+    public float ADSCamShakeFrequency;
+    public float unADSCamShakeFrequency;
+
     public float ADSCamShakeDuration;
     public float unADSCamShakeDuration;
 

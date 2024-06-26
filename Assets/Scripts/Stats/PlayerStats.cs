@@ -6,4 +6,6 @@ public class PlayerStats : Stats
 {
     public int knifeDamage;
     public int points;
+    public int passiveRegenAmount;
+    public float passiveRegenInterval;
 }

@@ -12,6 +12,9 @@ public class PlayerController : PlayerStats
     private ItemManager itemManager;
     [SerializeField] private KnifeController knifeController;
 
+    [SerializeField] private LayerMask enemyLayer;
+    private Enemy enemyToLookAt;
+
     [SerializeField] private MovementData movementData;
     private Rigidbody playerRB;
 
@@ -50,6 +53,7 @@ public class PlayerController : PlayerStats
         itemStats.ResetStats();
 
         EnemySpawner.Instance.StartWave(5f);
+        StartCoroutine(PassiveHealing());
     }
 
     private void Start()
@@ -141,6 +145,8 @@ public class PlayerController : PlayerStats
         transform.forward = Camera.main.transform.forward;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
+        CheckEnemyToLookAt();
+
         if (itemStats.shungiteHealing == 0)
             return;
 
@@ -157,9 +163,31 @@ public class PlayerController : PlayerStats
         }
     }
 
+
     private void FixedUpdate()
     {
         movementController.MovePlayer();
+    }
+
+    private void CheckEnemyToLookAt()
+    {
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward);
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (Utility.Instance.GetTopmostParent(hit.collider.transform).TryGetComponent<Enemy>(out Enemy enemy))
+            {
+                if (enemyToLookAt != null)
+                    enemyToLookAt.SetHealthbar(false);
+                enemyToLookAt = enemy;
+                enemyToLookAt.SetHealthbar(true);
+                return;
+            }
+        }
+
+        if (enemyToLookAt != null)
+            enemyToLookAt.SetHealthbar(false);
     }
 
     private void SetADS(bool ADS)
@@ -194,7 +222,7 @@ public class PlayerController : PlayerStats
             if (!Utility.Instance.GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy))
                 continue;
 
-            enemy.StunEnenmy();
+            enemy.StunEnemy(itemStats.stunGrenadeDuration);
         }
     }
 
@@ -206,7 +234,7 @@ public class PlayerController : PlayerStats
     private void UseCurrentWeapon()
     {
         if (weaponController.UseWeapon())
-            cameraController.ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeDuration());
+            ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeFrequency(), weaponController.GetWeaponCamShakeDuration());
     }
 
     public void ApplyRecoil(float recoilX, float recoilY)
@@ -302,6 +330,11 @@ public class PlayerController : PlayerStats
         weaponController.RefillAmmoClip();
     }
 
+    public void ShakeCamera(float intensity, float frequency, float duration)
+    {
+        cameraController.ShakeCamera(intensity, frequency, duration);
+    }
+
     private IEnumerator OnStopMoving()
     {
         yield return new WaitForSeconds(3f);
@@ -314,6 +347,18 @@ public class PlayerController : PlayerStats
         {
             Heal((int)(maxHealth * itemStats.shungiteHealing));
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private IEnumerator PassiveHealing()
+    {
+        while (true)
+        {
+            if (health < maxHealth)
+                yield return null;
+
+            Heal(passiveRegenAmount);
+            yield return new WaitForSeconds(passiveRegenInterval);
         }
     }
 }

@@ -162,6 +162,11 @@ public class WeaponController : MonoBehaviour
         return weapons[currentWeapon].GetCamShakeAmount();
     }
 
+    public float GetWeaponCamShakeFrequency()
+    {
+        return weapons[currentWeapon].GetCamShakeFrequency();
+    }
+
     public float GetWeaponCamShakeDuration()
     {
         return weapons[currentWeapon].GetCamShakeDuration();

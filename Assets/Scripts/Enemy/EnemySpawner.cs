@@ -8,8 +8,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Enemy[] enemies;
 
     [SerializeField] private float normalEnemyRatio;
-    [SerializeField] private int minibossAmount;
     [SerializeField] private int bossAmount;
+    [SerializeField] private int bossSpawnWaveInterval;
 
     [SerializeField] private int waveNumber = 0;
     [SerializeField] private float waveInterval = 10;
@@ -22,6 +22,8 @@ public class EnemySpawner : MonoBehaviour
     public static event System.Action<int> WaveStarted;
     public static event System.Action WaveEnded;
 
+    private Coroutine StartWaveRoutine;
+
     public static EnemySpawner Instance;
 
     private void Awake()
@@ -31,7 +33,10 @@ public class EnemySpawner : MonoBehaviour
 
     public void StartWave(float delay)
     {
-        StartCoroutine(DoStartWave(delay));
+        if (StartWaveRoutine != null)
+            StopCoroutine(StartWaveRoutine);
+
+        StartWaveRoutine = StartCoroutine(DoStartWave(delay));
     }
 
     private IEnumerator DoStartWave(float delay)
@@ -39,7 +44,6 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         waveNumber++;
-        IncreaseSpawnAmount();
 
         SetupSpawnSequence();
         StartCoroutine(DoSpawning());
@@ -49,8 +53,8 @@ public class EnemySpawner : MonoBehaviour
 
     public void EndWave()
     {
-        minibossAmount = 0;
         bossAmount = 0;
+        IncreaseSpawnAmount();
 
         WaveEnded?.Invoke();
 
@@ -86,19 +90,15 @@ public class EnemySpawner : MonoBehaviour
     {
         List<Enemy.EnemyType> enemyTypes = new List<Enemy.EnemyType>();
 
-        if (waveNumber % 15 == 0)
+        if (waveNumber % bossSpawnWaveInterval == 0)
             bossAmount++;
-        if (waveNumber % 10 == 0)
-            minibossAmount++;
 
         int remainingSpawns = spawnAmount;
 
         int minibossSpawnAmount = 0;
-        if (waveNumber % 5 == 0)
-            minibossSpawnAmount = minibossAmount;
 
         int bossSpawnAmount = 0;
-        if (waveNumber % 10 == 0)
+        if (waveNumber % bossSpawnWaveInterval == 0)
             bossSpawnAmount = bossAmount;
 
         remainingSpawns -= minibossSpawnAmount + bossSpawnAmount;
@@ -111,9 +111,6 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < eliteEnemySpawnAmount; i++)
             enemyTypes.Add(Enemy.EnemyType.Elite);
-
-        for (int i = 0; i < minibossSpawnAmount; i++)
-            enemyTypes.Add(Enemy.EnemyType.MiniBoss);
 
         for (int i = 0; i < bossSpawnAmount; i++)
             enemyTypes.Add(Enemy.EnemyType.Boss);
@@ -129,6 +126,16 @@ public class EnemySpawner : MonoBehaviour
                 enemy.EnemyDied += OnEnemyDied;
             }
         }
+    }
+
+    public void SetWave(int newWaveNumber)
+    {
+        int repeats = newWaveNumber - waveNumber;
+
+        for (int i = 0; i < repeats; i++)
+            EndWave();
+
+        waveNumber = newWaveNumber;
     }
 
     private void SpawnEnemy()

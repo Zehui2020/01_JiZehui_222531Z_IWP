@@ -49,6 +49,9 @@ public class ConsoleManager : MonoBehaviour
             else if (words[1].Equals("points"))
                 PlayerController.Instance.AddPoints(int.Parse(words[2]));
         }
+
+        if (command.Equals("/wave"))
+            EnemySpawner.Instance.SetWave(int.Parse(words[1]));
     }
 
     private void GiveItem(string itemName, string amount)

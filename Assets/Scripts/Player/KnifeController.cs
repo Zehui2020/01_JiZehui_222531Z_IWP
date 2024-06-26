@@ -27,14 +27,12 @@ public class KnifeController : MonoBehaviour
 
     public void OnDamageEventStart(int col)
     {
-        collisionController.EnableCollider(col);
-        collisionController.StartDamageCheck(PlayerController.Instance.knifeDamage);
+        collisionController.EnableCollider(PlayerController.Instance.knifeDamage, col);
     }
 
     public void OnDamageEventEnd(int col)
     {
         collisionController.DisableCollider(col);
-        collisionController.StopDamageCheck();
     }
 
     public void ShowCurrentWeapon()
