@@ -11,20 +11,24 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 9cbf7a83f8c3575458a043ff7ab3ff83, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: 7e6e8ac4165bc0246b7b1dfd86165fd8, type: 3}
+        m_Texture: {fileID: 2800000, guid: b9d5df7d174763642866a299e78b40e4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -41,10 +45,33 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _Blending: 0.5
+    - _CastShadows: 0
+    - _Cull: 0
+    - _DstBlend: 10
+    - _IntersectionDepth: 0.4
+    - _NoiseScale: 0.23
+    - _NoiseStrength: 0.63
+    - _OffsetY: 0.19
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _SrcBlend: 5
+    - _Surface: 1
+    - _WorkflowMode: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    - _ZWriteControl: 0
     m_Colors:
-    - _ScrollSpeed: {r: 10.99, g: 0, b: 0, a: 0}
+    - _Color: {r: 4.4818497, g: 9.543204, b: 3.5111778, a: 0.3921569}
+    - _NoiseSpeed: {r: 0, g: 2.84, b: 0, a: 0}
+    - _OppScrollSpeed: {r: -0.5, g: 0, b: 0, a: 0}
+    - _RadiusColor: {r: 0.013207495, g: 1, b: 0.019722112, a: 0}
+    - _ScrollSpeed: {r: 0.5, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6721371077822720987
 MonoBehaviour:

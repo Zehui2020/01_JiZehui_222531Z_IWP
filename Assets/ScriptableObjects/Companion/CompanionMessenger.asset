@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e51338ff388e3488f0f3d75c8d1a35, type: 3}
+  m_Name: CompanionMessenger
+  m_EditorClassIdentifier: 
+  introMessages:
+  - {fileID: 11400000, guid: fe6327e559412e2488028e71b51c4c66, type: 2}
+  - {fileID: 11400000, guid: c54401e05f2e8944390d74fb09c755b6, type: 2}
+  - {fileID: 11400000, guid: a76a4a99c6041c64cbbc6b6036f38783, type: 2}
+  - {fileID: 11400000, guid: 3f883dbb1ed0c8d498b13485b36e16fe, type: 2}
+  - {fileID: 11400000, guid: 2a291181b6006a8478334f9a3a2b96d2, type: 2}
+  - {fileID: 11400000, guid: 4acb8a02f40c3d541bbf2e3e11880c46, type: 2}

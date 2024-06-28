@@ -66,7 +66,7 @@ public class Enemy : EnemyStats
         if (burnRoutine != null)
             StopCoroutine(burnRoutine);
 
-        ApplyStatusEffect(StatusEffect.StatusEffectType.Burn, false, duration);
+        ApplyStatusEffect(StatusEffect.StatusEffectType.Burn, true, StatusEffect.StatusEffectCategory.Debuff, duration);
         firePS.PlayLoopingPS();
         burnRoutine = StartCoroutine(StartBurning(duration, interval, damage));
     }
@@ -165,7 +165,7 @@ public class Enemy : EnemyStats
     {
         speedModifier = speedMod;
         aiNavigation.SetNavMeshTarget(player.transform.position, enemyData.moveSpeed * speedModifier);
-        ApplyStatusEffect(StatusEffect.StatusEffectType.MoveSpeed, true, duration);
+        ApplyStatusEffect(StatusEffect.StatusEffectType.MoveSpeed, true, StatusEffect.StatusEffectCategory.Buff, duration);
 
         animator.SetFloat("moveSpeed", speedModifier);
 
@@ -188,7 +188,7 @@ public class Enemy : EnemyStats
         if (stunRoutine == null)
             stunRoutine = StartCoroutine(OnStun());
 
-        ApplyStatusEffect(StatusEffect.StatusEffectType.Stun, false, duration);
+        ApplyStatusEffect(StatusEffect.StatusEffectType.Stun, true, StatusEffect.StatusEffectCategory.Debuff, duration);
     }
 
     public void SetHealthbar(bool active)
@@ -206,10 +206,10 @@ public class Enemy : EnemyStats
         enemyCanvas.SetHealthBarActive(active);
     }
 
-    private void ApplyStatusEffect(StatusEffect.StatusEffectType statusEffect, bool isBuff, float duration)
+    private void ApplyStatusEffect(StatusEffect.StatusEffectType statusEffect, bool haveTimer, StatusEffect.StatusEffectCategory statusEffectCategory, float duration)
     {
         if (health > 0)
-            enemyCanvas.ApplyStatusEffect(statusEffect, isBuff, duration);
+            enemyCanvas.ApplyStatusEffect(statusEffect, haveTimer, statusEffectCategory, duration);
         else
             enemyCanvas.OnEnemyDie();
     }

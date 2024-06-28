@@ -15,8 +15,8 @@ public class VehiclePart : MonoBehaviour, IInteractable
     }
     public VehiclePartType vehiclePartType;
 
-    [SerializeField] private int vehiclePartCost;
-    [SerializeField] private TextMeshProUGUI cost;
+    [SerializeField] protected int vehiclePartCost;
+    [SerializeField] protected TextMeshProUGUI cost;
 
     public void InitInteractable()
     {
@@ -24,18 +24,39 @@ public class VehiclePart : MonoBehaviour, IInteractable
         cost.gameObject.SetActive(false);
     }
 
-    public void OnEnterRange()
+    public virtual void OnEnterRange()
     {
         cost.gameObject.SetActive(true);
     }
 
-    public void OnExitRange()
+    public virtual void OnExitRange()
     {
         cost.gameObject.SetActive(false);
     }
 
-    public void OnInteract()
+    public virtual void OnInteract()
     {
+        if (PlayerController.Instance.GetPoints() < vehiclePartCost)
+            return;
+
+        switch (vehiclePartType)
+        {
+            case VehiclePartType.Floodlights:
+                PlayerController.Instance.ApplyStatusEffect(StatusEffect.StatusEffectType.Floodlight, false, StatusEffect.StatusEffectCategory.VehiclePart, 0);
+                break;
+            case VehiclePartType.Gas_Tank:
+                PlayerController.Instance.ApplyStatusEffect(StatusEffect.StatusEffectType.GasTank, false, StatusEffect.StatusEffectCategory.VehiclePart, 0);
+                break;
+            case VehiclePartType.Reinforced_Steel:
+                PlayerController.Instance.ApplyStatusEffect(StatusEffect.StatusEffectType.ReinforcedSteel, false, StatusEffect.StatusEffectCategory.VehiclePart, 0);
+                break;
+            case VehiclePartType.Tires:
+                PlayerController.Instance.ApplyStatusEffect(StatusEffect.StatusEffectType.Tires, false, StatusEffect.StatusEffectCategory.VehiclePart, 0);
+                break;
+        }
+
+        cost.gameObject.SetActive(false);
+        PlayerController.Instance.DeductPoints(vehiclePartCost);
         PlayerController.Instance.AddVehiclePart(this);
         Destroy(gameObject);
     }

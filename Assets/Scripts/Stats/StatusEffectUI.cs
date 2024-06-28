@@ -8,6 +8,7 @@ public class StatusEffectUI : MonoBehaviour
 {
     [SerializeField] private Sprite buffBorder;
     [SerializeField] private Sprite debuffBorder;
+    [SerializeField] private Sprite vehiclePartBorder;
 
     [SerializeField] private Image border;
     [SerializeField] private Image statusIcon;
@@ -21,7 +22,12 @@ public class StatusEffectUI : MonoBehaviour
 
     private Coroutine TimerRoutine;
 
-    public void ApplyStatus(StatusEffect.StatusEffectType statusEffect, bool isBuff, float duration)
+    public void RemoveStatus()
+    {
+        animator.SetTrigger("destroy");
+    }
+
+    public void ApplyStatus(StatusEffect.StatusEffectType statusEffect, bool haveTimer, StatusEffect.StatusEffectCategory statusEffectCategory, float duration)
     {
         foreach (StatusEffect status in allStatusEffects)
         {
@@ -37,12 +43,23 @@ public class StatusEffectUI : MonoBehaviour
 
         statusIcon.sprite = targetStatusEffect.icon;
 
-        if (isBuff)
-            border.sprite = buffBorder;
+        switch (statusEffectCategory)
+        {
+            case StatusEffect.StatusEffectCategory.Buff:
+                border.sprite = buffBorder;
+                break;
+            case StatusEffect.StatusEffectCategory.Debuff:
+                border.sprite = debuffBorder;
+                break;
+            case StatusEffect.StatusEffectCategory.VehiclePart:
+                border.sprite = vehiclePartBorder;
+                break;
+        }
+            
+        if (haveTimer)
+            TimerRoutine = StartCoroutine(StartTimer(duration));
         else
-            border.sprite = debuffBorder;
-
-        TimerRoutine = StartCoroutine(StartTimer(duration));
+            timer.text = "-";
     }
 
     public void ResetStatus(float duration)
@@ -67,6 +84,7 @@ public class StatusEffectUI : MonoBehaviour
             yield return null;
         }
 
+        timer.text = "0s";
         animator.SetTrigger("destroy");
     }
 

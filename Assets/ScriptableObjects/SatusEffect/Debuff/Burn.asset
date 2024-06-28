@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Burn
   m_EditorClassIdentifier: 
   statusEffectType: 0
+  statusEffectCategory: 1
   icon: {fileID: 21300000, guid: 33ce4353bbd9a814280e82ae112d4e9e, type: 3}

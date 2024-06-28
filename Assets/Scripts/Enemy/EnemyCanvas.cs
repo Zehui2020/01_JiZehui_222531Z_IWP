@@ -24,7 +24,7 @@ public class EnemyCanvas : MonoBehaviour
         healthBar.value = health;
     }
 
-    public void ApplyStatusEffect(StatusEffect.StatusEffectType statusEffect, bool isBuff, float duration)
+    public void ApplyStatusEffect(StatusEffect.StatusEffectType statusEffect,  bool haveTimer, StatusEffect.StatusEffectCategory statusEffectCategory, float duration)
     {
         if (statusEffectUIs.Count >= maxStatusEffects)
             return;
@@ -41,7 +41,7 @@ public class EnemyCanvas : MonoBehaviour
         }
 
         StatusEffectUI newEffectUI = Instantiate(statusEffectUI, statusParent);
-        newEffectUI.ApplyStatus(statusEffect, isBuff, duration);
+        newEffectUI.ApplyStatus(statusEffect, haveTimer, statusEffectCategory, duration);
         newEffectUI.OnTimerUp += OnStatusEffectTimerEnd;
         statusEffectUIs.Add(newEffectUI);
     }

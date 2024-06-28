@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6110532398986830448
 RectTransform:
   m_ObjectHideFlags: 0
@@ -260,8 +260,10 @@ GameObject:
   - component: {fileID: 505855677099138496}
   - component: {fileID: 5213776667360467222}
   - component: {fileID: 8817634406011281552}
-  - component: {fileID: 5884383809677578735}
+  - component: {fileID: 2689997360436875002}
   - component: {fileID: 7424918058501284851}
+  - component: {fileID: 4570790674874389872}
+  - component: {fileID: -7933733860336728895}
   m_Layer: 0
   m_Name: ReinforcedSteel
   m_TagString: Untagged
@@ -335,7 +337,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5884383809677578735
+--- !u!114 &2689997360436875002
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -344,13 +346,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 6951766171626189864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91027e92324bd514dba611d6cea83fcf, type: 3}
+  m_Script: {fileID: 11500000, guid: 401e66cef61e8c9408212e487625aa20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   vehiclePartType: 2
   vehiclePartCost: 0
   cost: {fileID: 8686714612633691689}
+  steelStaminaModifier: 2
 --- !u!65 &7424918058501284851
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6951766171626189864}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.1215868, y: 2.7027197, z: 0.6677591}
+  m_Center: {x: -0.031662226, y: 0.2648503, z: -0.22923614}
+--- !u!65 &4570790674874389872
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -369,5 +393,24 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.1215868, y: 2.7027197, z: 0.6677591}
-  m_Center: {x: -0.031662226, y: 0.2648503, z: -0.22923614}
+  m_Size: {x: 2.1137002, y: 1.3231484, z: 0.90880597}
+  m_Center: {x: -0.020864844, y: 0.19631222, z: -0.10870668}
+--- !u!114 &-7933733860336728895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6951766171626189864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

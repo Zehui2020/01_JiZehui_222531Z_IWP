@@ -5,6 +5,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private MovementData movementData;
     [SerializeField] private ItemStats itemStats;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheckPosition;
     private CapsuleCollider playerCol;
     private Rigidbody playerRB;
 
@@ -21,6 +22,9 @@ public class MovementController : MonoBehaviour
     private bool useStamina = true;
     private bool canJump = true;
     private RaycastHit slopeHit;
+
+    private float moveSpeedModifier = 1;
+    private float staminaModifier = 1;
 
     // Start is called before the first frame update
     public void IntializeMovementController()
@@ -111,7 +115,7 @@ public class MovementController : MonoBehaviour
             // If player is sprinting and is moving
             if (isSprinting && playerRB.velocity.magnitude > 0.1f && useStamina && canSprint)
             {
-                stamina -= movementData.sprintStaminaCost * Time.deltaTime;
+                stamina -= movementData.sprintStaminaCost * staminaModifier * Time.deltaTime;
 
                 if (isGrounded)
                 {
@@ -159,7 +163,7 @@ public class MovementController : MonoBehaviour
 
     public void HandleJump()
     {
-        if (!canJump || !isGrounded || isCrouching || stamina < movementData.jumpStaminaCost)
+        if (!canJump || !isGrounded || isCrouching || stamina < movementData.jumpStaminaCost * staminaModifier)
             return;
 
         canJump = false;
@@ -170,7 +174,7 @@ public class MovementController : MonoBehaviour
         if (totalJumpCost < movementData.jumpStaminaCost)
             totalJumpCost = movementData.jumpStaminaCost;
         if (useStamina)
-            stamina -= totalJumpCost;
+            stamina -= totalJumpCost * staminaModifier;
 
         playerRB.velocity = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
         playerRB.AddForce(transform.up * movementData.baseJumpForce, ForceMode.Impulse);
@@ -188,7 +192,7 @@ public class MovementController : MonoBehaviour
         if (isGrounded)
             force = direction * moveSpeed * 10f;
         else if (!isGrounded)
-            force = direction * moveSpeed * 10f * movementData.airMultiplier;
+            force = direction * moveSpeed * 10f * movementData.airMultiplier * moveSpeedModifier;
         else
             force = Vector3.zero;
 
@@ -196,7 +200,7 @@ public class MovementController : MonoBehaviour
         if (OnSlope())
             playerRB.AddForce(GetSlopeMoveDir() * moveSpeed * 10f, ForceMode.Force);
         else
-            playerRB.AddForce(force, ForceMode.Force);
+            playerRB.AddForce(force * moveSpeedModifier, ForceMode.Force);
 
         SpeedControl();
     }
@@ -204,10 +208,10 @@ public class MovementController : MonoBehaviour
     public void CheckGroundCollision()
     {
         RaycastHit groundHit;
-        if (!Physics.Raycast(transform.position, Vector3.down, out groundHit, 100, groundLayer))
+        if (!Physics.Raycast(groundCheckPosition.position, Vector3.down, out groundHit, 100, groundLayer))
             return;
 
-        float dist = Vector3.Distance(transform.position, groundHit.point);
+        float dist = Vector3.Distance(groundCheckPosition.position, groundHit.point);
         if (dist <= movementData.minGroundDist)
         {
             isGrounded = true;
@@ -226,6 +230,16 @@ public class MovementController : MonoBehaviour
     {
         isMoving = false;
         playerRB.velocity = Vector3.zero;
+    }
+
+    public void SetMoveSpeedModifier(float newModifier)
+    {
+        moveSpeedModifier = newModifier;
+    }
+
+    public void SetStaminaModifier(float newModifier)
+    {
+        staminaModifier = newModifier;
     }
 
     private void SpeedControl()

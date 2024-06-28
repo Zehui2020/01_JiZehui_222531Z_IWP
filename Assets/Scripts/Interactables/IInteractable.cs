@@ -5,8 +5,8 @@ using UnityEngine;
 public interface IInteractable
 {
     void InitInteractable();
-    void OnInteract();
-    void OnEnterRange();
-    void OnExitRange();
+    virtual void OnInteract() { }
+    virtual void OnEnterRange() { }
+    virtual void OnExitRange() { }
     void SetCost(int newCost);
 }

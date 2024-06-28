@@ -25,6 +25,7 @@ public class ItemStats : ScriptableObject
 
     public float stunGrenadeRadius;
     public float stunGrenadeDuration;
+    public float stunGrenadeCooldown;
 
     public float shungiteHealing;
 
@@ -54,6 +55,7 @@ public class ItemStats : ScriptableObject
 
         stunGrenadeRadius = 0;
         stunGrenadeDuration = 2;
+        stunGrenadeCooldown = 5;
 
         shungiteHealing = 0;
 

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
+  m_Name: Intro4
+  m_EditorClassIdentifier: 
+  message: The location you're at... Ah yes, a lab under Kaiser Corp. They specialized
+    in enhancing various trinkets and baubles that empowers the user.
+  waitDuration: 2
+  entryDelay: 0
+  timeBtwChars: 0.05
+  hideAfterMessage: 0

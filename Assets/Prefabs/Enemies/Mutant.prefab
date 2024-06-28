@@ -1037,7 +1037,7 @@ MonoBehaviour:
   healthBar: {fileID: 6407866241633741976}
   enemyUI: {fileID: 5913990328492196113}
   statusParent: {fileID: 956639214296644716}
-  statusEffectUI: {fileID: 5521984865229111154, guid: 0d328ce0b26497f47993af5984590cfe, type: 3}
+  statusEffectUI: {fileID: 5521984865229111154, guid: a9f8fe314aa482441bc30ca2610d16f1, type: 3}
   maxStatusEffects: 4
 --- !u!114 &8649925491864794827
 MonoBehaviour:
@@ -6798,8 +6798,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 0.451}
-  m_SizeDelta: {x: 1, y: 0.1981}
+  m_AnchoredPosition: {x: -0, y: 0.4911}
+  m_SizeDelta: {x: 1, y: 0.2783}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7138205890980991498
 MonoBehaviour:
@@ -6819,7 +6819,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0.02
+  m_Spacing: -0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -6852,7 +6852,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6182801221271037034}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6861,7 +6861,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.5, y: 0.1}
+  m_SizeDelta: {x: 0.5, y: 0.1874}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4210327940571132071
 MonoBehaviour:
@@ -6880,7 +6880,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 3
+  m_ChildAlignment: 6
   m_Spacing: 0.033
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -16935,7 +16935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6388133177418421612
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16952,9 +16952,9 @@ RectTransform:
   - {fileID: 6069395105318063905}
   m_Father: {fileID: 3488190310342977142}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.5, y: -0.15904999}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.5, y: 0.0443}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6407866241633741976

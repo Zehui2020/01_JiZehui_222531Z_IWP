@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6803594617409563422}
   - component: {fileID: 3175148999456234592}
   - component: {fileID: 4188360437211151329}
+  - component: {fileID: 3097474056681081116}
+  - component: {fileID: 4152332224871119265}
   m_Layer: 0
   m_Name: GasTank
   m_TagString: Untagged
@@ -43,7 +45,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 229394797704778263}
-  m_Mesh: {fileID: 2996877403747422357, guid: ec5943719eda4d941a95cdbdbf08745a, type: 3}
+  m_Mesh: {fileID: 2996877403747422357, guid: 5400101bf51549947abc043efccb3210, type: 3}
 --- !u!23 &6803594617409563422
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -116,12 +118,52 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.5702305, y: 1.6880188, z: 0.17372738}
   m_Center: {x: -0.06229496, y: 0.040398896, z: -0.21799423}
+--- !u!114 &3097474056681081116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229394797704778263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
+--- !u!65 &4152332224871119265
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229394797704778263}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.18426712, y: 0.5655215, z: 0.48965716}
+  m_Center: {x: 0.011440963, y: 0.0015530286, z: -0.060019255}
 --- !u!1 &1909525597603529340
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &831770492079336984
 RectTransform:
   m_ObjectHideFlags: 0

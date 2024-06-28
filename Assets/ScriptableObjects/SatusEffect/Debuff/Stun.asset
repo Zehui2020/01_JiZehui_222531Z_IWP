@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Stun
   m_EditorClassIdentifier: 
   statusEffectType: 1
+  statusEffectCategory: 1
   icon: {fileID: 21300000, guid: fd364ea65b87ab74389a72de4dbbc83f, type: 3}

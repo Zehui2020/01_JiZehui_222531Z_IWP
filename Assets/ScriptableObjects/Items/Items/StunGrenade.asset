@@ -18,8 +18,9 @@ MonoBehaviour:
   itemCatagory: 2
   spriteIcon: {fileID: 21300000, guid: ffd9f326b1b52af40a2c9da6c630d4bb, type: 3}
   title: Stun Grenade
-  description: 'Drop a stun on reload, stunning all enemies in 10m(+5m/stack) for
-    2s. '
+  description: "Drop a stun on reload, stunning all enemies in 10m(+5m/stack) for
+    2s. \nCooldown of 5s(-10%/stack)."
   itemStack: 0
   baseStunRadius: 10
   stackStunRadius: 5
+  stunCooldownModifier: 0.9
