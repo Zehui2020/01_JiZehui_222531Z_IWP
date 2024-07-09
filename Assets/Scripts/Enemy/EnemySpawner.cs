@@ -26,6 +26,9 @@ public class EnemySpawner : MonoBehaviour
 
     public static EnemySpawner Instance;
 
+    [SerializeField] private int healthIncrease = 0;
+    [SerializeField] private float healthModifier = 1.1f;
+
     private void Awake()
     {
         Instance = this;
@@ -35,6 +38,16 @@ public class EnemySpawner : MonoBehaviour
     {
         if (StartWaveRoutine != null)
             StopCoroutine(StartWaveRoutine);
+
+        // Apply wave modifications
+        if (waveNumber >= 10)
+        {
+            healthModifier *= 1.1f;
+        }
+        else if (waveNumber > 0)
+        {
+            healthIncrease += 100;
+        }
 
         StartWaveRoutine = StartCoroutine(DoStartWave(delay));
     }
@@ -123,6 +136,18 @@ public class EnemySpawner : MonoBehaviour
             if (enemy != null)
             {
                 enemyList.Add(enemy);
+
+                if (waveNumber >= 10)
+                {
+                    int newHealth = (int)((enemy.health + healthIncrease) * healthModifier);
+                    enemy.SetHealth(newHealth, newHealth);
+                }
+                else
+                {
+                    int newHealth = enemy.health += healthIncrease;
+                    enemy.SetHealth(newHealth, newHealth);
+                }
+
                 enemy.EnemyDied += OnEnemyDied;
             }
         }
@@ -147,6 +172,10 @@ public class EnemySpawner : MonoBehaviour
 
             int randIndex = Random.Range(0, spawnPoints.Length);
             enemy.SpawnEnemy(spawnPoints[randIndex].position);
+
+            if (enemy.enemyType == Enemy.EnemyType.Boss)
+                CompanionManager.Instance.ShowMessage(CompanionManager.Instance.companionMessenger.bossSpawnMessage);
+
             return;
         }
     }

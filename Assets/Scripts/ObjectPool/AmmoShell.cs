@@ -6,10 +6,15 @@ using DesignPatterns.ObjectPool;
 public class AmmoShell : PooledObject
 {
     private Rigidbody shellRB;
+    private AudioSource audioSource;
+    [SerializeField] private Sound.SoundName ammoShellSound;
+    [SerializeField] private LayerMask groundLayer;
+    private bool isAudioPlayed = false;
 
     public override void Init()
     {
         shellRB = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void SetupShell(Vector3 spawnPos, float ejectForce, float ejectUpwardForce, Vector3 torque, float lifetime)
@@ -34,6 +39,21 @@ public class AmmoShell : PooledObject
     {
         yield return new WaitForSeconds(lifetime);
         Release();
+        isAudioPlayed = false;
         gameObject.SetActive(false);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Utility.Instance.CheckLayer(collision.gameObject, groundLayer))
+            return;
+
+        if (isAudioPlayed)
+            return;
+
+        Sound sound = AudioManager.Instance.FindSound(ammoShellSound);
+        AudioManager.Instance.InitAudioSource(audioSource, sound);
+        audioSource.PlayOneShot(sound.clip);
+        isAudioPlayed = true;
     }
 }

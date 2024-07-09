@@ -23,4 +23,4 @@ MonoBehaviour:
   maxStamina: 100
   staminaRegenRate: 18
   maxSlopeAngle: 100
-  minGroundDist: 0.03
+  minGroundDist: 0.36

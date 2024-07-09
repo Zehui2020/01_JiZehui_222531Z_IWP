@@ -21,7 +21,16 @@ public class SawnOff : Weapon
         base.ChangeState(newState);
         switch (newState)
         {
+            case WeaponState.USE:
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.SawnOffShoot);
+                break;
+            case WeaponState.HIDE:
+                AudioManager.Instance.Stop(Sound.SoundName.SawnOffReload);
+                break;
             case WeaponState.RELOAD:
+                Sound s = AudioManager.Instance.FindSound(Sound.SoundName.SawnOffReload);
+                AudioManager.Instance.SetPitch(Sound.SoundName.SawnOffReload, s.pitch * itemStats.relaodRateModifier);
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.SawnOffReload);
                 weaponAnimator.SetInteger("ammo", ammoCount);
                 break;
         }

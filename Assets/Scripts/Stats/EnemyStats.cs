@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DesignPatterns.ObjectPool;
+using System.Drawing;
+using UnityEngine.UIElements;
 
 public class EnemyStats : Stats
 {
     [SerializeField] private Transform damageSpawnPoint;
     private Coroutine damageRoutine;
-
-    public event System.Action<Vector3> TakeDamageEvent;
 
     public void TakeDamage(int damage, Vector3 position, Vector3 direction, DamagePopup.ColorType color, bool ignoreThreshold)
     {
@@ -23,10 +23,18 @@ public class EnemyStats : Stats
         if (health <= 0)
         {
             damageRoutine = null;
-            TakeDamageEvent?.Invoke(direction);
             yield break;
         }
 
+        OnTakeDamage(damage, position, direction, color);
+
+        yield return null;
+
+        damageRoutine = null;
+    }
+
+    public virtual void OnTakeDamage(int damage, Vector3 position, Vector3 direction, DamagePopup.ColorType color)
+    {
         // Check for crit
         int randNum = Random.Range(0, 100);
         if (randNum < itemStats.critRate)
@@ -43,10 +51,5 @@ public class EnemyStats : Stats
             damagePopup.SetupPopup(damage, damageSpawnPoint.position, color);
 
         base.TakeDamage(damage);
-        TakeDamageEvent?.Invoke(direction);
-
-        yield return null;
-
-        damageRoutine = null;
     }
 }

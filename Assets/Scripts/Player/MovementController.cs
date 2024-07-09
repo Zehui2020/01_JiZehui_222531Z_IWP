@@ -10,9 +10,10 @@ public class MovementController : MonoBehaviour
     private Rigidbody playerRB;
 
     public bool isMoving = false;
-    private bool isSprinting = false;
+    public bool isSprinting = false;
     private bool isCrouching = false;
     public bool isGrounded = true;
+    public bool isOnSlope = false;
 
     private bool canSprint = true;
 
@@ -49,17 +50,9 @@ public class MovementController : MonoBehaviour
         isSprinting = !isSprinting;
 
         if (isSprinting)
-        {
             moveSpeed = movementData.sprintSpeed * itemStats.sprintSpeedModifier;
-
-            //AudioManager.Instance.Stop("Walk");
-        }
         else
-        {
             moveSpeed = movementData.walkSpeed;
-
-            //AudioManager.Instance.Stop("Sprint");
-        }
     }
 
     public void SetCanSprint(bool sprint)
@@ -82,8 +75,6 @@ public class MovementController : MonoBehaviour
 
         if (isCrouching)
         {
-            //AudioManager.Instance.Stop("Sprint");
-
             moveSpeed = movementData.crouchSpeed;
             playerCol.height = 0.8f;
             playerCol.center = new Vector3(playerCol.center.x, 0.4f, playerCol.center.z);
@@ -109,20 +100,8 @@ public class MovementController : MonoBehaviour
             Vector3 sideDirection = Vector3.ProjectOnPlane(Camera.main.transform.right * horizontal, Vector3.up);
             direction = (forwardDirection + sideDirection).normalized;
 
-            // If player is walking
-            //if (!isSprinting && isGrounded)
-            //    AudioManager.Instance.OnlyPlayAfterSoundEnds("Walk");
-            // If player is sprinting and is moving
             if (isSprinting && playerRB.velocity.magnitude > 0.1f && useStamina && canSprint)
-            {
                 stamina -= movementData.sprintStaminaCost * staminaModifier * Time.deltaTime;
-
-                if (isGrounded)
-                {
-                    //AudioManager.Instance.Stop("Walk");
-                    //AudioManager.Instance.OnlyPlayAfterSoundEnds("Sprint");
-                }
-            }
         }
 
         else if (!isMoving && isGrounded)
@@ -138,12 +117,6 @@ public class MovementController : MonoBehaviour
             else if (isCrouching)
                 moveSpeed = movementData.crouchSpeed;
         }
-
-        //if (!isMoving || !isGrounded)
-        //{
-        //    AudioManager.Instance.Stop("Walk");
-        //    AudioManager.Instance.Stop("Sprint");
-        //}
 
         // If run out of stamina
         if (stamina <= 0f && isSprinting)
@@ -163,7 +136,10 @@ public class MovementController : MonoBehaviour
 
     public void HandleJump()
     {
-        if (!canJump || !isGrounded || isCrouching || stamina < movementData.jumpStaminaCost * staminaModifier)
+        if (!canJump || isCrouching || stamina < movementData.jumpStaminaCost * staminaModifier)
+            return;
+
+        if (!isGrounded && !isOnSlope)
             return;
 
         canJump = false;
@@ -179,7 +155,7 @@ public class MovementController : MonoBehaviour
         playerRB.velocity = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
         playerRB.AddForce(transform.up * movementData.baseJumpForce, ForceMode.Impulse);
 
-        //AudioManager.Instance.Play("Jump");
+        AudioManager.Instance.Play(Sound.SoundName.Jump);
     }
 
     public void MovePlayer()
@@ -197,7 +173,7 @@ public class MovementController : MonoBehaviour
             force = Vector3.zero;
 
         // Move player
-        if (OnSlope())
+        if (isOnSlope)
             playerRB.AddForce(GetSlopeMoveDir() * moveSpeed * 10f, ForceMode.Force);
         else
             playerRB.AddForce(force * moveSpeedModifier, ForceMode.Force);
@@ -214,6 +190,9 @@ public class MovementController : MonoBehaviour
         float dist = Vector3.Distance(groundCheckPosition.position, groundHit.point);
         if (dist <= movementData.minGroundDist)
         {
+            if (!isGrounded && !isOnSlope && playerRB.velocity.y <= -1.5f)
+                AudioManager.Instance.OnlyPlayAfterSoundEnds(Sound.SoundName.Land);
+
             isGrounded = true;
             canJump = true;
             playerRB.drag = movementData.groundDrag;
@@ -246,7 +225,7 @@ public class MovementController : MonoBehaviour
     {
         Vector3 currentVel = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
 
-        if (OnSlope())
+        if (isOnSlope)
         {
             if (playerRB.velocity.magnitude > movementData.walkSpeed)
                 playerRB.velocity = playerRB.velocity.normalized * movementData.walkSpeed;
@@ -258,15 +237,21 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    private bool OnSlope()
+    public void CheckOnSlope()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 100))
+        RaycastHit[] hits = Physics.RaycastAll(groundCheckPosition.position, Vector3.down, 100);
+        foreach (RaycastHit hit in hits)
         {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < movementData.maxSlopeAngle && angle != 0;
+            if (hit.collider.CompareTag("Slope"))
+            {
+                slopeHit = hit;
+                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                isOnSlope = angle < movementData.maxSlopeAngle && angle != 0;
+                return;
+            }
         }
 
-        return false;
+        isOnSlope = false;
     }
 
     private Vector3 GetSlopeMoveDir()

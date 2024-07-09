@@ -19,3 +19,31 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f883dbb1ed0c8d498b13485b36e16fe, type: 2}
   - {fileID: 11400000, guid: 2a291181b6006a8478334f9a3a2b96d2, type: 2}
   - {fileID: 11400000, guid: 4acb8a02f40c3d541bbf2e3e11880c46, type: 2}
+  interactionFailMessages:
+  - {fileID: 11400000, guid: 8da8f216ffc05fd49ae788ff240c7dd4, type: 2}
+  - {fileID: 11400000, guid: 211facb354963f74ebfdc2d8ee1126c8, type: 2}
+  - {fileID: 11400000, guid: 8226f0e96144afb43a14b3dc9be82cd6, type: 2}
+  lowHealthMessages:
+  - {fileID: 11400000, guid: 51d7261bf76df4d4eaffa9ec595f746b, type: 2}
+  - {fileID: 11400000, guid: 4546ba43524c7fe4daacb7fe64a8cdb1, type: 2}
+  - {fileID: 11400000, guid: 7b2bc6160021d21468459f32fa16a1e1, type: 2}
+  bossSpawnMessage: {fileID: 11400000, guid: e31316a38a4ccb349836469e7de7cafb, type: 2}
+  weaponPickupMessages:
+  - {fileID: 11400000, guid: 57aca78579951aa4fb9df1a73f21363a, type: 2}
+  - {fileID: 11400000, guid: 657e6e53ffd5f714da89cba3958d950d, type: 2}
+  - {fileID: 11400000, guid: 9dc8896c4ef906f4e9776f7444569bf0, type: 2}
+  - {fileID: 11400000, guid: ba3909652324464409f7649f7b3afa1a, type: 2}
+  - {fileID: 11400000, guid: fd6cea60a95e8d344bba6ccce46085ec, type: 2}
+  - {fileID: 11400000, guid: 5a80dee368f253c4b8dd86304161ba13, type: 2}
+  - {fileID: 11400000, guid: 500534435301a214aa6245f3177d824b, type: 2}
+  - {fileID: 11400000, guid: 4f4c08abaf3ab0e46be479135de0cca4, type: 2}
+  vehiclePartFoundMessages:
+  - {fileID: 11400000, guid: 1f2861dd835ba2b48822170c7650726f, type: 2}
+  - {fileID: 11400000, guid: 702a0f22f205cab4ead4cd99f2e74b6c, type: 2}
+  - {fileID: 11400000, guid: b3a0b13f9dab0484597bf1ae61de5833, type: 2}
+  - {fileID: 11400000, guid: 9bb3715baf769164da4070f3c2d5ea87, type: 2}
+  - {fileID: 11400000, guid: 092036aad50df134897168d43235074a, type: 2}
+  vehiclePartPickupMessages:
+  - {fileID: 11400000, guid: 5ecd424eb32375742a65fc7f9bb58473, type: 2}
+  - {fileID: 11400000, guid: 7628ee22ea5df5b489d49e0863d2e68d, type: 2}
+  - {fileID: 11400000, guid: a0d6b051369cf4444bde881d56b55cfc, type: 2}

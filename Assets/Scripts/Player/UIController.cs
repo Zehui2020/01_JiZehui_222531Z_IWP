@@ -31,6 +31,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private int maxStatusEffects;
     private List<StatusEffectUI> statusEffectUIs = new List<StatusEffectUI>();
 
+    [SerializeField] private Image crosshair;
+
     public void InitUIController()
     {
         waveAlertAnimator = waveAlertText.GetComponent<Animator>();
@@ -51,6 +53,11 @@ public class UIController : MonoBehaviour
         healthBar.value = currentHealth;
         healthBar.maxValue = maxHealth;
         healthText.text = currentHealth + " / " + maxHealth;
+    }
+
+    public void UpdateCrosshair(Sprite newCrosshair)
+    {
+        crosshair.sprite = newCrosshair;
     }
 
     public void OnPickupItem(Item item)

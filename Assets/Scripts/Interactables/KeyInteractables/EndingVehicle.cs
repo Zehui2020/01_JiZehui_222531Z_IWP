@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Truck : MonoBehaviour, IInteractable
+public class EndingVehicle : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject radiusPrefab;
     [SerializeField] private LayerMask playerLayer;
@@ -19,6 +20,9 @@ public class Truck : MonoBehaviour, IInteractable
     private Coroutine FixRoutine;
     private Objective vehicleObjective;
     public List<VehiclePart.VehiclePartType> vehicleParts = new List<VehiclePart.VehiclePartType>();
+
+    public static event Action<VehiclePart.VehiclePartType> OnInteractEvent;
+    public event Action OnInteractFailEvent;
 
     public void InitInteractable()
     {
@@ -72,10 +76,14 @@ public class Truck : MonoBehaviour, IInteractable
         }
 
         if (PlayerController.Instance.vehicleParts.Count == 0 || FixRoutine != null)
+        {
+            OnInteractFailEvent?.Invoke();
             return;
+        }
 
         CreateObjective();
         FixRoutine = StartCoroutine(CheckRadiusRoutine(fixRadius, fixDuration));
+        OnInteractEvent?.Invoke(PlayerController.Instance.vehicleParts[0]);
     }
 
     private IEnumerator CheckRadiusRoutine(float radius, float duration)
@@ -83,7 +91,7 @@ public class Truck : MonoBehaviour, IInteractable
         GameObject radiusGO = Instantiate(radiusPrefab, transform.position, Quaternion.identity);
         radiusGO.transform.localScale = new Vector3(radius, radius, radius);
 
-        ProgressObjectiveUI objectiveUI = ObjectiveManager.Instance.GetObjectiveUI(vehicleObjective) as ProgressObjectiveUI;
+        ProgressObjectiveUI objectiveUI = vehicleObjective.objectiveUI as ProgressObjectiveUI;
 
         float timer = 0;
         while (timer < duration)

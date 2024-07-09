@@ -18,8 +18,8 @@ MonoBehaviour:
   itemCatagory: 0
   spriteIcon: {fileID: 21300000, guid: 6967253bdd10a674596d013a56917ba1, type: 3}
   title: Crude Knife
-  description: "Deal x2 damage at close range \n(+1.5x damage, +2m range/stack)."
-  itemStack: 0
-  baseDistMod: 2
-  stackDistMod: 1.5
-  stackMinDistance: 2
+  description: "Deal x2 damage at close range \n(+1.5x damage, +0.4m range/stack)."
+  itemStack: 3
+  baseDistDamageMod: 2
+  stackDistDamageMod: 1.5
+  stackDistanceMod: 0.4

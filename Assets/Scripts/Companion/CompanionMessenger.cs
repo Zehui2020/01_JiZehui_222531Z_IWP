@@ -6,4 +6,10 @@ using UnityEngine;
 public class CompanionMessenger : ScriptableObject
 {
     public CompanionMessage[] introMessages;
+    public CompanionMessage[] interactionFailMessages;
+    public CompanionMessage[] lowHealthMessages;
+    public CompanionMessage bossSpawnMessage;
+    public WeaponPickupMessage[] weaponPickupMessages;
+    public VehiclePartFoundMessage[] vehiclePartFoundMessages;
+    public CompanionMessage[] vehiclePartPickupMessages;
 }

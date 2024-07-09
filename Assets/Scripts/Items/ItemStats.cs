@@ -11,7 +11,7 @@ public class ItemStats : ScriptableObject
     public float burnDamageModifier;
 
     public float distanceDamageModifier;
-    public int minDistance;
+    public float minDistance;
 
     public int critHealAmount;
     public int blockChance;
@@ -41,7 +41,7 @@ public class ItemStats : ScriptableObject
         burnDamageModifier = 1;
 
         distanceDamageModifier = 1;
-        minDistance = 3;
+        minDistance = 2;
 
         critHealAmount = 0;
         blockChance = 0;

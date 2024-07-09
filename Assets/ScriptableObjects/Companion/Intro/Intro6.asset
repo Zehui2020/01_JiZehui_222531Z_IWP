@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
   m_Name: Intro6
   m_EditorClassIdentifier: 
-  message: Also, keep your body cam on at all times. They're my eyes. Good luck out
-    there kiddo! You're gonna need it.
+  message: Lastly, keep your body cam and radio on at all times. Good luck out there
+    kiddo! You're gonna need it.
   waitDuration: 2
   entryDelay: 0
+  textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 0
   hideAfterMessage: 1
+  overridePreviousMessage: 0

@@ -5,6 +5,18 @@ using DesignPatterns.ObjectPool;
 
 public class GrenadeLauncher : Weapon
 {
+    public override void ChangeState(WeaponState newState)
+    {
+        base.ChangeState(newState);
+
+        switch (newState)
+        {
+            case WeaponState.USE:
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.GLauncherShoot);
+                break;
+        }
+    }
+
     public override void UseWeapon()
     {
         base.UseWeapon();
@@ -22,6 +34,7 @@ public class GrenadeLauncher : Weapon
         ammoCount++;
         totalAmmo--;
 
+        AudioManager.Instance.PlayOneShot(Sound.SoundName.GLauncherReloadOnce);
         if (ammoCount >= weaponData.ammoPerMag || totalAmmo <= 0)
             weaponAnimator.SetTrigger("finishReloading");
 

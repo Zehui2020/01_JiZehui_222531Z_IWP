@@ -6,6 +6,7 @@ using UnityEngine;
 public class WeaponData : ScriptableObject
 {
     public Sprite weaponIcon;
+    public Sprite weaponCrosshair;
 
     public enum Weapon { Pistol, Shotgun, Rifle, LMG, AK47, Flamethrower, SawnOff, GrenadeLauncher }
     public Weapon weapon;
@@ -47,4 +48,7 @@ public class WeaponData : ScriptableObject
     public float shellEjectForce;
     public float shellEjectUpwardForce;
     public float shellEjectTorque;
+
+    public float walkBob;
+    public float sprintBob;
 }

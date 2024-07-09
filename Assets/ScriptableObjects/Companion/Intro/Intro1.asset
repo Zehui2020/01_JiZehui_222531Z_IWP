@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
   m_Name: Intro1
   m_EditorClassIdentifier: 
-  message: Is this damn thing working... HELLO? CAN YOU HEAR ME KIDDO?
+  message: Damn crummy old radio... how on earth are y'all surviving out there with
+    THIS thing?
   waitDuration: 2
   entryDelay: 2
+  textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 1
   hideAfterMessage: 0
+  overridePreviousMessage: 0

@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class AmmoShelf : MonoBehaviour, IInteractable
 {
     [SerializeField] private int shelfCost;
     [SerializeField] private TextMeshProUGUI cost;
+
+    public event Action OnInteractEvent;
 
     public void InitInteractable()
     {
@@ -27,8 +30,12 @@ public class AmmoShelf : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         if (PlayerController.Instance.GetPoints() < shelfCost)
+        {
+            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
             return;
+        }
 
+        OnInteractEvent?.Invoke();
         if (PlayerController.Instance.RestockCurrentWeapon())
             PlayerController.Instance.DeductPoints(shelfCost);
     }

@@ -30,7 +30,10 @@ public class PlayerController : PlayerStats
     private Coroutine burnRoutine;
     private Coroutine shockRoutine;
 
-    [SerializeField] private CompanionMessenger companionMessenger;
+    private int waveObjectiveCounter = 0;
+
+    [SerializeField] private VehiclePartSpawner vehiclePartSpawner;
+    [SerializeField] private GameObject crudeKnifeRadius;
 
     public List<VehiclePart.VehiclePartType> vehicleParts = new List<VehiclePart.VehiclePartType>();
 
@@ -63,21 +66,34 @@ public class PlayerController : PlayerStats
     private void Start()
     {
         OnUpdatePoints?.Invoke(points);
-        CompanionManager.Instance.ShowMessages(companionMessenger.introMessages);
-        System.Action onMessageFinishHandler = null;
-        onMessageFinishHandler = () =>
+        CompanionManager.Instance.ShowMessages(CompanionManager.Instance.companionMessenger.introMessages);
+
+        CompanionManager.Instance.OnMessageFinish += () =>
         {
             EnemySpawner.Instance.StartWave(2f);
-            Objective objective = new Objective(Objective.ObjectiveType.Normal, "Survive for 3 waves (0/3)");
-            ObjectiveManager.Instance.AddObjective(objective);
-            CompanionManager.Instance.OnMessageFinish -= onMessageFinishHandler;
+            SetWaveObjectiveToSpawnVehiclePart(3);
         };
-        CompanionManager.Instance.OnMessageFinish += onMessageFinishHandler;
+    }
+
+    public void SetWaveObjectiveToSpawnVehiclePart(int waveNumber)
+    {
+        waveObjectiveCounter++;
+
+        WaveObjective objective = new WaveObjective(
+            Objective.ObjectiveType.Normal, 
+            "Survive for " + waveNumber + " waves " + Utility.Instance.ToRoman(waveObjectiveCounter) + " (0/" + waveNumber + ")", 
+            waveNumber);
+
+        ObjectiveManager.Instance.AddObjective(objective);
+        objective.OnObjectiveComplete += vehiclePartSpawner.SpawnVehiclePart;
     }
 
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
+
+        if (health <= maxHealth * 0.1f)
+            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.lowHealthMessages);
 
         if (vehicleParts.Contains(VehiclePart.VehiclePartType.Gas_Tank) && damage > 3)
             BurnPlayer(5f, 1f, 3);
@@ -92,7 +108,7 @@ public class PlayerController : PlayerStats
         if (Input.GetKeyDown(KeyCode.Return))
             ConsoleManager.Instance.OnInputCommand();
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Backslash))
             CompanionManager.Instance.SkipMessage();
 
         if (isDisabled || Time.timeScale == 0)
@@ -104,6 +120,7 @@ public class PlayerController : PlayerStats
         float mouseY = Input.GetAxis("Mouse Y");
 
         movementController.CheckGroundCollision();
+        movementController.CheckOnSlope();
         movementController.HandleMovment(horizontal, vertical);
 
         if (Input.GetKeyUp(KeyCode.Space))
@@ -162,7 +179,8 @@ public class PlayerController : PlayerStats
             cameraController.SetADS(false);
         }
 
-        weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded);
+        weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded || movementController.isOnSlope);
+        weaponController.SetSprinting(movementController.isSprinting);
 
         uiController.UpdateStaminaBar(movementController.stamina, movementData.maxStamina);
         uiController.UpdateHealthBar(health, maxHealth);
@@ -172,6 +190,31 @@ public class PlayerController : PlayerStats
 
         CheckEnemyToLookAt();
 
+        // Play movement audio
+        if (movementController.isMoving)
+        {
+            if (movementController.isSprinting && (movementController.isGrounded || movementController.isOnSlope))
+            {
+                AudioManager.Instance.OnlyPlayAfterSoundEnds(Sound.SoundName.Sprint);
+                AudioManager.Instance.Stop(Sound.SoundName.Walk);
+            }
+            else if (!movementController.isSprinting && (movementController.isGrounded || movementController.isOnSlope))
+            {
+                AudioManager.Instance.OnlyPlayAfterSoundEnds(Sound.SoundName.Walk);
+                AudioManager.Instance.Stop(Sound.SoundName.Sprint);
+            }
+            else
+            {
+                AudioManager.Instance.Stop(Sound.SoundName.Sprint);
+                AudioManager.Instance.Stop(Sound.SoundName.Walk);
+            }
+        }
+        else
+        {
+            AudioManager.Instance.Stop(Sound.SoundName.Sprint);
+            AudioManager.Instance.Stop(Sound.SoundName.Walk);
+        }
+
         if (itemStats.shungiteHealing == 0)
             return;
 
@@ -180,11 +223,28 @@ public class PlayerController : PlayerStats
 
         if (movementController.isMoving)
         {
+            if (movementController.isSprinting && movementController.isGrounded)
+            {
+                AudioManager.Instance.OnlyPlayAfterSoundEnds(Sound.SoundName.Sprint);
+                AudioManager.Instance.Stop(Sound.SoundName.Walk);
+            }
+            else if (!movementController.isSprinting && movementController.isGrounded)
+            {
+                AudioManager.Instance.OnlyPlayAfterSoundEnds(Sound.SoundName.Walk);
+                AudioManager.Instance.Stop(Sound.SoundName.Sprint);
+            }
+
             if (OnMoveRoutine != null) StopCoroutine(OnMoveRoutine);
             if (ShungiteHealingRoutine != null) StopCoroutine(ShungiteHealingRoutine);
 
             OnMoveRoutine = null;
             ShungiteHealingRoutine = null;
+            RemoveStatusEffect(StatusEffect.StatusEffectType.ShungiteHealing);
+        }
+        else if (!movementController.isMoving)
+        {
+            AudioManager.Instance.Stop(Sound.SoundName.Sprint);
+            AudioManager.Instance.Stop(Sound.SoundName.Walk);
         }
     }
 
@@ -246,6 +306,7 @@ public class PlayerController : PlayerStats
 
     private IEnumerator StunEnemyRoutine()
     {
+        AudioManager.Instance.PlayOneShot(Sound.SoundName.StunGrenade);
         ApplyStatusEffect(StatusEffect.StatusEffectType.StunGrenadeCD, true, StatusEffect.StatusEffectCategory.Debuff, itemStats.stunGrenadeCooldown);
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, itemStats.stunGrenadeRadius);
@@ -375,12 +436,14 @@ public class PlayerController : PlayerStats
     {
         yield return new WaitForSeconds(3f);
         ShungiteHealingRoutine = StartCoroutine(DoShungiteHealing());
+        ApplyStatusEffect(StatusEffect.StatusEffectType.ShungiteHealing, false, StatusEffect.StatusEffectCategory.Buff, 0);
     }
 
     private IEnumerator DoShungiteHealing()
     {
         while (true)
         {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.Heal);
             Heal((int)(maxHealth * itemStats.shungiteHealing));
             yield return new WaitForSeconds(1f);
         }
@@ -476,5 +539,12 @@ public class PlayerController : PlayerStats
     public void RemoveStatusEffect(StatusEffect.StatusEffectType statusEffect)
     {
         uiController.RemoveStatusEffect(statusEffect);
+    }
+
+    public void ShowCrudeKnifeRadius()
+    {
+        crudeKnifeRadius.SetActive(true);
+        float radius = itemStats.minDistance * 2;
+        crudeKnifeRadius.transform.localScale = new Vector3(radius, radius, radius);
     }
 }

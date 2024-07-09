@@ -24,9 +24,11 @@ public class Chest : PooledObject, IInteractable
 
     [SerializeField] private Transform itemParent;
     [SerializeField] private TextMeshProUGUI cost;
+
     private ItemPickup itemPickup;
     private WeaponPickup weaponPickup;
     private Animator animator;
+    private AudioSource audioSource;
 
     public event System.Action OnInteractEvent;
 
@@ -38,6 +40,7 @@ public class Chest : PooledObject, IInteractable
     public void InitInteractable()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         cost.text = chestCost.ToString() + "P";
         cost.gameObject.SetActive(false);
     }
@@ -59,7 +62,10 @@ public class Chest : PooledObject, IInteractable
         }
 
         if (isOpened || PlayerController.Instance.GetPoints() < chestCost)
+        {
+            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
             return;
+        }
 
         isOpened = true;
         animator.SetTrigger("open");
@@ -67,6 +73,11 @@ public class Chest : PooledObject, IInteractable
         cost.gameObject.SetActive(false);
 
         OnInteractEvent?.Invoke();
+
+        if (chestType == ChestType.Weapon)
+            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.WeaponChestOpen).clip);
+        else
+            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.NormalChestOpen).clip);
 
         switch (chestType)
         {

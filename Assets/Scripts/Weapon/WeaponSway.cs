@@ -7,15 +7,15 @@ public class WeaponSway : MonoBehaviour
     [Header("Sway")]
     public float step = 0.01f;
     public float maxStepDistance = 0.06f;
-    Vector3 swayPos;
+    public Vector3 swayPos;
 
     [Header("Sway Rotation")]
     public float rotationStep = 4f;
     public float maxRotationStep = 5f;
-    Vector3 swayEulerRot;
+    public Vector3 swayEulerRot;
 
     public float smooth = 10f;
-    float smoothRot = 12f;
+    public float smoothRot = 12f;
 
     [Header("Bobbing")]
     public float speedCurve;
@@ -24,13 +24,13 @@ public class WeaponSway : MonoBehaviour
 
     public Vector3 travelLimit = Vector3.one * 0.025f;
     public Vector3 bobLimit = Vector3.one * 0.01f;
-    Vector3 bobPosition;
+    public Vector3 bobPosition;
 
     public float bobExaggeration;
 
     [Header("Bob Rotation")]
     public Vector3 multiplier;
-    Vector3 bobEulerRotation;
+    public Vector3 bobEulerRotation;
 
     Vector2 walkInput;
     Vector2 lookInput;
@@ -58,8 +58,6 @@ public class WeaponSway : MonoBehaviour
         SwayRotation();
         BobOffset(isGrounded, horizontal, vertical);
         BobRotation();
-
-        //CompositePositionRotation();
     }
 
     void Sway()
@@ -71,6 +69,11 @@ public class WeaponSway : MonoBehaviour
         swayPos = initialPosition + invertLook;
     }
 
+    public void SetBobExaggeration(float newBob)
+    {
+        bobExaggeration = newBob;
+    }
+
     void SwayRotation()
     {
         Vector2 invertLook = lookInput * -rotationStep;
@@ -80,25 +83,34 @@ public class WeaponSway : MonoBehaviour
         swayEulerRot = initialRotation.eulerAngles + new Vector3(invertLook.y, invertLook.x, invertLook.x);
     }
 
-    void CompositePositionRotation()
-    {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, swayPos + bobPosition, Time.deltaTime * smooth);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(swayEulerRot) * Quaternion.Euler(bobEulerRotation), Time.deltaTime * smoothRot);
-    }
-
     void BobOffset(bool isGrounded, float horizontal, float vertical)
     {
-        speedCurve += Time.deltaTime * (isGrounded ? (horizontal + vertical) * bobExaggeration : 1f) + 0.01f;
+        float movementMagnitude = new Vector2(horizontal, vertical).magnitude;
+        if (isGrounded && movementMagnitude > 0)
+        {
+            speedCurve += Time.deltaTime * movementMagnitude * bobExaggeration;
 
-        bobPosition.x = (curveCos * bobLimit.x * (isGrounded ? 1 : 0)) - (walkInput.x * travelLimit.x);
-        bobPosition.y = (curveSin * bobLimit.y) - (vertical * travelLimit.y);
-        bobPosition.z = -(walkInput.y * travelLimit.z);
+            bobPosition.x = (curveCos * bobLimit.x) - (walkInput.x * travelLimit.x);
+            bobPosition.y = (curveSin * bobLimit.y);
+            bobPosition.z = -(walkInput.y * travelLimit.z);
+        }
+        else
+            bobPosition = Vector3.zero;
     }
 
     void BobRotation()
     {
-        bobEulerRotation.x = (walkInput != Vector2.zero ? multiplier.x * (Mathf.Sin(2 * speedCurve)) : multiplier.x * (Mathf.Sin(2 * speedCurve) / 2));
-        bobEulerRotation.y = (walkInput != Vector2.zero ? multiplier.y * curveCos : 0);
-        bobEulerRotation.z = (walkInput != Vector2.zero ? multiplier.z * curveCos * walkInput.x : 0);
+        if (walkInput != Vector2.zero)
+        {
+            bobEulerRotation.x = multiplier.x * Mathf.Sin(2 * speedCurve);
+            bobEulerRotation.y = multiplier.y * curveCos;
+            bobEulerRotation.z = -multiplier.z * curveCos * walkInput.x;
+        }
+        else
+        {
+            bobEulerRotation.x = multiplier.x * Mathf.Sin(2 * speedCurve) / 2;
+            bobEulerRotation.y = 0;
+            bobEulerRotation.z = 0;
+        }
     }
 }

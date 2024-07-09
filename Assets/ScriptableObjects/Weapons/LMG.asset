@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LMG
   m_EditorClassIdentifier: 
   weaponIcon: {fileID: 21300000, guid: df9bc0f344e175047b99dcafa244f3ac, type: 3}
+  weaponCrosshair: {fileID: 21300000, guid: 954811a281a228b4e9b5db6814ff622a, type: 3}
   weapon: 3
   weaponType: 1
   fireType: 1
@@ -30,6 +31,8 @@ MonoBehaviour:
   ADSSway: 0
   ADSCamShake: 1
   unADSCamShake: 1.5
+  ADSCamShakeFrequency: 0
+  unADSCamShakeFrequency: 0
   ADSCamShakeDuration: 0.1
   unADSCamShakeDuration: 0.2
   ADSZoomAmount: 50
@@ -37,3 +40,5 @@ MonoBehaviour:
   shellEjectForce: 1.2
   shellEjectUpwardForce: 1.2
   shellEjectTorque: 50
+  walkBob: 4
+  sprintBob: 8

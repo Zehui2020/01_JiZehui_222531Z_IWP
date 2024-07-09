@@ -34,6 +34,8 @@ public class WeaponController : MonoBehaviour
             uiController.SetWeaponUIs(weapons[currentWeapon], null);
         else
             uiController.SetWeaponUIs(weapons[currentWeapon], weapons[(currentWeapon + 1) % (weapons.Count - 1)]);
+
+        uiController.UpdateCrosshair(GetWeaponCrosshair());
     }
 
     public Weapon GetRandomWeaponFromPool()
@@ -88,6 +90,7 @@ public class WeaponController : MonoBehaviour
             newWeapon.OnShow();
 
         uiController.SetWeaponUIs(newWeapon, prevWeapon);
+        uiController.UpdateCrosshair(GetWeaponCrosshair());
     }
 
     public void ReplaceWeapon(WeaponData.Weapon newWeapon)
@@ -104,6 +107,8 @@ public class WeaponController : MonoBehaviour
         if (targetWeapon == null)
             return;
 
+        CompanionManager.Instance.ShowWeaponPickupMessage(targetWeapon.weaponData.weapon);
+
         if (weapons.Count < 2)
         {
             weapons.Add(targetWeapon);
@@ -112,20 +117,18 @@ public class WeaponController : MonoBehaviour
         }
         else
         {
-            weapons[currentWeapon].OnReturnToPool();
-
             weapons[currentWeapon].SwapWeaponEvent -= OnSwitchWeapon;
             weapons[currentWeapon].UseWeaponEvent -= uiController.UpdateAmmoCount;
             weapons[currentWeapon].ReloadWeaponEvent -= uiController.UpdateAmmoCount;
             weapons[currentWeapon].RestockWeaponEvent -= uiController.UpdateAmmoCount;
 
+            weapons[currentWeapon].OnReturnToPool();
             weaponPool.Add(weapons[currentWeapon]);
 
             weapons[currentWeapon] = targetWeapon;
             weaponPool.Remove(targetWeapon);
 
             targetWeapon.gameObject.SetActive(true);
-
             uiController.OnReplaceWeapon(targetWeapon);
         }
 
@@ -135,6 +138,7 @@ public class WeaponController : MonoBehaviour
         targetWeapon.RestockWeaponEvent += uiController.UpdateAmmoCount;
 
         uiController.SetWeaponCount(weapons.Count);
+        uiController.UpdateCrosshair(GetWeaponCrosshair());
     }
 
     public void HideCurrentWeapon()
@@ -195,5 +199,15 @@ public class WeaponController : MonoBehaviour
     public void UpgradeWeapon()
     {
         weapons[currentWeapon].UpgradeWeapon();
+    }
+
+    public Sprite GetWeaponCrosshair()
+    {
+        return weapons[currentWeapon].weaponData.weaponCrosshair;
+    }
+
+    public void SetSprinting(bool isSprinting)
+    {
+        weapons[currentWeapon].ToggleSprint(isSprinting);
     }
 }

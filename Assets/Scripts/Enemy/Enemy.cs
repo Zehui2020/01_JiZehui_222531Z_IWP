@@ -22,6 +22,7 @@ public class Enemy : EnemyStats
 
     private Coroutine burnRoutine;
     protected Coroutine stunRoutine;
+    private AudioSource audioSource;
 
     protected float speedModifier = 1;
 
@@ -33,8 +34,8 @@ public class Enemy : EnemyStats
         collisionController = GetComponent<CombatCollisionController>();
         aiNavigation = GetComponent<AINavigation>();
         enemyCanvas = GetComponent<EnemyCanvas>();
+        audioSource = GetComponent<AudioSource>();
         aiNavigation.InitNavMeshAgent();
-        TakeDamageEvent += OnTakeDamage;
 
         ragdollController.DeactivateRagdoll();
     }
@@ -107,8 +108,9 @@ public class Enemy : EnemyStats
             col.enabled = active;
     }
 
-    private void OnTakeDamage(Vector3 direction)
+    public override void OnTakeDamage(int damage, Vector3 position, Vector3 direction, DamagePopup.ColorType color)
     {
+        base.OnTakeDamage(damage, position, direction, color);
         enemyCanvas.SetHealthbar(health, maxHealth);
 
         if (health > 0)
@@ -129,7 +131,10 @@ public class Enemy : EnemyStats
 
         int randNum = Random.Range(0, 100);
         if (randNum <= itemStats.drumReloadPercentage)
+        {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.XKillDrum);
             PlayerController.Instance.RefillAmmoClip();
+        }
 
         StartCoroutine(OnDie());
     }
@@ -143,6 +148,9 @@ public class Enemy : EnemyStats
     private void CheckDeathExplosion()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, itemStats.dynamiteExplodeRadius);
+
+        if (hitColliders.Length > 0)
+            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.DynamiteExplode).clip);
 
         foreach (var hitCollider in hitColliders)
         {
@@ -189,6 +197,13 @@ public class Enemy : EnemyStats
             stunRoutine = StartCoroutine(OnStun());
 
         ApplyStatusEffect(StatusEffect.StatusEffectType.Stun, true, StatusEffect.StatusEffectCategory.Debuff, duration);
+    }
+
+    public void SetHealth(int health, int maxHealth)
+    {
+        this.health = health;
+        this.maxHealth = maxHealth;
+        enemyCanvas.SetHealthbar(health, maxHealth);
     }
 
     public void SetHealthbar(bool active)

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   weaponIcon: {fileID: 21300000, guid: 473d7ecbc48397a4e95660933388a10e, type: 3}
+  weaponCrosshair: {fileID: 21300000, guid: b4c9a4e1528ccac4b874628ff814a831, type: 3}
   weapon: 1
   weaponType: 1
   fireType: 0
@@ -30,6 +31,8 @@ MonoBehaviour:
   ADSSway: 0
   ADSCamShake: 2
   unADSCamShake: 4
+  ADSCamShakeFrequency: 0
+  unADSCamShakeFrequency: 0
   ADSCamShakeDuration: 0.2
   unADSCamShakeDuration: 0.3
   ADSZoomAmount: 50
@@ -37,3 +40,5 @@ MonoBehaviour:
   shellEjectForce: 1.5
   shellEjectUpwardForce: 1.5
   shellEjectTorque: 0
+  walkBob: 4
+  sprintBob: 8

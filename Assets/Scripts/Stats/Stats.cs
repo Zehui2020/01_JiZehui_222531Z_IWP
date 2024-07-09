@@ -10,19 +10,12 @@ public class Stats : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
-        int randNum = Random.Range(0, 100);
-        if (randNum < itemStats.blockChance)
-            return;
-
         health -= damage;
     }
 
     public virtual void Heal(int amount)
     {
-        if (health >= maxHealth)
-            return;
-
-        health += amount * itemStats.healingBonus;
+        health += amount;
         if (health > maxHealth)
             health = maxHealth;
     }

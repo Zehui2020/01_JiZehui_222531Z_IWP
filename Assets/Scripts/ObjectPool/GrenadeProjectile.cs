@@ -30,6 +30,9 @@ public class GrenadeProjectile : PooledObject
 
     public void Explode()
     {
+        Sound s = AudioManager.Instance.FindSound(Sound.SoundName.GrenadeExplode);
+        ObjectPool.Instance.GetPooledObject("AudioPlayer", true).GetComponent<AudioPlayer>().SetupAudioPlayer(s);
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider col in colliders)
         {

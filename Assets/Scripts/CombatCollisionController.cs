@@ -42,9 +42,14 @@ public class CombatCollisionController : MonoBehaviour
         damage = newDamage;
     }
 
+    public void PlayAudio(Sound.SoundName soundName)
+    {
+        AudioManager.Instance.PlayOneShot(soundName);
+    }
+
     private void TriggerEvent(Collider col)
     {
-        if (((1 << col.gameObject.layer) & targetLayer) == 0)
+        if (Utility.Instance.CheckLayer(col.gameObject, targetLayer))
             return;
 
         Vector3 closestPoint = col.ClosestPointOnBounds(transform.position);

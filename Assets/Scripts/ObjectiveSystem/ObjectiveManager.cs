@@ -9,7 +9,7 @@ public class ObjectiveManager : MonoBehaviour
     [SerializeField] private ObjectiveUI normalObjective;
     [SerializeField] private ObjectiveUI progressObjective;
 
-    [SerializeField] private Dictionary<Objective, ObjectiveUI> currentObjectives = new Dictionary<Objective, ObjectiveUI>();
+    [SerializeField] private List<Objective> currentObjectives = new List<Objective>();
     [SerializeField] private Transform objectiveUIParent;
 
     private void Awake()
@@ -31,30 +31,21 @@ public class ObjectiveManager : MonoBehaviour
                 break;
         }
 
+        objective.SetObjectiveUI(objectiveUI);
         objectiveUI.transform.SetParent(objectiveUIParent, false);
-        objectiveUI.SetupObjective(objective);
-        currentObjectives.Add(objective, objectiveUI);
+        objectiveUI.SetObjectiveName(objective.objectiveName);
+
+        currentObjectives.Add(objective);
     }
 
     public void RemoveObjective(Objective objective)
     {
-        if (!currentObjectives.TryGetValue(objective, out ObjectiveUI objectiveUI))
+        Objective foundObjective = currentObjectives.Find(o => o == objective);
+
+        if (foundObjective == null)
             return;
 
-        currentObjectives.Remove(objective);
-        objectiveUI.RemoveObjective();
-    }
-
-    public ObjectiveUI GetObjectiveUI(Objective objective)
-    {
-        if (currentObjectives.TryGetValue(objective, out ObjectiveUI objectiveUI))
-            return objectiveUI;
-
-        return null;
-    }
-
-    public void OnObjectiveComplete()
-    {
-
+        foundObjective.CompleteObjective();
+        currentObjectives.Remove(foundObjective);
     }
 }

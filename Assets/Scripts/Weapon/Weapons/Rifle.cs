@@ -4,6 +4,26 @@ using UnityEngine;
 
 public class Rifle : Weapon
 {
+    public override void ChangeState(WeaponState newState)
+    {
+        base.ChangeState(newState);
+
+        switch (newState)
+        {
+            case WeaponState.USE:
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.RifleShoot);
+                break;
+            case WeaponState.RELOAD:
+                Sound s = AudioManager.Instance.FindSound(Sound.SoundName.RifleReload);
+                AudioManager.Instance.SetPitch(Sound.SoundName.RifleReload, s.pitch * itemStats.relaodRateModifier);
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.RifleReload);
+                break;
+            case WeaponState.HIDE:
+                AudioManager.Instance.Stop(Sound.SoundName.RifleReload);
+                break;
+        }
+    }
+
     public override void UseWeapon()
     {
         base.UseWeapon();

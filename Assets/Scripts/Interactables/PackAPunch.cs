@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,6 +8,8 @@ public class PackAPunch : MonoBehaviour, IInteractable
 {
     [SerializeField] private int packAPunchCost;
     [SerializeField] private TextMeshProUGUI cost;
+
+    public event Action OnInteractEvent;
 
     public void InitInteractable()
     {
@@ -27,10 +30,14 @@ public class PackAPunch : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         if (PlayerController.Instance.GetPoints() < packAPunchCost)
+        {
+            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
             return;
+        }
 
         PlayerController.Instance.DeductPoints(packAPunchCost);
         PlayerController.Instance.UpgradeCurrentWeapon();
+        OnInteractEvent?.Invoke();
     }
 
     public void SetCost(int newCost)

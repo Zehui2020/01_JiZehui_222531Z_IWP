@@ -28,6 +28,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Quaternion unADSRotation;
     [SerializeField] private Vector3 ADSPos;
     [SerializeField] private Quaternion ADSRotation;
+    [SerializeField] private Sound.SoundName dryFireSound;
 
     public int ammoCount;
     public int totalAmmo;
@@ -88,21 +89,26 @@ public class Weapon : MonoBehaviour
 
     public virtual void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)
     {
-        if (weaponSway == null)
+        if (weaponSway == null || currentState == WeaponState.SHOW || currentState == WeaponState.HIDE)
             return;
+
+        weaponSway.UpdateWeaponSway(horizontal, vertical, mouseX, mouseY, isGrounded);
 
         if (isADS)
         {
             transform.localPosition = Vector3.Lerp(transform.localPosition, ADSPos, Time.deltaTime * 20f);
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, ADSRotation, Time.deltaTime * 20f);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, weaponSway.swayPos + weaponSway.bobPosition, Time.deltaTime * weaponSway.smooth);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(weaponSway.swayEulerRot) * Quaternion.Euler(weaponSway.bobEulerRotation), Time.deltaTime * weaponSway.smoothRot);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, ADSRotation, Time.deltaTime * 20f);
         }
         else
         {
             transform.localPosition = Vector3.Lerp(transform.localPosition, unADSPos, Time.deltaTime * 20f);
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, unADSRotation, Time.deltaTime * 20f);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, weaponSway.swayPos + weaponSway.bobPosition, Time.deltaTime * weaponSway.smooth);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, unADSRotation, Time.deltaTime * 20f);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(weaponSway.swayEulerRot) * Quaternion.Euler(weaponSway.bobEulerRotation), Time.deltaTime * weaponSway.smoothRot);
         }
 
-        weaponSway.UpdateWeaponSway(horizontal, vertical, mouseX, mouseY, isGrounded);
         weaponAnimator.SetFloat("fireRate", fireRate);
         weaponAnimator.SetFloat("reloadRate", reloadRate);
     }
@@ -130,6 +136,12 @@ public class Weapon : MonoBehaviour
         {
             ChangeState(WeaponState.USE);
             return true;
+        }
+        else if (weaponData.weaponType == WeaponData.WeaponType.Ranged &&
+            ammoCount <= 0)
+        {
+            AudioManager.Instance.OnlyPlayAfterSoundEnds(dryFireSound);
+            return false;
         }
         else if (weaponData.weaponType == WeaponData.WeaponType.Melee)
         {
@@ -222,9 +234,15 @@ public class Weapon : MonoBehaviour
             else
                 colorType = DamagePopup.ColorType.WHITE;
 
-            float distance = Vector3.Distance(PlayerController.Instance.transform.position, hit.point);
-            if (distance <= itemStats.minDistance)
-                damage = (int)(damage * itemStats.distanceDamageModifier);
+            Collider[] cols = Physics.OverlapSphere(transform.position, itemStats.minDistance);
+            foreach (Collider col in cols)
+            {
+                if (col.Equals(hit.collider))
+                {
+                    damage = (int)(damage * itemStats.distanceDamageModifier);
+                    break;
+                }
+            }
 
             if (!enemyHits.ContainsKey(enemyStats))
                 enemyHits.Add(enemyStats, headshot);
@@ -237,7 +255,7 @@ public class Weapon : MonoBehaviour
 
         foreach (KeyValuePair<EnemyStats, bool> enemyStat in enemyHits)
         {
-            if (enemyStat.Key.health < 0)
+            if (enemyStat.Key.health <= 0)
             {
                 if (enemyStat.Value)
                     PlayerController.Instance.AddPoints(100);
@@ -341,6 +359,14 @@ public class Weapon : MonoBehaviour
             return Random.Range(-weaponData.ADSBulletSpreadAccuracy, weaponData.ADSBulletSpreadAccuracy);
     }
 
+    public void ToggleSprint(bool isSprinting)
+    {
+        if (isSprinting)
+            weaponSway.SetBobExaggeration(weaponData.sprintBob);
+        else
+            weaponSway.SetBobExaggeration(weaponData.walkBob);
+    }
+
     public float GetWeaponZoomAmount()
     {
         return weaponData.ADSZoomAmount;
@@ -439,5 +465,10 @@ public class Weapon : MonoBehaviour
     {
         ammoCount = weaponData.ammoPerMag;
         RestockWeaponEvent?.Invoke(this);
+    }
+
+    public void PlayAudio(Sound.SoundName soundName)
+    {
+        AudioManager.Instance.PlayOneShot(soundName);
     }
 }

@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Intro4
   m_EditorClassIdentifier: 
   message: The location you're at... Ah yes, a lab under Kaiser Corp. They specialized
-    in enhancing various trinkets and baubles that empowers the user.
+    in enhancing various <color=green>Trinkets & Baubles</color> that empowers the
+    user.
   waitDuration: 2
   entryDelay: 0
+  textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 1
   hideAfterMessage: 0
+  overridePreviousMessage: 0

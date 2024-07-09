@@ -6,6 +6,21 @@ public class Shotgun : Weapon
 {
     [SerializeField] private int bulletsPerShot;
 
+    public override void ChangeState(WeaponState newState)
+    {
+        base.ChangeState(newState);
+
+        switch (newState)
+        {
+            case WeaponState.USE:
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.ShotgunShoot);
+                break;
+            case WeaponState.HIDE:
+                AudioManager.Instance.Stop(Sound.SoundName.ShotgunReload);
+                break;
+        }
+    }
+
     public override void UseWeapon()
     {
         base.UseWeapon();

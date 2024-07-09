@@ -105,6 +105,7 @@ MonoBehaviour:
   explosionRadius: 3
   explosionForce: 100
   damage: 0
+  audioSource: {fileID: 0}
 --- !u!54 &-8500639469565382715
 Rigidbody:
   m_ObjectHideFlags: 0

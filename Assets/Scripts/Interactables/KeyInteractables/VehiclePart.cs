@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,9 @@ public class VehiclePart : MonoBehaviour, IInteractable
 
     [SerializeField] protected int vehiclePartCost;
     [SerializeField] protected TextMeshProUGUI cost;
+    public string vehiclePartName;
+
+    public event Action OnInteractEvent;
 
     public void InitInteractable()
     {
@@ -37,7 +41,10 @@ public class VehiclePart : MonoBehaviour, IInteractable
     public virtual void OnInteract()
     {
         if (PlayerController.Instance.GetPoints() < vehiclePartCost)
+        {
+            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
             return;
+        }
 
         switch (vehiclePartType)
         {
@@ -55,9 +62,13 @@ public class VehiclePart : MonoBehaviour, IInteractable
                 break;
         }
 
+        OnInteractEvent?.Invoke();
         cost.gameObject.SetActive(false);
         PlayerController.Instance.DeductPoints(vehiclePartCost);
         PlayerController.Instance.AddVehiclePart(this);
+
+        CompanionManager.Instance.ShowVehiclePartPickupMessage(this);
+
         Destroy(gameObject);
     }
 

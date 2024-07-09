@@ -4,6 +4,25 @@ using UnityEngine;
 
 public class AK47 : Weapon
 {
+    public override void ChangeState(WeaponState newState)
+    {
+        base.ChangeState(newState);
+        switch (newState)
+        {
+            case WeaponState.USE:
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.AKShoot);
+                break;
+            case WeaponState.HIDE:
+                AudioManager.Instance.Stop(Sound.SoundName.AKReload);
+                break;
+            case WeaponState.RELOAD:
+                Sound s = AudioManager.Instance.FindSound(Sound.SoundName.AKReload);
+                AudioManager.Instance.SetPitch(Sound.SoundName.AKReload, s.pitch * itemStats.relaodRateModifier);
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.AKReload);
+                break;
+        }
+    }
+
     public override void UseWeapon()
     {
         base.UseWeapon();

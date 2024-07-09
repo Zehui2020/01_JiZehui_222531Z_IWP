@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Flamethrower
   m_EditorClassIdentifier: 
   weaponIcon: {fileID: 21300000, guid: 3b90b5bcab1e802459de39822b88fe68, type: 3}
+  weaponCrosshair: {fileID: 21300000, guid: 056b83c0b0057a844a28616ff79f494a, type: 3}
   weapon: 5
   weaponType: 1
   fireType: 1
@@ -30,6 +31,8 @@ MonoBehaviour:
   ADSSway: 0
   ADSCamShake: 0
   unADSCamShake: 0
+  ADSCamShakeFrequency: 0
+  unADSCamShakeFrequency: 0
   ADSCamShakeDuration: 0
   unADSCamShakeDuration: 0
   ADSZoomAmount: 50
@@ -37,3 +40,5 @@ MonoBehaviour:
   shellEjectForce: 0
   shellEjectUpwardForce: 0
   shellEjectTorque: 0
+  walkBob: 4
+  sprintBob: 8

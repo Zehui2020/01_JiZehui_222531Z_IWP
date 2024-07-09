@@ -4,10 +4,29 @@ using UnityEngine;
 
 public class Pistol : Weapon
 {
+    public override void ChangeState(WeaponState newState)
+    {
+        base.ChangeState(newState);
+
+        switch (newState)
+        {
+            case WeaponState.USE:
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.PistolShoot);
+                break;
+            case WeaponState.RELOAD:
+                Sound s = AudioManager.Instance.FindSound(Sound.SoundName.PistolReload);
+                AudioManager.Instance.SetPitch(Sound.SoundName.PistolReload, s.pitch * itemStats.relaodRateModifier);
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.PistolReload);
+                break;
+            case WeaponState.HIDE:
+                AudioManager.Instance.Stop(Sound.SoundName.PistolReload);
+                break;
+        }
+    }
+
     public override void UseWeapon()
     {
         base.UseWeapon();
-
         EjectShell("PistolShell");
         muzzleFlash.PlayPS();
         DoRaycast(0.07f, 1);

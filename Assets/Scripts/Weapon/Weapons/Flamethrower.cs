@@ -10,6 +10,33 @@ public class Flamethrower : Weapon
     [SerializeField] private float baseBurnDuration;
     [SerializeField] private float baseBurnInterval;
 
+    public override void ChangeState(WeaponState newState)
+    {
+        base.ChangeState(newState);
+
+        switch (newState)
+        {
+            case WeaponState.USE:
+                AudioManager.Instance.StopFadeRoutine(Sound.SoundName.FlamethrowerShoot);
+                AudioManager.Instance.Play(Sound.SoundName.FlamethrowerShoot);
+                break;
+            case WeaponState.RELOAD:
+                Sound s = AudioManager.Instance.FindSound(Sound.SoundName.FlamethrowerReload);
+                AudioManager.Instance.SetPitch(Sound.SoundName.FlamethrowerReload, s.pitch * itemStats.relaodRateModifier);
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.FlamethrowerReload);
+                break;
+            case WeaponState.HIDE:
+                AudioManager.Instance.Stop(Sound.SoundName.FlamethrowerReload);
+                break;
+        }
+
+        if (newState != WeaponState.USE)
+        {
+            muzzleFlash.StopLoopingPS();
+            AudioManager.Instance.FadeSound(false, Sound.SoundName.FlamethrowerShoot, 1, 0);
+        }
+    }
+
     public override void UseWeapon()
     {
         base.UseWeapon();
@@ -43,14 +70,9 @@ public class Flamethrower : Weapon
         base.UpdateWeapon(horizontal, vertical, mouseX, mouseY, isGrounded);
 
         if (ammoCount <= 0 || Input.GetMouseButtonUp(0))
+        {
             weaponAnimator.SetTrigger("stopUse");
-    }
-
-    public override void ChangeState(WeaponState newState)
-    {
-        base.ChangeState(newState);
-        if (newState != WeaponState.USE)
-            muzzleFlash.StopLoopingPS();
+        }
     }
 
     public override void ReloadWeapon()

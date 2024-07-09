@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GrenadeLauncher
   m_EditorClassIdentifier: 
   weaponIcon: {fileID: 21300000, guid: c8d6685ee5f4d1c409c608e3331c2ba2, type: 3}
+  weaponCrosshair: {fileID: 21300000, guid: 6691803c7c13a4443919a1fc5429a904, type: 3}
   weapon: 7
   weaponType: 1
   fireType: 0
@@ -30,6 +31,8 @@ MonoBehaviour:
   ADSSway: 0
   ADSCamShake: 2
   unADSCamShake: 5
+  ADSCamShakeFrequency: 0
+  unADSCamShakeFrequency: 0
   ADSCamShakeDuration: 0.2
   unADSCamShakeDuration: 0.3
   ADSZoomAmount: 50
@@ -37,3 +40,5 @@ MonoBehaviour:
   shellEjectForce: 40
   shellEjectUpwardForce: 0
   shellEjectTorque: 0
+  walkBob: 4
+  sprintBob: 8
