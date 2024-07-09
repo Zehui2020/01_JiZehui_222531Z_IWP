@@ -11,6 +11,11 @@ public class PackAPunch : MonoBehaviour, IInteractable
 
     public event Action OnInteractEvent;
 
+    private void Start()
+    {
+        InitInteractable();
+    }
+
     public void InitInteractable()
     {
         cost.text = packAPunchCost.ToString() + "P";

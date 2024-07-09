@@ -26,7 +26,8 @@ public class EnemySpawner : MonoBehaviour
 
     public static EnemySpawner Instance;
 
-    [SerializeField] private int healthIncrease = 0;
+    private int healthIncrease = 0;
+    [SerializeField] private int healthIncreaseAmount = 50;
     [SerializeField] private float healthModifier = 1.1f;
 
     private void Awake()
@@ -46,7 +47,7 @@ public class EnemySpawner : MonoBehaviour
         }
         else if (waveNumber > 0)
         {
-            healthIncrease += 100;
+            healthIncrease += healthIncreaseAmount;
         }
 
         StartWaveRoutine = StartCoroutine(DoStartWave(delay));

@@ -31,6 +31,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private int maxStatusEffects;
     private List<StatusEffectUI> statusEffectUIs = new List<StatusEffectUI>();
 
+    [SerializeField] private TextMeshProUGUI fpsCounter;
+    float deltaTime = 0;
+
     [SerializeField] private Image crosshair;
 
     public void InitUIController()
@@ -40,6 +43,26 @@ public class UIController : MonoBehaviour
         EnemySpawner.WaveStarted += OnWaveStart;
         EnemySpawner.WaveEnded += OnWaveEnd;
         PlayerController.OnUpdatePoints += UpdatePointCount;
+
+        StartCoroutine(UpdateFPS());
+    }
+
+    private IEnumerator UpdateFPS()
+    {
+        float fps = 0;
+
+        while (true)
+        {
+            fps = 1.0f / deltaTime;
+            fpsCounter.text = "FPS: " + Mathf.Ceil(fps).ToString();
+
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    private void Update()
+    {
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
 
     public void UpdateStaminaBar(float currentStamina, float maxStamina)

@@ -8,8 +8,16 @@ public class Door : MonoBehaviour, IInteractable
 {
     [SerializeField] private int doorCost;
     [SerializeField] private TextMeshProUGUI cost;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Collider doorCollider;
+    private bool isOpened = false;
 
     public event Action OnInteractEvent;
+
+    private void Start()
+    {
+        InitInteractable();
+    }
 
     public void InitInteractable()
     {
@@ -19,6 +27,9 @@ public class Door : MonoBehaviour, IInteractable
 
     public void OnEnterRange()
     {
+        if (isOpened)
+            return;
+
         cost.gameObject.SetActive(true);
     }
 
@@ -29,14 +40,20 @@ public class Door : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
+        if (isOpened)
+            return;
+
         if (PlayerController.Instance.GetPoints() < doorCost)
         {
             CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
             return;
         }
 
+        isOpened = true;
+        doorCollider.enabled = false;
         PlayerController.Instance.DeductPoints(doorCost);
-        gameObject.SetActive(false);
+        animator.SetTrigger("open");
+        cost.gameObject.SetActive(false);
         OnInteractEvent?.Invoke();
     }
 

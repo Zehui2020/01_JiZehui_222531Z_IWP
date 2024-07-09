@@ -11,6 +11,11 @@ public class AmmoShelf : MonoBehaviour, IInteractable
 
     public event Action OnInteractEvent;
 
+    private void Start()
+    {
+        InitInteractable();
+    }
+
     public void InitInteractable()
     {
         cost.text = shelfCost.ToString() + "P";
