@@ -22,19 +22,19 @@ MonoBehaviour:
   ammoPerMag: 20
   maxAmmo: 100
   ADSRecoilX: -8
-  ADSRecoilY: 5
-  unADSRecoilX: -15
-  unADSRecoilY: 10
+  ADSRecoilY: 2
+  unADSRecoilX: -13
+  unADSRecoilY: 5
   ADSBulletSpreadAccuracy: 0
   unADSBulletSpreadAccuracy: 0.008
   unADSSway: 10
   ADSSway: 0
-  ADSCamShake: 3
-  unADSCamShake: 5
+  ADSCamShake: 1
+  unADSCamShake: 3
   ADSCamShakeFrequency: 0
   unADSCamShakeFrequency: 0
-  ADSCamShakeDuration: 0.2
-  unADSCamShakeDuration: 0.3
+  ADSCamShakeDuration: 0.1
+  unADSCamShakeDuration: 0.2
   ADSZoomAmount: 40
   ADSZoomDuration: 2
   shellEjectForce: 1.5

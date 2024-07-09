@@ -277,7 +277,7 @@ MonoBehaviour:
   poolAmount: 10
   chestType: 1
   itemCatagory: 0
-  chestCost: 150
+  chestCost: 1000
   spotLight: {fileID: 458884749083909075}
   isStartingChest: 0
   closeAnimState: ItemChestStatic
@@ -771,6 +771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8417505544044474154}
   - component: {fileID: 1235029239073748235}
+  - component: {fileID: 9029465378944295997}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -854,6 +855,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.051653907, y: 0.32696462, z: 0.004327774}
     m_Extent: {x: 0.4044171, y: 0.33205998, z: 0.54127204}
   m_DirtyAABB: 0
+--- !u!65 &9029465378944295997
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6796213598986329486}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8088342, y: 1.0825444, z: 0.66412026}
+  m_Center: {x: 0.051653903, y: -0.0043280297, z: 1.9359527}
 --- !u!1 &7324250364089709065
 GameObject:
   m_ObjectHideFlags: 0
