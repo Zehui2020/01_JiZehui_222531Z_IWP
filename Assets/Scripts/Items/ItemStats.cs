@@ -33,6 +33,16 @@ public class ItemStats : ScriptableObject
 
     public int healingBonus;
 
+    public float jitbStunRadius;
+    public float jitbStunDuration;
+
+    public float knuckleHealthThreshold;
+    public float knuckleDamageModifier;
+
+    public float bootsDamageModifier;
+    public float bootsStackLimit;
+    public float bootsSprintDuration;
+
     public void ResetStats()
     {
         critRate = 1;
@@ -62,5 +72,15 @@ public class ItemStats : ScriptableObject
         drumReloadPercentage = 0;
 
         healingBonus = 1;
+
+        jitbStunRadius = 0;
+        jitbStunDuration = 5;
+
+        knuckleHealthThreshold = 0.9f;
+        knuckleDamageModifier = 1;
+
+        bootsDamageModifier = 0;
+        bootsStackLimit = 5;
+        bootsSprintDuration = 5;
     }
 }

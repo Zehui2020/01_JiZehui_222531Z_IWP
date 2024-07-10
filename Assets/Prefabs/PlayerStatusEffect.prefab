@@ -327,6 +327,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e6d3e40d894c13e42a9883bfec8eea0a, type: 2}
   - {fileID: 11400000, guid: cc9051d0230baf94ca5bbbe073b74ad1, type: 2}
   - {fileID: 11400000, guid: a69d689206b7f8d4389431ff961bdd45, type: 2}
+  - {fileID: 11400000, guid: ceb4a86dc2327f94f92b7320503f1b31, type: 2}
   animator: {fileID: 6173283120368925248}
   targetStatusEffect: {fileID: 0}
 --- !u!95 &6173283120368925248

@@ -105,12 +105,12 @@ public class Spitter : Enemy
         return false;
     }
 
-    public override IEnumerator OnStun()
+    public override IEnumerator OnStun(float duration)
     {
         ChangeState(SpitterState.STUN);
         aiNavigation.StopNavigation();
 
-        yield return new WaitForSeconds(itemStats.stunGrenadeDuration);
+        yield return new WaitForSeconds(duration);
 
         aiNavigation.ResumeNavigation();
         stunRoutine = null;

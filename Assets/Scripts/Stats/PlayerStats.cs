@@ -8,6 +8,7 @@ public class PlayerStats : Stats
     public int points;
     public int passiveRegenAmount;
     public float passiveRegenInterval;
+    public int powerShot;
 
     public override void TakeDamage(int damage)
     {

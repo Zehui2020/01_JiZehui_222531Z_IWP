@@ -11,7 +11,7 @@ public class Item : ScriptableObject
     public Rarity itemRarity;
 
     public enum ItemType { HDHUD, AdrenalineShot, Gasoline, CrudeKnife, RitualSickle, HoloDie, BundleOfDynamite, ColdOne, WarmOne, 
-        StunGrenade, Shungite, XKILLDrum, HealthPack };
+        StunGrenade, Shungite, XKILLDrum, HealthPack, JackInTheBox, KnuckleDuster, CorruptedBoots };
     public ItemType itemType;
 
     public enum ItemCatagory { Damage, Healing, Utility };

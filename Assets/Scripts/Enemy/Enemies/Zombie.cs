@@ -73,12 +73,12 @@ public class Zombie : Enemy
         }
     }
 
-    public override IEnumerator OnStun()
+    public override IEnumerator OnStun(float duration)
     {
         ChangeState(ZombieState.STUN);
         aiNavigation.StopNavigation();
 
-        yield return new WaitForSeconds(itemStats.stunGrenadeDuration);
+        yield return new WaitForSeconds(duration);
 
         aiNavigation.ResumeNavigation();
         stunRoutine = null;

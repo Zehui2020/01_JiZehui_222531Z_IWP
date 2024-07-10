@@ -183,7 +183,7 @@ public class Enemy : EnemyStats
         animator.SetFloat("moveSpeed", speedModifier);
     }
 
-    public virtual IEnumerator OnStun()
+    public virtual IEnumerator OnStun(float duration)
     {
         yield return null;
     }
@@ -194,7 +194,7 @@ public class Enemy : EnemyStats
             return;
 
         if (stunRoutine == null)
-            stunRoutine = StartCoroutine(OnStun());
+            stunRoutine = StartCoroutine(OnStun(duration));
 
         ApplyStatusEffect(StatusEffect.StatusEffectType.Stun, true, StatusEffect.StatusEffectCategory.Debuff, duration);
     }

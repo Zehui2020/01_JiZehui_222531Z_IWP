@@ -191,12 +191,12 @@ public class Mutant : Enemy
         roarRoutine = null;
     }
 
-    public override IEnumerator OnStun()
+    public override IEnumerator OnStun(float duration)
     {
         ChangeState(MutantState.STUN);
         aiNavigation.StopNavigation();
 
-        yield return new WaitForSeconds(itemStats.stunGrenadeDuration);
+        yield return new WaitForSeconds(duration);
 
         aiNavigation.ResumeNavigation();
         stunRoutine = null;

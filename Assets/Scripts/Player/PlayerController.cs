@@ -29,6 +29,7 @@ public class PlayerController : PlayerStats
     private Coroutine ShungiteHealingRoutine;
     private Coroutine burnRoutine;
     private Coroutine shockRoutine;
+    private Coroutine sprintRoutine;
 
     private int waveObjectiveCounter = 0;
 
@@ -154,7 +155,22 @@ public class PlayerController : PlayerStats
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (collidedInteractable != null)
+            {
                 collidedInteractable.OnInteract();
+
+                if (itemStats.jitbStunRadius == 0)
+                    return;
+
+                Collider[] colliders = Physics.OverlapSphere(transform.position, itemStats.jitbStunRadius);
+                AudioManager.Instance.PlayOneShot(Sound.SoundName.StunGrenade);
+                foreach (Collider col in colliders)
+                {
+                    if (!Utility.Instance.GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy))
+                        continue;
+
+                    enemy.StunEnemy(itemStats.jitbStunDuration);
+                }
+            }
         }
 
         if (weaponController.GetFireType() == WeaponData.FireType.SemiAuto)
@@ -215,10 +231,20 @@ public class PlayerController : PlayerStats
             AudioManager.Instance.Stop(Sound.SoundName.Walk);
         }
 
-        if (itemStats.shungiteHealing == 0)
-            return;
+        // Check for corrupted boots stacking
+        if (sprintRoutine == null && 
+            movementController.isSprinting && 
+            movementController.isMoving &&
+            itemStats.bootsDamageModifier > 0)
+            sprintRoutine = StartCoroutine(DoSprintRoutine());
+        else if (sprintRoutine != null && !movementController.isSprinting)
+        {
+            StopCoroutine(sprintRoutine);
+            sprintRoutine = null;
+        }
 
-        if (OnMoveRoutine == null && !movementController.isMoving)
+        // Check for shungite
+        if (OnMoveRoutine == null && !movementController.isMoving && itemStats.shungiteHealing > 0)
             OnMoveRoutine = StartCoroutine(OnStopMoving());
 
         if (movementController.isMoving)
@@ -321,6 +347,32 @@ public class PlayerController : PlayerStats
         yield return new WaitForSeconds(itemStats.stunGrenadeCooldown);
 
         stunEnemyRoutine = null;
+    }
+
+    private IEnumerator DoSprintRoutine()
+    {
+        float timer = 0;
+
+        while (true)
+        {
+            Debug.Log("CALLED");
+            timer += Time.deltaTime;
+            Debug.Log(timer);
+
+            if (timer >= itemStats.bootsSprintDuration)
+            {
+
+                timer = 0;
+
+                if (powerShot >= itemStats.bootsStackLimit)
+                    continue;
+
+                powerShot++;
+                ApplyStatusEffect(StatusEffect.StatusEffectType.PowerShot, true, StatusEffect.StatusEffectCategory.Buff, powerShot);
+            }
+
+            yield return null;
+        }
     }
 
     public void SetCanADS(bool ads)

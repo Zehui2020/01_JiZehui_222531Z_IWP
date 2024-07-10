@@ -55,9 +55,11 @@ public class StatusEffectUI : MonoBehaviour
                 border.sprite = vehiclePartBorder;
                 break;
         }
-            
-        if (haveTimer)
+
+        if (haveTimer && !targetStatusEffect.hasStacks)
             TimerRoutine = StartCoroutine(StartTimer(duration));
+        else if (targetStatusEffect.hasStacks)
+            timer.text = duration.ToString();
         else
             timer.text = "-";
     }
@@ -66,6 +68,12 @@ public class StatusEffectUI : MonoBehaviour
     {
         if (!gameObject)
             return;
+
+        if (targetStatusEffect.hasStacks)
+        {
+            timer.text = duration.ToString();
+            return;
+        }
 
         if (TimerRoutine != null)
             StopCoroutine(TimerRoutine);
