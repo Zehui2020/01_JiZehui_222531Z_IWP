@@ -78,6 +78,12 @@ public class Sound
 
     public IEnumerator FadeSoundRoutine(bool fadeIn, float duration, float targetVolume)
     {
+        if (source == null)
+        {
+            fadeRoutine = null;
+            yield break;
+        }
+
         float time = 0f;
         float startVolume = source.volume;
 

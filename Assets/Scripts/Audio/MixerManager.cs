@@ -11,7 +11,7 @@ public class MixerManager : MonoBehaviour
     [SerializeField] private Slider sfxSlider;
 
     // Player prefs
-    [SerializeField] private PlayerPrefs playerPrefs;
+    [SerializeField] private PlayerSettings playerSettings;
 
     private void Start()
     {
@@ -21,28 +21,28 @@ public class MixerManager : MonoBehaviour
     public void SetMasterVolume()
     {
         SetVolume("Master", Mathf.Log10(masterSlider.value) * 20);
-        playerPrefs.masterVolume = masterSlider.value;
+        playerSettings.masterVolume = masterSlider.value;
     }
 
     public void SetBGMVolume()
     {
         SetVolume("BGM", Mathf.Log10(bgmSlider.value) * 20 + 5);
-        playerPrefs.bgmVolume = bgmSlider.value;
+        playerSettings.bgmVolume = bgmSlider.value;
     }
 
     public void SetSFXVolume()
     {
         SetVolume("SFX", Mathf.Log10(sfxSlider.value) * 20);
-        playerPrefs.sfxVolume = sfxSlider.value;
+        playerSettings.sfxVolume = sfxSlider.value;
     }
 
     public void ResetVolume()
     {
-        playerPrefs.ResetVolume();
+        playerSettings.ResetVolume();
 
-        masterSlider.value = playerPrefs.masterVolume;
-        bgmSlider.value = playerPrefs.bgmVolume;
-        sfxSlider.value = playerPrefs.sfxVolume;
+        masterSlider.value = playerSettings.masterVolume;
+        bgmSlider.value = playerSettings.bgmVolume;
+        sfxSlider.value = playerSettings.sfxVolume;
 
         SetMasterVolume();
         SetBGMVolume();
@@ -51,9 +51,9 @@ public class MixerManager : MonoBehaviour
 
     public void SetSliders()
     {
-        masterSlider.value = playerPrefs.masterVolume;
-        bgmSlider.value = playerPrefs.bgmVolume;
-        sfxSlider.value = playerPrefs.sfxVolume;
+        masterSlider.value = playerSettings.masterVolume;
+        bgmSlider.value = playerSettings.bgmVolume;
+        sfxSlider.value = playerSettings.sfxVolume;
     }
 
     private void SetVolume(string name, float volume)
