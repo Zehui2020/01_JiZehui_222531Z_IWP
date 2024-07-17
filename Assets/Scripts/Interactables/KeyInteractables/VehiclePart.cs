@@ -16,36 +16,25 @@ public class VehiclePart : MonoBehaviour, IInteractable
     }
     public VehiclePartType vehiclePartType;
 
-    [SerializeField] protected int vehiclePartCost;
-    [SerializeField] protected TextMeshProUGUI cost;
     public string vehiclePartName;
 
     public event Action OnInteractEvent;
 
     public void InitInteractable()
     {
-        cost.text = vehiclePartCost.ToString() + "P";
-        cost.gameObject.SetActive(false);
+        OnInteractEvent += PlayerController.Instance.OnInteractStun;
     }
 
     public virtual void OnEnterRange()
     {
-        cost.gameObject.SetActive(true);
     }
 
     public virtual void OnExitRange()
     {
-        cost.gameObject.SetActive(false);
     }
 
     public virtual void OnInteract()
     {
-        if (PlayerController.Instance.GetPoints() < vehiclePartCost)
-        {
-            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
-            return;
-        }
-
         switch (vehiclePartType)
         {
             case VehiclePartType.Floodlights:
@@ -63,8 +52,6 @@ public class VehiclePart : MonoBehaviour, IInteractable
         }
 
         OnInteractEvent?.Invoke();
-        cost.gameObject.SetActive(false);
-        PlayerController.Instance.DeductPoints(vehiclePartCost);
         PlayerController.Instance.AddVehiclePart(this);
 
         CompanionManager.Instance.ShowVehiclePartPickupMessage(this);
@@ -74,7 +61,5 @@ public class VehiclePart : MonoBehaviour, IInteractable
 
     public void SetCost(int newCost)
     {
-        vehiclePartCost = newCost;
-        cost.text = vehiclePartCost.ToString() + "P";
     }
 }

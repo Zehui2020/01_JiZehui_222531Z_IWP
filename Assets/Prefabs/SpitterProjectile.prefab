@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1113950533320956285}
   - component: {fileID: 3205204539159035827}
   - component: {fileID: 5061309711885824982}
-  - component: {fileID: 3439638246357997266}
   - component: {fileID: 493714048652695424}
   - component: {fileID: 1698671822990252770}
   m_Layer: 0
@@ -65,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 22973feca64c12945bb1008c69d9ce1f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,27 +102,6 @@ SphereCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &3439638246357997266
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417448994158777966}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 192
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -170,5 +148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: SpitterProjectile
   poolAmount: 10
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
   damage: 5
   lifetime: 10

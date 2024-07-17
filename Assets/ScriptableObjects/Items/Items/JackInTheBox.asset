@@ -21,5 +21,6 @@ MonoBehaviour:
   description: Activating an interactable stuns all enemies within 5m(+2m/stack)
     for 5s.
   itemStack: 0
+  alertDuration: 5
   baseStunRadius: 5
   stackStunRadius: 2

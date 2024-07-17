@@ -6,11 +6,16 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
+    [SerializeField] private GameObject canvas;
+    [SerializeField] private GameObject deathCanvas;
+
     [SerializeField] private Slider staminaBar;
     [SerializeField] private Slider healthBar;
     [SerializeField] private TextMeshProUGUI healthText;
 
-    [SerializeField] private GameObject crossHair;
+    [SerializeField] private float unADSCrosshairWidth;
+    [SerializeField] private float ADSCrosshairWidth;
+
     [SerializeField] private ItemPickupAlert itemPickupAlert;
 
     [SerializeField] private ItemUI itemUIPrefab;
@@ -34,7 +39,10 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI fpsCounter;
     float deltaTime = 0;
 
+    [SerializeField] private RectTransform crosshairRect;
     [SerializeField] private Image crosshair;
+
+    private Coroutine crosshairLerpRoutine;
 
     public void InitUIController()
     {
@@ -43,6 +51,7 @@ public class UIController : MonoBehaviour
         EnemySpawner.WaveStarted += OnWaveStart;
         EnemySpawner.WaveEnded += OnWaveEnd;
         PlayerController.OnUpdatePoints += UpdatePointCount;
+        crosshairRect.sizeDelta = new Vector2(unADSCrosshairWidth, unADSCrosshairWidth);
 
         StartCoroutine(UpdateFPS());
     }
@@ -101,9 +110,32 @@ public class UIController : MonoBehaviour
         itemUIs.Add(newItemUI);
     }
 
-    public void OnADS(bool isADS)
+    public void OnADS(bool isADS, float duration)
     {
-        crossHair.SetActive(!isADS);
+        if (crosshairLerpRoutine != null)
+            StopCoroutine(crosshairLerpRoutine);
+
+        if (isADS)
+            crosshairLerpRoutine = StartCoroutine(LerpCrosshairSize(ADSCrosshairWidth, duration));
+        else
+            crosshairLerpRoutine = StartCoroutine(LerpCrosshairSize(unADSCrosshairWidth, duration));
+    }
+
+    private IEnumerator LerpCrosshairSize(float targetWidth, float duration)
+    {
+        float elapsedTime = 0f;
+        float initialWidth = crosshairRect.sizeDelta.x;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float lerpFactor = Mathf.Clamp01(elapsedTime / duration);
+            float newWidth = Mathf.Lerp(initialWidth, targetWidth, lerpFactor);
+            crosshairRect.sizeDelta = new Vector2(newWidth, newWidth);
+            yield return null;
+        }
+
+        crosshairRect.sizeDelta = new Vector2(targetWidth, targetWidth);
     }
 
     public void OnWaveStart(int waveNumber)
@@ -139,6 +171,11 @@ public class UIController : MonoBehaviour
 
         if (secondaryWeapon != null)
             secondaryWeaponUI.SetWeaponUI(secondaryWeapon);
+    }
+
+    public void UpdateWeaponLevel(Weapon weapon)
+    {
+        mainWeaponUI.SetWeaponUI(weapon);
     }
 
     public void UpdateAmmoCount(Weapon weapon)
@@ -195,5 +232,11 @@ public class UIController : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void Die()
+    {
+        canvas.gameObject.SetActive(false);
+        deathCanvas.gameObject.SetActive(true);
     }
 }

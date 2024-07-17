@@ -16,7 +16,7 @@ public class ItemStats : ScriptableObject
     public int critHealAmount;
     public int blockChance;
 
-    public int dynamiteExplodeDamage;
+    public float dynamiteExplodeDamage;
     public float dynamiteExplodeRadius;
     public float dynamiteBurnDamageModifier;
 
@@ -43,6 +43,8 @@ public class ItemStats : ScriptableObject
     public float bootsStackLimit;
     public float bootsSprintDuration;
 
+    public float magSizeModifier;
+
     public void ResetStats()
     {
         critRate = 1;
@@ -50,7 +52,7 @@ public class ItemStats : ScriptableObject
         sprintSpeedModifier = 1;
         burnDamageModifier = 1;
 
-        distanceDamageModifier = 1;
+        distanceDamageModifier = 0;
         minDistance = 2;
 
         critHealAmount = 0;
@@ -77,10 +79,12 @@ public class ItemStats : ScriptableObject
         jitbStunDuration = 5;
 
         knuckleHealthThreshold = 0.9f;
-        knuckleDamageModifier = 1;
+        knuckleDamageModifier = 0;
 
         bootsDamageModifier = 0;
         bootsStackLimit = 5;
-        bootsSprintDuration = 5;
+        bootsSprintDuration = 2;
+
+        magSizeModifier = 1;
     }
 }

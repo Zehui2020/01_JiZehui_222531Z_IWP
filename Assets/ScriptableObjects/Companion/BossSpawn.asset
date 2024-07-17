@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: BossSpawn
   m_EditorClassIdentifier: 
   message: I'm detecting a strange signal on my radar... that thing's <color=red>HUGE</color>.
-    Be careful out there kiddo!
+    Be careful out there!
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 0
   hideAfterMessage: 1
+  overridePreviousMessage: 0

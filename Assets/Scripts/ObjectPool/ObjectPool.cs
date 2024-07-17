@@ -13,7 +13,7 @@ namespace DesignPatterns.ObjectPool
         // store the pooled objects in list
         private List<PooledObject> pooledObjects;
 
-        private void Awake()
+        private void Start()
         {
             Instance = this;
             SetupPool();

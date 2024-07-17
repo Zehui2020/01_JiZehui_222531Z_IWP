@@ -9,6 +9,7 @@ public class MenuPlayer : MonoBehaviour
     private void Start()
     {
         StartCoroutine(IdleRoutine());
+        LevelManager.Instance.FadeIn();
     }
 
     private IEnumerator IdleRoutine()

@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: LMGMessage
   m_EditorClassIdentifier: 
   message: The LMG! High fire rate and a large magazine size! Mow down the zombies
-    with this bad boy kiddo!
+    with this bad boy!
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 0
   hideAfterMessage: 1
+  overridePreviousMessage: 0
   weaponType: 3

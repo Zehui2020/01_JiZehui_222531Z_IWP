@@ -11,6 +11,10 @@ public class AudioManager : MonoBehaviour
 
     public Sound[] sounds;
 
+    public Sound[] zombieGrowl;
+    public Sound[] zombieAttack;
+    public Sound[] zombieDie;
+
     private static AudioManager _instance;
 
     public static AudioManager Instance
@@ -42,6 +46,15 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
+        InitSoundList(sounds);
+
+        InitSoundList(zombieGrowl);
+        InitSoundList(zombieAttack);
+        InitSoundList(zombieDie);
+    }
+
+    private void InitSoundList(Sound[] sounds)
+    {
         foreach (Sound s in sounds)
         {
             if (!s.createSource)
@@ -160,6 +173,9 @@ public class AudioManager : MonoBehaviour
 
     private void ResetVolumeOfSound(Sound sound)
     {
+        if (sound.source == null)
+            return;
+
         FindSound(sound.name).source.volume = sound.volume;
     }
 

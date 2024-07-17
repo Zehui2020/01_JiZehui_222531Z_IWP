@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e213d41210819c84eb5bc0159ae1f427, type: 3}
   m_Name: GasTankFound
   m_EditorClassIdentifier: 
-  message: I've located a spare <color=yellow>Gas Tank</color>! The fuel is <color=red>extrmely
+  message: I've located a spare <color=yellow>Gas Tank</color>! The fuel is <color=red>extremely
     pyrophobic</color>. Be mindful <color=red>not to get hit</color> while carrying
     it, or you'll <color=red>suffer burns</color> all over your body.
   waitDuration: 2

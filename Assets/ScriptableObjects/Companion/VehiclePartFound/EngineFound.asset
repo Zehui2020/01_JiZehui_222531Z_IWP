@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EngineFound
   m_EditorClassIdentifier: 
   message: Finally! I found the <color=yellow>Engine</color>! That thing's in <color=red>shambles</color>!
-    You're going to have to <color=red>asssemble it yourself</color>. Good luck kiddo!
+    You're going to have to <color=red>asssemble it yourself</color>. Good luck!
     This is the last one!
   waitDuration: 2
   entryDelay: 0

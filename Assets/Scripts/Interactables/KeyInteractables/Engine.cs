@@ -16,26 +16,12 @@ public class Engine : VehiclePart
 
     public override void OnInteract()
     {
-        if (fixRoutine != null)
-        {
-            cost.gameObject.SetActive(false);
-            return;
-        }
-
-        if (PlayerController.Instance.GetPoints() < vehiclePartCost)
-        {
-            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
-            return;
-        }
-
         engineObjective = new Objective(Objective.ObjectiveType.Progress, "Assemble the Engine");
         ObjectiveManager.Instance.AddObjective(engineObjective);
         engineObjective.OnObjectiveComplete += () => { CompanionManager.Instance.ShowVehiclePartPickupMessage(this); };
 
         animator.SetTrigger("fix");
         fixRoutine = StartCoroutine(CheckRadiusRoutine());
-        cost.gameObject.SetActive(false);
-        PlayerController.Instance.DeductPoints(vehiclePartCost);
     }
 
     private IEnumerator CheckRadiusRoutine()

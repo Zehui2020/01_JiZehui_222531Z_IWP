@@ -49,6 +49,7 @@ public class Spitter : Enemy
                 break;
 
             case SpitterState.DIE:
+                PlayRandomDieSound();
                 aiNavigation.StopNavigation();
                 animator.enabled = false;
                 break;
@@ -70,6 +71,7 @@ public class Spitter : Enemy
         switch (currentState)
         {
             case SpitterState.CHASE:
+                PlayRandomGrowlSound(2, 5);
                 CheckSpit();
                 break;
             case SpitterState.SPIT:
@@ -119,7 +121,7 @@ public class Spitter : Enemy
 
     public void SpitProjectile()
     {
-        Vector3 shootDir = (projectileSpawnPos.position - player.transform.position).normalized;
+        Vector3 shootDir = (projectileSpawnPos.position - PlayerController.Instance.raycastHitPos.position).normalized;
 
         SpitterProjectile projectile = ObjectPool.Instance.GetPooledObject("SpitterProjectile", true).GetComponent<SpitterProjectile>();
         projectile.SetupProjectile(projectileSpawnPos.position, -shootDir, projectileEjectForce, enemyData.damage);

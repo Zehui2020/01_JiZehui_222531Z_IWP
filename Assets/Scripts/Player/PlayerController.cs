@@ -10,10 +10,14 @@ public class PlayerController : PlayerStats
     private UIController uiController;
     private CameraController cameraController;
     private ItemManager itemManager;
+    private DeathController deathController;
+    private PostEffectController postEffectController;
     [SerializeField] private KnifeController knifeController;
 
     [SerializeField] private LayerMask enemyLayer;
     private Enemy enemyToLookAt;
+
+    public Transform raycastHitPos;
 
     [SerializeField] private MovementData movementData;
     private Rigidbody playerRB;
@@ -30,6 +34,8 @@ public class PlayerController : PlayerStats
     private Coroutine burnRoutine;
     private Coroutine shockRoutine;
     private Coroutine sprintRoutine;
+    private Coroutine dieRoutine;
+    private Coroutine passiveHealingRoutine;
 
     private int waveObjectiveCounter = 0;
 
@@ -48,6 +54,8 @@ public class PlayerController : PlayerStats
         uiController = GetComponent<UIController>();
         cameraController = GetComponent<CameraController>();
         itemManager = GetComponent<ItemManager>();
+        deathController = GetComponent<DeathController>();
+        postEffectController = GetComponent<PostEffectController>();
         playerRB = GetComponent<Rigidbody>();
 
         // Initialize components
@@ -57,11 +65,12 @@ public class PlayerController : PlayerStats
         knifeController.InitKnifeController();
         uiController.InitUIController();
         itemManager.InitItemManager();
+        deathController.InitDeathController();
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
         itemStats.ResetStats();
-        StartCoroutine(PassiveHealing());
+        passiveHealingRoutine = StartCoroutine(PassiveHealing());
     }
 
     private void Start()
@@ -74,6 +83,8 @@ public class PlayerController : PlayerStats
             EnemySpawner.Instance.StartWave(2f);
             SetWaveObjectiveToSpawnVehiclePart(3);
         };
+
+        LevelManager.Instance.FadeIn();
     }
 
     public void SetWaveObjectiveToSpawnVehiclePart(int waveNumber)
@@ -93,11 +104,19 @@ public class PlayerController : PlayerStats
     {
         base.TakeDamage(damage);
 
+        if (health <= maxHealth * 0.2f)
+            postEffectController.Pulse(20, 2f, false);
+        else
+            postEffectController.Pulse(0.5f, 2f, true);
+
         if (health <= maxHealth * 0.1f)
             CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.lowHealthMessages);
 
         if (vehicleParts.Contains(VehiclePart.VehiclePartType.Gas_Tank) && damage > 3)
-            BurnPlayer(5f, 1f, 3);
+            BurnPlayer(5f, 1f, 2);
+
+        StopCoroutine(passiveHealingRoutine);
+        passiveHealingRoutine = StartCoroutine(PassiveHealing());
     }
 
     // Update is called once per frame
@@ -108,6 +127,17 @@ public class PlayerController : PlayerStats
 
         if (Input.GetKeyDown(KeyCode.Return))
             ConsoleManager.Instance.OnInputCommand();
+
+        if (health <= 0)
+        {
+            if (dieRoutine == null)
+            {
+                StopAllCoroutines();
+                dieRoutine = StartCoroutine(DieRoutine());
+            }
+
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Backslash))
             CompanionManager.Instance.SkipMessage();
@@ -126,9 +156,6 @@ public class PlayerController : PlayerStats
 
         if (Input.GetKeyUp(KeyCode.Space))
             movementController.HandleJump();
-
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-            movementController.ToggleCrouch();
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
             movementController.ToggleSprint();
@@ -155,22 +182,7 @@ public class PlayerController : PlayerStats
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (collidedInteractable != null)
-            {
                 collidedInteractable.OnInteract();
-
-                if (itemStats.jitbStunRadius == 0)
-                    return;
-
-                Collider[] colliders = Physics.OverlapSphere(transform.position, itemStats.jitbStunRadius);
-                AudioManager.Instance.PlayOneShot(Sound.SoundName.StunGrenade);
-                foreach (Collider col in colliders)
-                {
-                    if (!Utility.Instance.GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy))
-                        continue;
-
-                    enemy.StunEnemy(itemStats.jitbStunDuration);
-                }
-            }
         }
 
         if (weaponController.GetFireType() == WeaponData.FireType.SemiAuto)
@@ -279,6 +291,18 @@ public class PlayerController : PlayerStats
         movementController.MovePlayer();
     }
 
+    private IEnumerator DieRoutine()
+    {
+        uiController.Die();
+        weaponController.HideCurrentWeapon();
+        cameraController.Die();
+        deathController.Die();
+
+        yield return new WaitForSeconds(3f);
+
+        LevelManager.Instance.LoadScene("MainMenu");
+    }
+
     private void CheckEnemyToLookAt()
     {
         RaycastHit[] hits;
@@ -307,7 +331,7 @@ public class PlayerController : PlayerStats
 
         isADS = ADS;
         weaponController.ADSWeapon(isADS);
-        uiController.OnADS(isADS);
+        uiController.OnADS(isADS, 0.2f);
 
         if (isADS)
         {
@@ -355,9 +379,7 @@ public class PlayerController : PlayerStats
 
         while (true)
         {
-            Debug.Log("CALLED");
             timer += Time.deltaTime;
-            Debug.Log(timer);
 
             if (timer >= itemStats.bootsSprintDuration)
             {
@@ -384,6 +406,11 @@ public class PlayerController : PlayerStats
     {
         if (weaponController.UseWeapon())
             ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeFrequency(), weaponController.GetWeaponCamShakeDuration());
+        else if (weaponController.GetCurrentWeapon().ammoCount <= 0)
+        {
+            if (weaponController.ReloadWeapon())
+                OnReload();
+        }
     }
 
     public void ApplyRecoil(float recoilX, float recoilY)
@@ -467,6 +494,7 @@ public class PlayerController : PlayerStats
     public void UpgradeCurrentWeapon()
     {
         weaponController.UpgradeWeapon();
+        uiController.UpdateWeaponLevel(weaponController.GetCurrentWeapon());
     }
 
     public bool RestockCurrentWeapon()
@@ -477,6 +505,11 @@ public class PlayerController : PlayerStats
     public void RefillAmmoClip()
     {
         weaponController.RefillAmmoClip();
+    }
+
+    public Weapon GetCurrentWeapon()
+    {
+        return weaponController.GetCurrentWeapon();
     }
 
     public void ShakeCamera(float intensity, float frequency, float duration)
@@ -503,6 +536,8 @@ public class PlayerController : PlayerStats
 
     private IEnumerator PassiveHealing()
     {
+        yield return new WaitForSeconds(5f);
+
         while (true)
         {
             if (health < maxHealth)
@@ -598,5 +633,21 @@ public class PlayerController : PlayerStats
         crudeKnifeRadius.SetActive(true);
         float radius = itemStats.minDistance * 2;
         crudeKnifeRadius.transform.localScale = new Vector3(radius, radius, radius);
+    }
+
+    public void OnInteractStun()
+    {
+        if (itemStats.jitbStunRadius == 0)
+            return;
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, itemStats.jitbStunRadius);
+        AudioManager.Instance.PlayOneShot(Sound.SoundName.StunGrenade);
+        foreach (Collider col in colliders)
+        {
+            if (!Utility.Instance.GetTopmostParent(col.transform).TryGetComponent<Enemy>(out Enemy enemy))
+                continue;
+
+            enemy.StunEnemy(itemStats.jitbStunDuration);
+        }
     }
 }

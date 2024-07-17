@@ -20,5 +20,6 @@ MonoBehaviour:
   title: Knuckle Duster
   description: Enemies above 90% health take 75% more damage.
   itemStack: 0
+  alertDuration: 5
   baseDamageModifier: 0.75
   stackDamageModifier: 0.75

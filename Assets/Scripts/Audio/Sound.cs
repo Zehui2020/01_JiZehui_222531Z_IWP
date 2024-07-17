@@ -54,7 +54,16 @@ public class Sound
         DynamiteExplode,
         Block,
         Heal,
-        XKillDrum
+        XKillDrum,
+        DoorOpen,
+        PackAPunchLoop,
+        PackAPunchInteract,
+        InteractFail,
+        HeavyFootstep,
+        Roar,
+        Thud,
+        Swing,
+        SoftFootstep
     }
     public SoundName name;
 

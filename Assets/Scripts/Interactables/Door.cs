@@ -10,6 +10,7 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private TextMeshProUGUI cost;
     [SerializeField] private Animator animator;
     [SerializeField] private Collider doorCollider;
+    [SerializeField] private AudioSource audioSource;
     private bool isOpened = false;
 
     public event Action OnInteractEvent;
@@ -23,6 +24,7 @@ public class Door : MonoBehaviour, IInteractable
     {
         cost.text = doorCost.ToString() + "P";
         cost.gameObject.SetActive(false);
+        OnInteractEvent += PlayerController.Instance.OnInteractStun;
     }
 
     public void OnEnterRange()
@@ -45,6 +47,7 @@ public class Door : MonoBehaviour, IInteractable
 
         if (PlayerController.Instance.GetPoints() < doorCost)
         {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
             CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
             return;
         }
@@ -55,6 +58,9 @@ public class Door : MonoBehaviour, IInteractable
         animator.SetTrigger("open");
         cost.gameObject.SetActive(false);
         OnInteractEvent?.Invoke();
+
+        if (audioSource != null)
+            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.DoorOpen).clip);
     }
 
     public void SetCost(int newCost)

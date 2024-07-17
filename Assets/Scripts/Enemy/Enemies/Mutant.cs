@@ -86,6 +86,7 @@ public class Mutant : Enemy
                 break;
 
             case MutantState.DIE:
+                audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.Roar).clip);
                 aiNavigation.StopNavigation();
                 animator.enabled = false;
                 break;

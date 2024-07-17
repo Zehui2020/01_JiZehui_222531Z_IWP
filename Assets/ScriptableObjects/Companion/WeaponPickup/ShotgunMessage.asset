@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: ShotgunMessage
   m_EditorClassIdentifier: 
   message: The Shotgun! High spray; High damage! Get in close to maximize the damage,
-    but don't get too close kiddo!
+    but don't get too close!
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 0
   hideAfterMessage: 1
+  overridePreviousMessage: 0
   weaponType: 1

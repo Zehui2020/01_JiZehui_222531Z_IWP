@@ -38,11 +38,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 500534435301a214aa6245f3177d824b, type: 2}
   - {fileID: 11400000, guid: 4f4c08abaf3ab0e46be479135de0cca4, type: 2}
   vehiclePartFoundMessages:
-  - {fileID: 11400000, guid: 1f2861dd835ba2b48822170c7650726f, type: 2}
-  - {fileID: 11400000, guid: 702a0f22f205cab4ead4cd99f2e74b6c, type: 2}
-  - {fileID: 11400000, guid: b3a0b13f9dab0484597bf1ae61de5833, type: 2}
   - {fileID: 11400000, guid: 9bb3715baf769164da4070f3c2d5ea87, type: 2}
+  - {fileID: 11400000, guid: b3a0b13f9dab0484597bf1ae61de5833, type: 2}
+  - {fileID: 11400000, guid: 702a0f22f205cab4ead4cd99f2e74b6c, type: 2}
   - {fileID: 11400000, guid: 092036aad50df134897168d43235074a, type: 2}
+  - {fileID: 11400000, guid: 1f2861dd835ba2b48822170c7650726f, type: 2}
   vehiclePartPickupMessages:
   - {fileID: 11400000, guid: 5ecd424eb32375742a65fc7f9bb58473, type: 2}
   - {fileID: 11400000, guid: 7628ee22ea5df5b489d49e0863d2e68d, type: 2}

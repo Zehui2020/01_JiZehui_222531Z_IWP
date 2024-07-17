@@ -277,7 +277,7 @@ MonoBehaviour:
   poolAmount: 10
   chestType: 3
   itemCatagory: 0
-  chestCost: 750
+  chestCost: 550
   spotLight: {fileID: 480611294821185908}
   isStartingChest: 0
   closeAnimState: ItemChestStatic

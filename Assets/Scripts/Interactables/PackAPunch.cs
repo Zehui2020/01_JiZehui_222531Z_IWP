@@ -6,10 +6,17 @@ using UnityEngine;
 
 public class PackAPunch : MonoBehaviour, IInteractable
 {
-    [SerializeField] private int packAPunchCost;
     [SerializeField] private TextMeshProUGUI cost;
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private int packAPunchCost;
+    private int baseCost;
+    [SerializeField] private int costIncreasePerLevel;
+
+    private bool isInRange = false;
 
     public event Action OnInteractEvent;
+    private Coroutine interactRoutine;
 
     private void Start()
     {
@@ -20,34 +27,72 @@ public class PackAPunch : MonoBehaviour, IInteractable
     {
         cost.text = packAPunchCost.ToString() + "P";
         cost.gameObject.SetActive(false);
+        OnInteractEvent += PlayerController.Instance.OnInteractStun;
+        baseCost = packAPunchCost;
+    }
+
+    private void Update()
+    {
+        if (cost.IsActive())
+        {
+            CalculateCost();
+            cost.text = packAPunchCost.ToString() + "P";
+        }
     }
 
     public void OnEnterRange()
     {
-        cost.gameObject.SetActive(true);
+        if (interactRoutine == null)
+            cost.gameObject.SetActive(true);
+
+        isInRange = true;
     }
 
     public void OnExitRange()
     {
         cost.gameObject.SetActive(false);
+        isInRange = false;
     }
 
     public void OnInteract()
     {
+        if (interactRoutine == null)
+            interactRoutine = StartCoroutine(InteractRoutine());
+    }
+
+    private IEnumerator InteractRoutine()
+    {
         if (PlayerController.Instance.GetPoints() < packAPunchCost)
         {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
             CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
-            return;
+            interactRoutine = null;
+            yield break;
         }
 
+        cost.gameObject.SetActive(false);
         PlayerController.Instance.DeductPoints(packAPunchCost);
         PlayerController.Instance.UpgradeCurrentWeapon();
+        audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.PackAPunchInteract).clip);
         OnInteractEvent?.Invoke();
+
+        yield return new WaitForSeconds(6f);
+
+        if (isInRange)
+            cost.gameObject.SetActive(true);
+
+        interactRoutine = null;
     }
 
     public void SetCost(int newCost)
     {
         packAPunchCost = newCost;
         cost.text = packAPunchCost.ToString() + "P";
+    }
+
+    private void CalculateCost()
+    {
+        Weapon currentWeapon = PlayerController.Instance.GetCurrentWeapon();
+        packAPunchCost = baseCost + (currentWeapon.level - 1) * costIncreasePerLevel;
     }
 }

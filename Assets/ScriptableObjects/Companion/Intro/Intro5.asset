@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
   m_Name: Intro5
   m_EditorClassIdentifier: 
-  message: There should be <color=green>Supply Chests</color> lying all over the
-    place. You'll need <color=green>Points</color> to open them. Try killing some
-    zombies! They'll give you the <color=green>Points</color> you need!
+  message: There's also a <color=green>special</color> machine somewhere in the facility
+    that upgrades your weapons! Find it and make use of it soldier!
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3
-  timeBtwChars: 0.05
+  timeBtwChars: 0.03
   isPartOfList: 1
   hideAfterMessage: 0
   overridePreviousMessage: 0

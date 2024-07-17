@@ -6,6 +6,7 @@ using DesignPatterns.ObjectPool;
 public class SpitterProjectile : PooledObject
 {
     private Rigidbody projectileRB;
+    [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private int damage;
     [SerializeField] private float lifetime;
 
@@ -29,11 +30,11 @@ public class SpitterProjectile : PooledObject
 
     private void OnTriggerEnter(Collider col)
     {
-        if (!col.TryGetComponent<PlayerController>(out PlayerController playerController))
-            return;
+        if (col.TryGetComponent<PlayerController>(out PlayerController playerController))
+            playerController.TakeDamage(damage);
 
-        playerController.TakeDamage(damage);
-        Release();
+        if (Utility.Instance.CheckLayer(col.gameObject, enemyLayer))
+            Release();
     }
 
     private IEnumerator DestroyRoutine()

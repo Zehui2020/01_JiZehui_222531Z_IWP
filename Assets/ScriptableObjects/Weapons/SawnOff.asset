@@ -18,9 +18,9 @@ MonoBehaviour:
   weaponType: 1
   fireType: 0
   damagePerBullet: 15
-  headshotMultiplier: 1.5
+  headshotMultiplier: 2
   ammoPerMag: 2
-  maxAmmo: 100
+  maxAmmo: 30
   ADSRecoilX: -10
   ADSRecoilY: 2
   unADSRecoilX: -20

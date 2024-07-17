@@ -13,7 +13,7 @@ public class CrudeKnife : Item
     public override void Initialize()
     {
         base.Initialize();
-        itemStats.distanceDamageModifier *= baseDistDamageMod;
+        itemStats.distanceDamageModifier += baseDistDamageMod;
         PlayerController.Instance.ShowCrudeKnifeRadius();
     }
 

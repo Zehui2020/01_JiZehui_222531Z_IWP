@@ -20,6 +20,7 @@ public class AmmoShelf : MonoBehaviour, IInteractable
     {
         cost.text = shelfCost.ToString() + "P";
         cost.gameObject.SetActive(false);
+        OnInteractEvent += PlayerController.Instance.OnInteractStun;
     }
 
     public void OnEnterRange()
@@ -36,13 +37,22 @@ public class AmmoShelf : MonoBehaviour, IInteractable
     {
         if (PlayerController.Instance.GetPoints() < shelfCost)
         {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
             CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
             return;
         }
 
-        OnInteractEvent?.Invoke();
         if (PlayerController.Instance.RestockCurrentWeapon())
+        {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.XKillDrum);
+            PlayerController.Instance.RefillAmmoClip();
             PlayerController.Instance.DeductPoints(shelfCost);
+            OnInteractEvent?.Invoke();
+        }
+        else
+        {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
+        }
     }
 
     public void SetCost(int newCost)

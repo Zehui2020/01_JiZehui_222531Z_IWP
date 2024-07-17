@@ -20,7 +20,7 @@ MonoBehaviour:
   damagePerBullet: 10
   headshotMultiplier: 1.5
   ammoPerMag: 7
-  maxAmmo: 100
+  maxAmmo: 50
   ADSRecoilX: -15
   ADSRecoilY: 2
   unADSRecoilX: -30

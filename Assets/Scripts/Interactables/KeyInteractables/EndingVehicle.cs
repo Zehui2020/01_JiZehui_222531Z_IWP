@@ -26,6 +26,7 @@ public class EndingVehicle : MonoBehaviour, IInteractable
 
     public void InitInteractable()
     {
+        OnInteractEvent += (VehiclePart.VehiclePartType vehiclePartType) => { PlayerController.Instance.OnInteractStun(); };
     }
 
     public void OnEnterRange()
@@ -67,12 +68,10 @@ public class EndingVehicle : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        // WIN GAME CHECK
         if (vehicleParts.Count >= 5)
         {
-            Debug.Log("WWIN");
+            LevelManager.Instance.LoadScene("WinScreen");
             return;
-            // WIN GAME!!!!!
         }
 
         if (PlayerController.Instance.vehicleParts.Count == 0 || FixRoutine != null)

@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
   m_Name: InteractionFail2
   m_EditorClassIdentifier: 
-  message: No can do kiddo. Try killing more zombies.
+  message: No can do. Try killing more zombies.
   waitDuration: 1
   entryDelay: 0
+  textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 0
   hideAfterMessage: 1
+  overridePreviousMessage: 0

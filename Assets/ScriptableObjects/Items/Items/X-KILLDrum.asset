@@ -21,5 +21,6 @@ MonoBehaviour:
   description: 20%(+10%/stack) chance to automatically reload weapon upon killing
     an enemy.
   itemStack: 0
+  alertDuration: 8
   baseChance: 20
   sackChance: 10

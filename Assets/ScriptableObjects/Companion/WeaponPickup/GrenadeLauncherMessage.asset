@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: GrenadeLauncherMessage
   m_EditorClassIdentifier: 
   message: The Grenade Launcher! The impact grenades that lil' puppy fires aren't
-    a joke! Stay away from the blast zone kiddo!
+    a joke! Stay away from the blast zone!
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 0
   hideAfterMessage: 1
+  overridePreviousMessage: 0
   weaponType: 7

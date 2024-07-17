@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb5b6c93252eab4c8a0f353474c4121, type: 3}
   m_Name: SawnOffMessage
   m_EditorClassIdentifier: 
-  message: The Sawn Off! A modified double pump shotgun! That thing packs a punch
-    kiddo! Great find!
+  message: The Sawn Off! A double pump shotgun! That thing packs a punch! Great find!
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3
   timeBtwChars: 0.05
+  isPartOfList: 0
   hideAfterMessage: 1
+  overridePreviousMessage: 0
   weaponType: 6

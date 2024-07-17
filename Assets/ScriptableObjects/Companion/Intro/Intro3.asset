@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
   m_Name: Intro3
   m_EditorClassIdentifier: 
-  message: See the <color=yellow>broken truck</color> near you? That's your ticket
-    out of this hell hole. I'll search for <color=yellow>spare parts</color> with
-    my UAV recon. Meanwhile, try not to die.
+  message: The location you're at... Ah yes, a lab under Kaiser Corp. They specialized
+    in enhancing various <color=green>Trinkets & Baubles</color> that empowers the
+    user.
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3
-  timeBtwChars: 0.05
+  timeBtwChars: 0.03
   isPartOfList: 1
   hideAfterMessage: 0
   overridePreviousMessage: 0

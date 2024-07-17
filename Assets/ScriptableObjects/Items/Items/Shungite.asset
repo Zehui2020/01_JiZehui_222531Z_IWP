@@ -21,5 +21,6 @@ MonoBehaviour:
   description: After standing still for 3s, start rapidly healing for 3%(+3%/stack)
     of your health every second.
   itemStack: 0
+  alertDuration: 8
   baseHeal: 0.03
   stackHeal: 0.03

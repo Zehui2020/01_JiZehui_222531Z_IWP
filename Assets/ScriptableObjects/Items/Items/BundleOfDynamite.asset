@@ -18,12 +18,13 @@ MonoBehaviour:
   itemCatagory: 0
   spriteIcon: {fileID: 21300000, guid: 3dae4fbaee2bcd142b6a2dd50c762c13, type: 3}
   title: Bundle O' Dynamite
-  description: Enemies explode for 50 damage upon death, burning all enemies within
-    3m for 20% damage.
-  itemStack: 0
-  baseExplodeDamage: 40
+  description: Enemies explode for 50%(+30%/stack) max health as damage upon death,
+    burning all enemies within 3m(+2m/stack) for 20%(+20%/stack) damage.
+  itemStack: 9
+  alertDuration: 10
+  baseExplodeDamage: 0.5
   baseBurnDamage: 0.2
   baseExplodeRadius: 3
-  stackExplodeDamage: 25
+  stackExplodeDamage: 0.3
   stackBurnDamage: 0.2
   stackExplodeRadius: 2

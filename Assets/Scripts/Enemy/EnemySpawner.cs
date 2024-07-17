@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Enemy[] enemies;
 
     [SerializeField] private float normalEnemyRatio;
@@ -17,12 +16,15 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int burstsAmount = 1;
     [SerializeField] private float burstInterval = 10;
 
+    [SerializeField] private Room currentRoom;
+
     [SerializeField] private List<Enemy> enemyList = new List<Enemy>();
 
     public static event System.Action<int> WaveStarted;
     public static event System.Action WaveEnded;
 
     private Coroutine StartWaveRoutine;
+    private Coroutine WaveCountdownRoutine;
 
     public static EnemySpawner Instance;
 
@@ -133,7 +135,7 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (Enemy.EnemyType enemyType in enemyTypes)
         {
-            Enemy enemy = GetRandomEnemyOfType(enemyType);
+            Enemy enemy = GetRandomEnemyOfType(enemyType, false);
             if (enemy != null)
             {
                 enemyList.Add(enemy);
@@ -171,8 +173,8 @@ public class EnemySpawner : MonoBehaviour
             if (enemy.gameObject.activeInHierarchy)
                 continue;
 
-            int randIndex = Random.Range(0, spawnPoints.Length);
-            enemy.SpawnEnemy(spawnPoints[randIndex].position);
+            int randIndex = Random.Range(0, currentRoom.spawnPoints.Length);
+            enemy.SpawnEnemy(currentRoom.spawnPoints[randIndex].position);
 
             if (enemy.enemyType == Enemy.EnemyType.Boss)
                 CompanionManager.Instance.ShowMessage(CompanionManager.Instance.companionMessenger.bossSpawnMessage);
@@ -181,7 +183,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private Enemy GetRandomEnemyOfType(Enemy.EnemyType enemyType)
+    private Enemy GetRandomEnemyOfType(Enemy.EnemyType enemyType, bool isActive)
     {
         List<Enemy> filteredEnemies = new List<Enemy>();
 
@@ -197,7 +199,7 @@ public class EnemySpawner : MonoBehaviour
         int randomIndex = Random.Range(0, filteredEnemies.Count);
         Enemy newEnemy = Instantiate(filteredEnemies[randomIndex]);
         newEnemy.InitEnemy();
-        newEnemy.gameObject.SetActive(false);
+        newEnemy.gameObject.SetActive(isActive);
 
         return newEnemy;
     }
@@ -218,7 +220,39 @@ public class EnemySpawner : MonoBehaviour
         enemy.EnemyDied -= OnEnemyDied;
         enemyList.Remove(enemy);
 
+        if (enemyList.Count <= 10)
+        {
+            if (WaveCountdownRoutine != null)
+                StopCoroutine(WaveCountdownRoutine);
+            WaveCountdownRoutine = StartCoroutine(WaveCountdown());
+        }
+
         if (enemyList.Count == 0)
+        {
+            if (WaveCountdownRoutine != null)
+            {
+                StopCoroutine(WaveCountdownRoutine);
+                WaveCountdownRoutine = null;
+            }
             EndWave();
+        }
+    }
+
+    public void SetCurrentRoom(Room newRoom)
+    {
+        currentRoom = newRoom;
+    }
+
+    public void SpawnEnemyAtPosition(Enemy.EnemyType enemyType, Vector3 position)
+    {
+        GetRandomEnemyOfType(enemyType, true).transform.position = position;
+    }
+
+    private IEnumerator WaveCountdown()
+    {
+        yield return new WaitForSeconds(40);
+
+        EndWave();
+        WaveCountdownRoutine = null;
     }
 }

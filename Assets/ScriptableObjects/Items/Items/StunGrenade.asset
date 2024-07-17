@@ -21,6 +21,7 @@ MonoBehaviour:
   description: "Drop a stun on reload, stunning all enemies in 10m(+5m/stack) for
     2s. \nCooldown of 5s(-10%/stack)."
   itemStack: 0
+  alertDuration: 8
   baseStunRadius: 10
   stackStunRadius: 5
   stunCooldownModifier: 0.9

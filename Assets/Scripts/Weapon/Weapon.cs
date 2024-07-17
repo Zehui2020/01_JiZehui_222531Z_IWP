@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DesignPatterns.ObjectPool;
+using Unity.Burst.CompilerServices;
 
 public class Weapon : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class Weapon : MonoBehaviour
     public int totalAmmo;
     private float fireRate;
     private float reloadRate;
+    private float totalDamageModifer = 1f;
+    public int level;
     protected float upgradeDamageModifier = 1f;
 
     [SerializeField] private Transform shellSpawnPoint;
@@ -58,6 +61,7 @@ public class Weapon : MonoBehaviour
         ammoCount = weaponData.ammoPerMag;
         fireRate = 1f;
         reloadRate = 1f;
+        level = 1;
 
         ColdOne.IncreaseFireRate += IncreaseFireRate;
         WarmOne.IncreaseReloadRate += IncreaseReloadRate;
@@ -186,12 +190,14 @@ public class Weapon : MonoBehaviour
     public virtual void ReloadWeapon() { ReloadWeaponEvent?.Invoke(this); }
 
     public virtual void UseWeapon() { ammoCount--; UseWeaponEvent?.Invoke(this); }
-    public virtual void UpgradeWeapon() { upgradeDamageModifier += 0.25f; }
+    public virtual void UpgradeWeapon() { upgradeDamageModifier += 1f; level++; }
 
     public virtual bool DoRaycast(float tracerSize, int numberOfRaycasts)
     {
         bool isHit = false;
         bool headshot = false;
+        bool isKnuckleActive = false;
+        int powerShots = PlayerController.Instance.powerShot;
 
         Dictionary<EnemyStats, bool> enemyHits = new Dictionary<EnemyStats, bool>();
 
@@ -200,6 +206,8 @@ public class Weapon : MonoBehaviour
             Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
             Ray ray = new Ray(Camera.main.transform.position, shootDir);
             RaycastHit hit;
+
+            totalDamageModifer = upgradeDamageModifier;
 
             if (!Physics.Raycast(ray, out hit, Mathf.Infinity, ~playerLayer))
             {
@@ -222,9 +230,10 @@ public class Weapon : MonoBehaviour
             if (enemyStats.health <= 0)
                 continue;
 
-            int damage = (int)(weaponData.damagePerBullet * upgradeDamageModifier);
+            int damage = weaponData.damagePerBullet;
             DamagePopup.ColorType colorType;
 
+            // Check for headshot
             if (hit.collider.CompareTag("Head"))
             {
                 colorType = DamagePopup.ColorType.YELLOW;
@@ -234,23 +243,41 @@ public class Weapon : MonoBehaviour
             else
                 colorType = DamagePopup.ColorType.WHITE;
 
-            Collider[] cols = Physics.OverlapSphere(transform.position, itemStats.minDistance);
-            foreach (Collider col in cols)
-            {
-                if (col.Equals(hit.collider))
-                {
-                    damage = (int)(damage * itemStats.distanceDamageModifier);
-                    break;
-                }
-            }
-
             if (!enemyHits.ContainsKey(enemyStats))
                 enemyHits.Add(enemyStats, headshot);
 
             Vector3 hitDir = (transform.position - hit.point).normalized;
+
+            // Check for crude knife
+            float dist = Vector3.Distance(transform.position, hit.transform.position);
+            if (dist <= itemStats.minDistance)
+                totalDamageModifer += itemStats.distanceDamageModifier;
+
+            // Check for knuckle duster
+            if (enemyStats.health >= enemyStats.maxHealth * itemStats.knuckleHealthThreshold || isKnuckleActive)
+            {
+                isKnuckleActive = true;
+                totalDamageModifer += itemStats.knuckleDamageModifier;
+            }
+
+            // Check for power shots
+            if (powerShots > 0)
+                totalDamageModifer += (itemStats.bootsDamageModifier * powerShots);
+
+            // Tally up damage
+            if (totalDamageModifer > 0)
+                damage = (int)(damage * totalDamageModifer);
+            Debug.Log(totalDamageModifer);
             enemyStats.TakeDamage(damage, hit.point, -hitDir, colorType, true);
 
             isHit = true;
+        }
+
+        // Reset power shots
+        if (powerShots > 0 && isHit)
+        {
+            PlayerController.Instance.powerShot = 0;
+            PlayerController.Instance.RemoveStatusEffect(StatusEffect.StatusEffectType.PowerShot);
         }
 
         foreach (KeyValuePair<EnemyStats, bool> enemyStat in enemyHits)
@@ -262,11 +289,17 @@ public class Weapon : MonoBehaviour
                 else
                     PlayerController.Instance.AddPoints(60);
             }
+            else if (numberOfRaycasts > 1)
+                PlayerController.Instance.AddPoints(30);
             else
                 PlayerController.Instance.AddPoints(10);
         }
 
         return isHit;
+    }
+
+    private void ApplyDamageModifiers(Collider hitCollider, EnemyStats enemyStats)
+    {
     }
 
     public void Swap()

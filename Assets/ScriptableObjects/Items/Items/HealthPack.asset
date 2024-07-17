@@ -20,4 +20,5 @@ MonoBehaviour:
   title: '"Health Pack"'
   description: "Doubles incoming healing \n(It heals you, trust me!)."
   itemStack: 0
+  alertDuration: 3
   healingBonus: 2

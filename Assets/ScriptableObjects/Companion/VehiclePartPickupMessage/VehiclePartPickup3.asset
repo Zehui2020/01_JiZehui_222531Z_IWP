@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
   m_Name: VehiclePartPickup3
   m_EditorClassIdentifier: 
-  message: Perfect! Now bring it back to the truck so we can get out of this hell
-    together kiddo!
+  message: Perfect! Now bring it back to the truck so we can get out of here together!
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3

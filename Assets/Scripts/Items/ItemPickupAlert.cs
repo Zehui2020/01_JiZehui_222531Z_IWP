@@ -22,6 +22,11 @@ public class ItemPickupAlert : MonoBehaviour
 
     private void ShowItem()
     {
+        StartCoroutine(ShowRoutine());
+    }
+
+    private IEnumerator ShowRoutine()
+    {
         itemIcon.sprite = itemsToDisplay[0].spriteIcon;
         title.text = itemsToDisplay[0].title;
         description.text = itemsToDisplay[0].description;
@@ -32,6 +37,10 @@ public class ItemPickupAlert : MonoBehaviour
             description.enableAutoSizing = true;
 
         animator.SetTrigger("show");
+
+        yield return new WaitForSeconds(itemsToDisplay[0].alertDuration);
+
+        animator.SetTrigger("hide");
     }
 
     public void RemoveItem()

@@ -17,12 +17,16 @@ public class Enemy : EnemyStats
     protected EnemyCanvas enemyCanvas;
 
     [SerializeField] private ParticleSystemEmitter firePS;
+    [SerializeField] private ParticleSystemEmitter explodePS;
+    [SerializeField] private Transform explodePos;
 
     public event System.Action<Enemy> EnemyDied;
 
     private Coroutine burnRoutine;
     protected Coroutine stunRoutine;
-    private AudioSource audioSource;
+    protected Coroutine growlRoutine;
+
+    protected AudioSource audioSource;
 
     protected float speedModifier = 1;
 
@@ -38,6 +42,7 @@ public class Enemy : EnemyStats
         aiNavigation.InitNavMeshAgent();
 
         ragdollController.DeactivateRagdoll();
+        enemyCanvas.SetHealthBarActive(false);
     }
 
     public void SpawnEnemy(Vector3 spawnPos)
@@ -130,7 +135,7 @@ public class Enemy : EnemyStats
         ragdollController.ActivateRagdoll(Vector3.zero, enemyData.deathPushbackForce);
 
         int randNum = Random.Range(0, 100);
-        if (randNum <= itemStats.drumReloadPercentage)
+        if (randNum < itemStats.drumReloadPercentage)
         {
             AudioManager.Instance.PlayOneShot(Sound.SoundName.XKillDrum);
             PlayerController.Instance.RefillAmmoClip();
@@ -147,7 +152,15 @@ public class Enemy : EnemyStats
 
     private void CheckDeathExplosion()
     {
+        if (itemStats.dynamiteExplodeRadius == 0)
+            return;
+
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, itemStats.dynamiteExplodeRadius);
+
+        ParticleSystemEmitter explosion = Instantiate(explodePS);
+        explosion.transform.position = explodePos.position;
+        explosion.PlayPS();
+        Destroy(explosion, 5f);
 
         if (hitColliders.Length > 0)
             audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.DynamiteExplode).clip);
@@ -159,8 +172,8 @@ public class Enemy : EnemyStats
                 continue;
 
             Vector3 hitDir = (transform.position - hitCollider.transform.position).normalized;
-            enemy.TakeDamage(itemStats.dynamiteExplodeDamage, Vector3.zero, -hitDir, DamagePopup.ColorType.WHITE, false);
-            enemy.BurnEnemy(5f, 0.5f, (int)(itemStats.dynamiteExplodeDamage * itemStats.dynamiteBurnDamageModifier));
+            enemy.TakeDamage((int)(itemStats.dynamiteExplodeDamage * maxHealth), Vector3.zero, -hitDir, DamagePopup.ColorType.WHITE, false);
+            enemy.BurnEnemy(5f, 0.5f, (int)(itemStats.dynamiteExplodeDamage * itemStats.dynamiteBurnDamageModifier * maxHealth));
         }
     }
 
@@ -227,5 +240,54 @@ public class Enemy : EnemyStats
             enemyCanvas.ApplyStatusEffect(statusEffect, haveTimer, statusEffectCategory, duration);
         else
             enemyCanvas.OnEnemyDie();
+    }
+
+    public void PlayRandomAttackSound()
+    {
+        Sound[] attackSounds = AudioManager.Instance.zombieAttack;
+        int randNum = Random.Range(0, attackSounds.Length);
+        AudioManager.Instance.InitAudioSource(audioSource, attackSounds[randNum]);
+        audioSource.PlayOneShot(attackSounds[randNum].clip);
+    }
+
+    public void PlayRandomDieSound()
+    {
+        if (growlRoutine != null)
+        {
+            StopCoroutine(growlRoutine);
+            growlRoutine = null;
+        }
+
+        Sound[] dieSounds = AudioManager.Instance.zombieDie;
+        int randNum = Random.Range(0, dieSounds.Length);
+        AudioManager.Instance.InitAudioSource(audioSource, dieSounds[randNum]);
+        audioSource.PlayOneShot(dieSounds[randNum].clip);
+    }
+
+    public void PlayRandomGrowlSound(float minDuration, float maxDuration)
+    {
+        if (growlRoutine == null)
+            growlRoutine = StartCoroutine(DoGrowlRoutine(minDuration, maxDuration));
+    }
+
+    private IEnumerator DoGrowlRoutine(float minDuration, float maxDuration)
+    {
+        float randTime = Random.Range(minDuration, maxDuration);
+
+        yield return new WaitForSeconds(randTime);
+
+        Sound[] growlSounds = AudioManager.Instance.zombieDie;
+        int randNum = Random.Range(0, growlSounds.Length);
+        AudioManager.Instance.InitAudioSource(audioSource, growlSounds[randNum]);
+        audioSource.PlayOneShot(growlSounds[randNum].clip);
+
+        growlRoutine = null;
+    }
+
+    public void PlaySound(Sound.SoundName soundName)
+    {
+        Sound sound = AudioManager.Instance.FindSound(soundName);
+        AudioManager.Instance.InitAudioSource(audioSource, sound);
+        audioSource.PlayOneShot(sound.clip);
     }
 }

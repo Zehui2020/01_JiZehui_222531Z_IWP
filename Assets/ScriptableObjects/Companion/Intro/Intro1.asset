@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659fbaa01b60ec84a85f98eb87b1076c, type: 3}
   m_Name: Intro1
   m_EditorClassIdentifier: 
-  message: Damn crummy old radio... how on earth are y'all surviving out there with
-    THIS thing?
+  message: Listen up soldier, I'm only going to say this <color=red>ONCE</color>.
   waitDuration: 2
-  entryDelay: 2
+  entryDelay: 0.5
   textDelay: 0.3
-  timeBtwChars: 0.05
+  timeBtwChars: 0.03
   isPartOfList: 1
   hideAfterMessage: 0
   overridePreviousMessage: 0

@@ -64154,6 +64154,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
+  - time: 1.1666666
+    functionName: PlaySound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 54
+    messageOptions: 0
   - time: 1.6333333
     functionName: OnDamageEventEnd
     data: 

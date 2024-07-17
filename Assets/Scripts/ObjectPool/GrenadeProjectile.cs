@@ -57,7 +57,7 @@ public class GrenadeProjectile : PooledObject
                     enemy.GetComponent<RagdollController>().ExplosionRagdoll(explosionForce, transform.position, explosionRadius);
                 }
                 else
-                    PlayerController.Instance.AddPoints(50);
+                    PlayerController.Instance.AddPoints(30);
             }
         }
 

@@ -21,6 +21,7 @@ public class Chest : PooledObject, IInteractable
     [SerializeField] private bool isStartingChest;
     [SerializeField] private string closeAnimState;
     public bool isOpened = false;
+    private bool hasSetLight = false;
 
     [SerializeField] private Transform itemParent;
     [SerializeField] private TextMeshProUGUI cost;
@@ -43,6 +44,9 @@ public class Chest : PooledObject, IInteractable
         audioSource = GetComponent<AudioSource>();
         cost.text = chestCost.ToString() + "P";
         cost.gameObject.SetActive(false);
+        hasSetLight = false;
+
+        OnInteractEvent += PlayerController.Instance.OnInteractStun;
     }
 
     public void OnInteract()
@@ -55,15 +59,25 @@ public class Chest : PooledObject, IInteractable
             weaponPickup?.PickupWeapon();
             weaponPickup = null;
 
+            SetLights(0);
+            hasSetLight = true;
+
             if (isStartingChest)
-                Destroy(gameObject);
+                Destroy(gameObject, 3f);
 
             return;
         }
 
-        if (isOpened || PlayerController.Instance.GetPoints() < chestCost)
+        if (isOpened)
+        {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
+            return;
+        }
+
+        if (PlayerController.Instance.GetPoints() < chestCost)
         {
             CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
             return;
         }
 
@@ -116,6 +130,9 @@ public class Chest : PooledObject, IInteractable
 
     public void SetLights(int active)
     {
+        if (hasSetLight)
+            return;
+
         if (active == 0)
             spotLight.enabled = false;
         else
@@ -146,6 +163,8 @@ public class Chest : PooledObject, IInteractable
 
         isOpened = false;
         cost.gameObject.SetActive(false);
+        SetLights(1);
+        hasSetLight = false;
 
         if (weaponPickup != null)
         {

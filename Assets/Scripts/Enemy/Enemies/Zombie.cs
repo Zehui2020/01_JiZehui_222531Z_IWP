@@ -44,6 +44,7 @@ public class Zombie : Enemy
                 break;
 
             case ZombieState.DIE:
+                PlayRandomDieSound();
                 aiNavigation.StopNavigation();
                 animator.enabled = false;
                 break;
@@ -65,6 +66,7 @@ public class Zombie : Enemy
         switch (currentState)
         {
             case ZombieState.CHASE:
+                PlayRandomGrowlSound(2, 5);
                 if (!ChasePlayer(enemyData.attackRange))
                     ChangeState(ZombieState.ATTACK);
                 break;

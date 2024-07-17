@@ -11,7 +11,6 @@ public class MovementController : MonoBehaviour
 
     public bool isMoving = false;
     public bool isSprinting = false;
-    private bool isCrouching = false;
     public bool isGrounded = true;
     public bool isOnSlope = false;
 
@@ -44,7 +43,7 @@ public class MovementController : MonoBehaviour
 
     public void ToggleSprint()
     {
-        if (!isMoving || !isGrounded || isCrouching || !canSprint)
+        if (!isMoving || !isGrounded || !canSprint)
             return;
 
         isSprinting = !isSprinting;
@@ -62,29 +61,6 @@ public class MovementController : MonoBehaviour
         {
             isSprinting = sprint;
             moveSpeed = movementData.walkSpeed;
-        }
-    }
-
-    public void ToggleCrouch()
-    {
-        if (!isGrounded)
-            return;
-
-        isCrouching = !isCrouching;
-        isSprinting = false;
-
-        if (isCrouching)
-        {
-            moveSpeed = movementData.crouchSpeed;
-            playerCol.height = 0.8f;
-            playerCol.center = new Vector3(playerCol.center.x, 0.4f, playerCol.center.z);
-            playerRB.AddForce(new Vector3(0, 1, 0) * -10f, ForceMode.Impulse);
-        }
-        else
-        {
-            moveSpeed = movementData.walkSpeed;
-            playerCol.center = new Vector3(playerCol.center.x, 0.9f, playerCol.center.z);
-            playerCol.height = 1.78f;
         }
     }
 
@@ -107,15 +83,8 @@ public class MovementController : MonoBehaviour
         else if (!isMoving && isGrounded)
         {
             playerRB.velocity = Vector3.zero;
-
-            // Disable sprinting if stop moving
             isSprinting = false;
-
-            // Reset move speed
-            if (!isCrouching)
-                moveSpeed = movementData.walkSpeed;
-            else if (isCrouching)
-                moveSpeed = movementData.crouchSpeed;
+            moveSpeed = movementData.walkSpeed;
         }
 
         // If run out of stamina
@@ -136,7 +105,7 @@ public class MovementController : MonoBehaviour
 
     public void HandleJump()
     {
-        if (!canJump || isCrouching || stamina < movementData.jumpStaminaCost * staminaModifier)
+        if (!canJump || stamina < movementData.jumpStaminaCost * staminaModifier)
             return;
 
         if (!isGrounded && !isOnSlope)
@@ -164,17 +133,18 @@ public class MovementController : MonoBehaviour
             return;
 
         Vector3 force;
+
         // Adjust drag & force
         if (isGrounded)
             force = direction * moveSpeed * 10f;
-        else if (!isGrounded)
+        else if (!isGrounded && !canJump)
             force = direction * moveSpeed * 10f * movementData.airMultiplier * moveSpeedModifier;
         else
             force = Vector3.zero;
 
         // Move player
         if (isOnSlope)
-            playerRB.AddForce(GetSlopeMoveDir() * moveSpeed * 10f, ForceMode.Force);
+            playerRB.AddForce(GetSlopeMoveDir() * moveSpeed * 10f * moveSpeedModifier, ForceMode.Force);
         else
             playerRB.AddForce(force * moveSpeedModifier, ForceMode.Force);
 
@@ -227,10 +197,10 @@ public class MovementController : MonoBehaviour
 
         if (isOnSlope)
         {
-            if (playerRB.velocity.magnitude > movementData.walkSpeed)
-                playerRB.velocity = playerRB.velocity.normalized * movementData.walkSpeed;
+            if (playerRB.velocity.magnitude > movementData.sprintSpeed)
+                playerRB.velocity = playerRB.velocity.normalized * movementData.sprintSpeed;
         }
-        else if (currentVel.magnitude > moveSpeed)
+        if (currentVel.magnitude > moveSpeed)
         {
             Vector3 limitVel = currentVel.normalized * moveSpeed;
             playerRB.velocity = new Vector3(limitVel.x, playerRB.velocity.y, limitVel.z);
@@ -244,10 +214,14 @@ public class MovementController : MonoBehaviour
         {
             if (hit.collider.CompareTag("Slope"))
             {
-                slopeHit = hit;
-                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-                isOnSlope = angle < movementData.maxSlopeAngle && angle != 0;
-                return;
+                float dist = Vector3.Distance(groundCheckPosition.position, hit.point);
+                if (dist <= movementData.minGroundDist)
+                {
+                    slopeHit = hit;
+                    float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                    isOnSlope = angle < movementData.maxSlopeAngle && angle != 0;
+                    return;
+                }
             }
         }
 

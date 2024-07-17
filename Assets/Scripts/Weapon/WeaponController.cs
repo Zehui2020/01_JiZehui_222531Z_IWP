@@ -210,4 +210,9 @@ public class WeaponController : MonoBehaviour
     {
         weapons[currentWeapon].ToggleSprint(isSprinting);
     }
+
+    public Weapon GetCurrentWeapon()
+    {
+        return weapons[currentWeapon];
+    }
 }

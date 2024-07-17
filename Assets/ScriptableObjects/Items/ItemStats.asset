@@ -16,8 +16,8 @@ MonoBehaviour:
   critDamage: 200
   sprintSpeedModifier: 1
   burnDamageModifier: 1
-  distanceDamageModifier: 1
-  minDistance: 3
+  distanceDamageModifier: 0
+  minDistance: 2
   critHealAmount: 0
   blockChance: 0
   dynamiteExplodeDamage: 0
@@ -27,4 +27,14 @@ MonoBehaviour:
   relaodRateModifier: 1
   stunGrenadeRadius: 0
   stunGrenadeDuration: 2
+  stunGrenadeCooldown: 5
   shungiteHealing: 0
+  drumReloadPercentage: 0
+  healingBonus: 1
+  jitbStunRadius: 0
+  jitbStunDuration: 5
+  knuckleHealthThreshold: 0.9
+  knuckleDamageModifier: 0
+  bootsDamageModifier: 0
+  bootsStackLimit: 5
+  bootsSprintDuration: 2

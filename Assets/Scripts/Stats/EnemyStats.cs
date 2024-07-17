@@ -44,19 +44,6 @@ public class EnemyStats : Stats
             PlayerController.Instance.Heal(itemStats.critHealAmount);
         }
 
-        // Check for knuckle duster
-        if (health >= maxHealth * itemStats.knuckleHealthThreshold)
-            damage = (int)(damage * itemStats.knuckleDamageModifier);
-
-        // Check for power shots
-        int powerShots = PlayerController.Instance.powerShot;
-        if (powerShots > 0)
-        {
-            damage = (int)(damage * (1 + itemStats.bootsDamageModifier * powerShots));
-            PlayerController.Instance.powerShot = 0;
-            PlayerController.Instance.RemoveStatusEffect(StatusEffect.StatusEffectType.PowerShot);
-        }
-
         DamagePopup damagePopup = ObjectPool.Instance.GetPooledObject("DamagePopup", true).GetComponent<DamagePopup>();
         if (position != Vector3.zero)
             damagePopup.SetupPopup(damage, position, color);

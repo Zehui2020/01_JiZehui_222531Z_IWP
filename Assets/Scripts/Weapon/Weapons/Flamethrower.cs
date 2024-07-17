@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
+using static DamagePopup;
 
 public class Flamethrower : Weapon
 {
@@ -52,16 +54,33 @@ public class Flamethrower : Weapon
             if (!flamethrowerRadius.enemiesInRadius.Contains(enemy))
                 continue;
 
-            int damage = (int)(weaponData.damagePerBullet * upgradeDamageModifier);
-            float distance = Vector3.Distance(PlayerController.Instance.transform.position, enemy.transform.position);
-            if (distance <= itemStats.minDistance)
-                damage = (int)(weaponData.damagePerBullet * itemStats.distanceDamageModifier * upgradeDamageModifier);
+            float totalDamageModifer = upgradeDamageModifier;
+            int damage = weaponData.damagePerBullet;
 
+            // Check for crude knife
+            float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            if (dist <= itemStats.minDistance)
+                totalDamageModifer += itemStats.distanceDamageModifier;
+
+            // Check for knuckle duster
+            if (enemy.health >= enemy.maxHealth * itemStats.knuckleHealthThreshold)
+                totalDamageModifer += itemStats.knuckleDamageModifier;
+
+            // Check for power shots
+            int powerShots = PlayerController.Instance.powerShot;
+            if (powerShots > 0)
+                totalDamageModifer += (itemStats.bootsDamageModifier * powerShots);
+
+            // Tally up damage
+            if (totalDamageModifer > 0)
+                damage = (int)(damage * totalDamageModifer);
             enemy.TakeDamage(damage, Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, true);
+
             if (enemy.health <= 0)
                 PlayerController.Instance.AddPoints(20);
 
-            enemy.BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet / 2f));
+            enemy.BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet * 1.8f));
+            Debug.Log(totalDamageModifer);
         }
     }
 
