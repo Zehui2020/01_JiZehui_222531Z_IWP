@@ -34,7 +34,7 @@ public class Shotgun : Weapon
         ammoCount++;
         totalAmmo--;
 
-        if (ammoCount >= weaponData.ammoPerMag || totalAmmo <= 0)
+        if (ammoCount >= Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier) || totalAmmo <= 0)
             weaponAnimator.SetTrigger("finishReloading");
 
         base.ReloadWeapon();

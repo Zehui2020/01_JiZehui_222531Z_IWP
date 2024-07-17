@@ -58,7 +58,7 @@ public class Weapon : MonoBehaviour
     {
         weaponSway = GetComponent<WeaponSway>();
         weaponAnimator = GetComponent<Animator>();
-        ammoCount = weaponData.ammoPerMag;
+        ammoCount = Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier);
         fireRate = 1f;
         reloadRate = 1f;
         level = 1;
@@ -161,7 +161,7 @@ public class Weapon : MonoBehaviour
         if (currentState != WeaponState.RELOAD && 
             currentState != WeaponState.HIDE &&
             currentState != WeaponState.SHOW &&
-            ammoCount < weaponData.ammoPerMag &&
+            ammoCount < Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier) &&
             totalAmmo > 0)
         {
             ChangeState(WeaponState.RELOAD);
@@ -217,7 +217,7 @@ public class Weapon : MonoBehaviour
 
             ShootTracer(hit.point, hit, tracerSize);
 
-            EnemyStats enemyStats = Utility.Instance.GetTopmostParent(hit.transform).GetComponent<EnemyStats>();
+            Enemy enemyStats = Utility.Instance.GetTopmostParent(hit.transform).GetComponent<Enemy>();
 
             if (enemyStats == null)
             {
@@ -269,6 +269,11 @@ public class Weapon : MonoBehaviour
                 damage = (int)(damage * totalDamageModifer);
             Debug.Log(totalDamageModifer);
             enemyStats.TakeDamage(damage, hit.point, -hitDir, colorType, true);
+
+            // Chance to inflict burn
+            int randNum = Random.Range(0, 100);
+            if (randNum < itemStats.incendiaryChance)
+                enemyStats.BurnEnemy(5f, 1f, (int)((damage * itemStats.incendiaryDamageModifier) / 5f));
 
             isHit = true;
         }
@@ -496,7 +501,7 @@ public class Weapon : MonoBehaviour
 
     public void RefillAmmoClip()
     {
-        ammoCount = weaponData.ammoPerMag;
+        ammoCount = Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier);
         RestockWeaponEvent?.Invoke(this);
     }
 

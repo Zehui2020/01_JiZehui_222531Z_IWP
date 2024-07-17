@@ -35,7 +35,7 @@ public class GrenadeLauncher : Weapon
         totalAmmo--;
 
         AudioManager.Instance.PlayOneShot(Sound.SoundName.GLauncherReloadOnce);
-        if (ammoCount >= weaponData.ammoPerMag || totalAmmo <= 0)
+        if (ammoCount >= Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier) || totalAmmo <= 0)
             weaponAnimator.SetTrigger("finishReloading");
 
         base.ReloadWeapon();

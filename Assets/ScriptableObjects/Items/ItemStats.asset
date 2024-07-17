@@ -38,3 +38,4 @@ MonoBehaviour:
   bootsDamageModifier: 0
   bootsStackLimit: 5
   bootsSprintDuration: 2
+  magSizeModifier: 1.15

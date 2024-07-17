@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/AmmoStash")]
 public class AmmoStash : Item
 {
-    [SerializeField] private int magSizeModifierIncrease;
+    [SerializeField] private float magSizeModifierIncrease;
 
     public override void Initialize()
     {

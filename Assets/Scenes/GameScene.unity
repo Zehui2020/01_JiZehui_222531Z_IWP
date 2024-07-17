@@ -40143,6 +40143,9 @@ MonoBehaviour:
   - {fileID: 1266718588501079155, guid: bf77b3905b529f44b87ce321df8446d5, type: 3}
   - {fileID: 2856794882766520290, guid: c77711e3f496a1447b426a23bb888142, type: 3}
   - {fileID: 3737824990911811514, guid: 1828ea860af464844bd149f2704e8a77, type: 3}
+  - {fileID: 4697083791713992109, guid: 34cf56bf5b49f2242bb4eff94b1a101e, type: 3}
+  - {fileID: 1928865723058050912, guid: 4cca5ed7792b111438e849ffc993ae18, type: 3}
+  - {fileID: 201909722217257629, guid: 9d755ab1df5ef9d4183a11eb4e3bb359, type: 3}
   - {fileID: 6409823374401450125, guid: c9c24a4a782fa3442bf471707d4b0de1, type: 3}
   - {fileID: 5050269549887794390, guid: 4a58d50323d4868418a13e4128e6c6fa, type: 3}
   - {fileID: 1294587799088437096, guid: d65c4c576dae56d4393ea72fa6a89b19, type: 3}
@@ -57412,6 +57415,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6fc21b8b8efb01340a58026feec2de38, type: 2}
   - {fileID: 11400000, guid: ef5871c767b59cf49ae026cd0019a8e4, type: 2}
   - {fileID: 11400000, guid: 0a167c01f96d5f94594251c744430d5d, type: 2}
+  - {fileID: 11400000, guid: 964e22596b030324a952bcb3c3a4a8ef, type: 2}
+  - {fileID: 11400000, guid: f5e1b671d6c9a1641a08b11eaa07b44d, type: 2}
+  - {fileID: 11400000, guid: 58b977581ed6ebe4c8ca96ad885bdcb8, type: 2}
   chestSpawnPoints:
   - {fileID: 703818608}
   - {fileID: 1870571755}

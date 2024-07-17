@@ -461,6 +461,11 @@ public class PlayerController : PlayerStats
 
     public void AddPoints(int amount)
     {
+        // Chance to obtain double points
+        int randNum = Random.Range(0, 100);
+        if (randNum < itemStats.doublePointsChance)
+            amount *= 2;
+
         points += amount;
         OnUpdatePoints?.Invoke(points);
     }

@@ -36,15 +36,15 @@ public class Rifle : Weapon
 
     public override void ReloadWeapon()
     {
-        if (totalAmmo <= weaponData.ammoPerMag)
+        if (totalAmmo <= Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier))
         {
             ammoCount = totalAmmo;
             totalAmmo = 0;
         }
         else
         {
-            totalAmmo -= weaponData.ammoPerMag - ammoCount;
-            ammoCount = weaponData.ammoPerMag;
+            totalAmmo -= Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier) - ammoCount;
+            ammoCount = Mathf.CeilToInt(weaponData.ammoPerMag * itemStats.magSizeModifier);
         }
 
         base.ReloadWeapon();

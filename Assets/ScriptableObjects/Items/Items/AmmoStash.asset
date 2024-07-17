@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96ce5a6e03120046b78538dbf2a6c47, type: 3}
+  m_Name: AmmoStash
+  m_EditorClassIdentifier: 
+  itemStats: {fileID: 11400000, guid: 1b71fc74fd7f8f94685194172023b3b2, type: 2}
+  itemRarity: 0
+  itemType: 16
+  itemCatagory: 2
+  spriteIcon: {fileID: 21300000, guid: 01e3b5770026d314d9a09db62817c0eb, type: 3}
+  title: Ammo Stash
+  description: Increase magazine capacity by 15% (+15%/stack).
+  itemStack: 2
+  alertDuration: 5
+  magSizeModifierIncrease: 0.15

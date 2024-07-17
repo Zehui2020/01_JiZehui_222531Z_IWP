@@ -45,6 +45,11 @@ public class ItemStats : ScriptableObject
 
     public float magSizeModifier;
 
+    public int doublePointsChance;
+
+    public int incendiaryChance;
+    public float incendiaryDamageModifier;
+
     public void ResetStats()
     {
         critRate = 1;
@@ -86,5 +91,10 @@ public class ItemStats : ScriptableObject
         bootsSprintDuration = 2;
 
         magSizeModifier = 1;
+
+        doublePointsChance = 0;
+
+        incendiaryChance = 0;
+        incendiaryDamageModifier = 0;
     }
 }
