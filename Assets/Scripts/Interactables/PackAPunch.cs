@@ -10,7 +10,7 @@ public class PackAPunch : MonoBehaviour, IInteractable
     [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private int packAPunchCost;
-    private int baseCost;
+    [SerializeField] private List<int> tierCosts;
     [SerializeField] private int costIncreasePerLevel;
 
     private bool isInRange = false;
@@ -28,7 +28,6 @@ public class PackAPunch : MonoBehaviour, IInteractable
         cost.text = packAPunchCost.ToString() + "P";
         cost.gameObject.SetActive(false);
         OnInteractEvent += PlayerController.Instance.OnInteractStun;
-        baseCost = packAPunchCost;
     }
 
     private void Update()
@@ -93,6 +92,9 @@ public class PackAPunch : MonoBehaviour, IInteractable
     private void CalculateCost()
     {
         Weapon currentWeapon = PlayerController.Instance.GetCurrentWeapon();
-        packAPunchCost = baseCost + (currentWeapon.level - 1) * costIncreasePerLevel;
+        if (currentWeapon.level - 1 >= tierCosts.Count)
+            return;
+
+        SetCost(tierCosts[currentWeapon.level - 1]);
     }
 }

@@ -205,77 +205,86 @@ public class Weapon : MonoBehaviour
         {
             Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
             Ray ray = new Ray(Camera.main.transform.position, shootDir);
-            RaycastHit hit;
-
+            RaycastHit[] hits = new RaycastHit[1];
             totalDamageModifer = upgradeDamageModifier;
 
-            if (!Physics.Raycast(ray, out hit, Mathf.Infinity, ~playerLayer))
+            // Calculate piercing chance
+            int randNum = Random.Range(0, 100);
+            if (randNum < itemStats.piercingChance)
+                hits = Physics.RaycastAll(ray, Mathf.Infinity, ~playerLayer);
+            else
+                Physics.Raycast(ray, out hits[0], Mathf.Infinity, ~playerLayer);
+
+            if (hits[0].point == Vector3.zero)
             {
                 ShootTracer(firePoint.position + (shootDir * 500f), new RaycastHit(), tracerSize);
                 continue;
             }
 
-            ShootTracer(hit.point, hit, tracerSize);
+            ShootTracer(hits[0].point, hits[0], tracerSize);
 
-            Enemy enemyStats = Utility.Instance.GetTopmostParent(hit.transform).GetComponent<Enemy>();
-
-            if (enemyStats == null)
+            foreach (RaycastHit hit in hits)
             {
-                ObjectPool.Instance.GetPooledObject("StoneHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -hit.normal);
-                continue;
+                Enemy enemyStats = Utility.Instance.GetTopmostParent(hit.transform).GetComponent<Enemy>();
+
+                if (enemyStats == null)
+                {
+                    ObjectPool.Instance.GetPooledObject("StoneHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -hit.normal);
+                    continue;
+                }
+
+                ObjectPool.Instance.GetPooledObject("BloodHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -Camera.main.transform.forward);
+
+                if (enemyStats.health <= 0)
+                    continue;
+
+                int damage = weaponData.damagePerBullet;
+                DamagePopup.ColorType colorType;
+
+                // Check for headshot
+                if (hit.collider.CompareTag("Head"))
+                {
+                    colorType = DamagePopup.ColorType.YELLOW;
+                    damage = (int)(damage * weaponData.headshotMultiplier);
+                    headshot = true;
+                }
+                else
+                    colorType = DamagePopup.ColorType.WHITE;
+
+                if (!enemyHits.ContainsKey(enemyStats))
+                    enemyHits.Add(enemyStats, headshot);
+
+                Vector3 hitDir = (transform.position - hit.point).normalized;
+
+                // Check for crude knife
+                float dist = Vector3.Distance(transform.position, hit.transform.position);
+                if (dist <= itemStats.minDistance)
+                    totalDamageModifer += itemStats.distanceDamageModifier;
+
+                // Check for knuckle duster
+                if (enemyStats.health >= enemyStats.maxHealth * itemStats.knuckleHealthThreshold || isKnuckleActive)
+                {
+                    isKnuckleActive = true;
+                    totalDamageModifer += itemStats.knuckleDamageModifier;
+                }
+
+                // Check for power shots
+                if (powerShots > 0)
+                    totalDamageModifer += (itemStats.bootsDamageModifier * powerShots);
+
+                // Tally up damage
+                if (totalDamageModifer > 0)
+                    damage = (int)(damage * totalDamageModifer);
+                Debug.Log(totalDamageModifer);
+                enemyStats.TakeDamage(damage, hit.point, -hitDir, colorType, true);
+
+                // Chance to inflict burn
+                randNum = Random.Range(0, 100);
+                if (randNum < itemStats.incendiaryChance)
+                    enemyStats.BurnEnemy(5f, 1f, (int)((damage * itemStats.incendiaryDamageModifier) / 5f));
+
+                isHit = true;
             }
-
-            ObjectPool.Instance.GetPooledObject("BloodHitEffect", true).GetComponent<HitEffect>().SetupHitEffect(hit.point, -Camera.main.transform.forward);
-
-            if (enemyStats.health <= 0)
-                continue;
-
-            int damage = weaponData.damagePerBullet;
-            DamagePopup.ColorType colorType;
-
-            // Check for headshot
-            if (hit.collider.CompareTag("Head"))
-            {
-                colorType = DamagePopup.ColorType.YELLOW;
-                damage = (int)(damage * weaponData.headshotMultiplier);
-                headshot = true;
-            }
-            else
-                colorType = DamagePopup.ColorType.WHITE;
-
-            if (!enemyHits.ContainsKey(enemyStats))
-                enemyHits.Add(enemyStats, headshot);
-
-            Vector3 hitDir = (transform.position - hit.point).normalized;
-
-            // Check for crude knife
-            float dist = Vector3.Distance(transform.position, hit.transform.position);
-            if (dist <= itemStats.minDistance)
-                totalDamageModifer += itemStats.distanceDamageModifier;
-
-            // Check for knuckle duster
-            if (enemyStats.health >= enemyStats.maxHealth * itemStats.knuckleHealthThreshold || isKnuckleActive)
-            {
-                isKnuckleActive = true;
-                totalDamageModifer += itemStats.knuckleDamageModifier;
-            }
-
-            // Check for power shots
-            if (powerShots > 0)
-                totalDamageModifer += (itemStats.bootsDamageModifier * powerShots);
-
-            // Tally up damage
-            if (totalDamageModifer > 0)
-                damage = (int)(damage * totalDamageModifer);
-            Debug.Log(totalDamageModifer);
-            enemyStats.TakeDamage(damage, hit.point, -hitDir, colorType, true);
-
-            // Chance to inflict burn
-            int randNum = Random.Range(0, 100);
-            if (randNum < itemStats.incendiaryChance)
-                enemyStats.BurnEnemy(5f, 1f, (int)((damage * itemStats.incendiaryDamageModifier) / 5f));
-
-            isHit = true;
         }
 
         // Reset power shots

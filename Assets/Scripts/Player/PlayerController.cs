@@ -47,6 +47,7 @@ public class PlayerController : PlayerStats
     private void Awake()
     {
         Instance = this;
+        itemStats.ResetStats();
 
         // Get player components
         movementController = GetComponent<MovementController>();
@@ -69,7 +70,6 @@ public class PlayerController : PlayerStats
 
         // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
-        itemStats.ResetStats();
         passiveHealingRoutine = StartCoroutine(PassiveHealing());
     }
 

@@ -40164,6 +40164,7 @@ MonoBehaviour:
   - {fileID: 1674743609866386585, guid: 6353c74a3bef1e447bc6faa2c4d43530, type: 3}
   - {fileID: 1674743609866386585, guid: da08f9fb4dd051f4ebadf9446267cf16, type: 3}
   - {fileID: 5116362361602689271, guid: b845cb59cc81a3345807077f48ce525e, type: 3}
+  - {fileID: 3076915009684066319, guid: 460ce05a47a5d134c978840d19631639, type: 3}
 --- !u!1001 &1395220989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57418,6 +57419,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 964e22596b030324a952bcb3c3a4a8ef, type: 2}
   - {fileID: 11400000, guid: f5e1b671d6c9a1641a08b11eaa07b44d, type: 2}
   - {fileID: 11400000, guid: 58b977581ed6ebe4c8ca96ad885bdcb8, type: 2}
+  - {fileID: 11400000, guid: 7850466dede887e4b9a63fd2754bae18, type: 2}
   chestSpawnPoints:
   - {fileID: 703818608}
   - {fileID: 1870571755}
