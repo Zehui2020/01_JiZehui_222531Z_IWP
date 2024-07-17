@@ -36682,7 +36682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77436ab1a142ee14891f229a74f0aef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorCost: 750
+  doorCost: 200
   cost: {fileID: 1428974445}
   animator: {fileID: 1303132813}
   doorCollider: {fileID: 1943843321}
