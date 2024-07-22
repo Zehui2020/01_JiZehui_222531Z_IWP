@@ -5070,7 +5070,7 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   damageSpawnPoint: {fileID: 4610127074145358828}
-  enemyType: 1
+  enemyType: 0
   enemyData: {fileID: 11400000, guid: 5297c21a836b85c4c846c0c20488f6c1, type: 2}
   enemyCols:
   - {fileID: 8387126299931591157}
