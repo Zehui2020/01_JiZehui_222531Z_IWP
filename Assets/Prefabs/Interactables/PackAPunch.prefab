@@ -1399,7 +1399,7 @@ MonoBehaviour:
   cost: {fileID: 2939014464056263552}
   audioSource: {fileID: 7586053712166450359}
   packAPunchCost: 2000
-  tierCosts: d007000088130000401f0000401f0000f82a0000
+  tierCosts: 58020000d0070000a00f0000401f0000f82a0000
   costIncreasePerLevel: 3000
 --- !u!65 &4220791866685595491
 BoxCollider:

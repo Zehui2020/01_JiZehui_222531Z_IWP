@@ -98,19 +98,19 @@ public class Chest : PooledObject, IInteractable
             case ChestType.Normal:
                 int randNum = Random.Range(0, 100);
                 if (randNum > 20)
-                    DisplayItem(null, 73, 25, 2);
+                    DisplayItem(null, 67, 25, 8);
                 else
                     DisplayWeapon();
                 return;
             case ChestType.Large:
-                DisplayItem(null, 0, 80, 20);
+                DisplayItem(null, 0, 50, 50);
                 return;
             case ChestType.Weapon:
                 DisplayWeapon();
                 return;
         }
 
-        DisplayItem(itemCatagory, 73, 25, 2);
+        DisplayItem(itemCatagory, 67, 25, 8);
     }
 
     private void DisplayItem(Item.ItemCatagory? itemCatagory, float commonRarity, float uncommonRarity, float legenaryRarity)
@@ -179,5 +179,10 @@ public class Chest : PooledObject, IInteractable
 
         Release();
         gameObject.SetActive(false);
+    }
+
+    public bool GetInteracted()
+    {
+        return isOpened;
     }
 }

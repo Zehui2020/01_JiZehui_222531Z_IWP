@@ -19,6 +19,8 @@ public class VehiclePart : MonoBehaviour, IInteractable
     public string vehiclePartName;
 
     public event Action OnInteractEvent;
+    protected bool isInteracted = false;
+    protected bool destroyOnInteract = true;
 
     public void InitInteractable()
     {
@@ -55,11 +57,18 @@ public class VehiclePart : MonoBehaviour, IInteractable
         PlayerController.Instance.AddVehiclePart(this);
 
         CompanionManager.Instance.ShowVehiclePartPickupMessage(this);
+        isInteracted = true;
 
-        Destroy(gameObject);
+        if (destroyOnInteract)
+            Destroy(gameObject);
     }
 
     public void SetCost(int newCost)
     {
+    }
+
+    public bool GetInteracted()
+    {
+        return isInteracted;
     }
 }

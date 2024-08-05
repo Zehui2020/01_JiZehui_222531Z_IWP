@@ -11,6 +11,7 @@ public class EndingVehicle : MonoBehaviour, IInteractable
 
     [SerializeField] private float fixRadius;
     [SerializeField] private float fixDuration;
+    private bool canInteract = false;
 
     [SerializeField] private GameObject floodlights;
     [SerializeField] private GameObject gasTank;
@@ -23,6 +24,12 @@ public class EndingVehicle : MonoBehaviour, IInteractable
 
     public static event Action<VehiclePart.VehiclePartType> OnInteractEvent;
     public event Action OnInteractFailEvent;
+
+    private void OnDisable()
+    {
+        OnInteractEvent = null;
+        OnInteractFailEvent = null;
+    }
 
     public void InitInteractable()
     {
@@ -145,5 +152,18 @@ public class EndingVehicle : MonoBehaviour, IInteractable
                 animator.SetTrigger("tires");
                 break;
         }
+    }
+
+    private void Update()
+    {
+        if (PlayerController.Instance.vehicleParts.Count == 0)
+            canInteract = true;
+        else
+            canInteract = false;
+    }
+
+    public bool GetInteracted()
+    {
+        return canInteract;
     }
 }

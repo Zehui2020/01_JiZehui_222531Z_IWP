@@ -46,6 +46,8 @@ public class Flamethrower : Weapon
 
         List<Enemy> enemiesCopy = new List<Enemy>(flamethrowerRadius.enemiesInRadius);
 
+        bool addPoints = false;
+
         foreach (Enemy enemy in enemiesCopy)
         {
             if (enemy == null)
@@ -76,12 +78,15 @@ public class Flamethrower : Weapon
                 damage = (int)(damage * totalDamageModifer);
             enemy.TakeDamage(damage, Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, true);
 
-            if (enemy.health <= 0)
-                PlayerController.Instance.AddPoints(20);
+            if (enemy.health > 0)
+                addPoints = true;                
 
             enemy.BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet * 1.8f));
             Debug.Log(totalDamageModifer);
         }
+
+        if (addPoints)
+            PlayerController.Instance.AddPoints(15);
     }
 
     public override void UpdateWeapon(float horizontal, float vertical, float mouseX, float mouseY, bool isGrounded)

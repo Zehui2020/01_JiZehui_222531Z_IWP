@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Zombie;
 
 public class Charger : Enemy
 {
@@ -10,17 +9,24 @@ public class Charger : Enemy
         CHASE,
         ATTACK,
         STUN,
-        DIE
+        DIE,
+        IDLE
     }
     public ChargerState currentState = ChargerState.CHASE;
 
     public readonly int Run = Animator.StringToHash("ChargerRun");
     public readonly int Attack = Animator.StringToHash("ChargerAttack");
     public readonly int Stun = Animator.StringToHash("ChargerStun");
+    public readonly int Idle = Animator.StringToHash("ChargerIdle");
     public readonly int Die = Animator.StringToHash("ChargerDie");
 
     public void ChangeState(ChargerState newState)
     {
+        if (stunRoutine != null)
+            return;
+
+        currentState = newState;
+
         switch (newState)
         {
             case ChargerState.CHASE:
@@ -31,19 +37,28 @@ public class Charger : Enemy
                 }
                 animator.CrossFade(Run, 0.1f);
                 break;
+
             case ChargerState.ATTACK:
                 animator.Play(Attack, 0, 0f);
                 animator.CrossFade(Attack, 0.1f);
                 aiNavigation.StopNavigation();
                 break;
+
             case ChargerState.DIE:
                 PlayRandomDieSound();
                 aiNavigation.StopNavigation();
                 animator.enabled = false;
                 break;
+
             case ChargerState.STUN:
                 animator.CrossFade(Stun, 0.1f);
                 break;
+
+            case ChargerState.IDLE:
+                animator.CrossFade(Idle, 0.1f);
+                aiNavigation.StopNavigation();
+                break;
+
             default:
                 break;
         }

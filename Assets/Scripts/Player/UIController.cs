@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class UIController : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class UIController : MonoBehaviour
     private List<ItemUI> itemUIs = new List<ItemUI>();
 
     [SerializeField] private TextMeshProUGUI waveAlertText;
-    private Animator waveAlertAnimator;
+    [SerializeField] private Animator waveAlertAnimator;
     [SerializeField] private TextMeshProUGUI waveNumberText;
 
     [SerializeField] private WeaponUI mainWeaponUI;
@@ -42,12 +43,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private RectTransform crosshairRect;
     [SerializeField] private Image crosshair;
 
+    [SerializeField] private GameObject interactNotification;
+    [SerializeField] private TextMeshProUGUI ammoNotification;
+
     private Coroutine crosshairLerpRoutine;
 
     public void InitUIController()
     {
-        waveAlertAnimator = waveAlertText.GetComponent<Animator>();
-
         EnemySpawner.WaveStarted += OnWaveStart;
         EnemySpawner.WaveEnded += OnWaveEnd;
         PlayerController.OnUpdatePoints += UpdatePointCount;
@@ -238,5 +240,24 @@ public class UIController : MonoBehaviour
     {
         canvas.gameObject.SetActive(false);
         deathCanvas.gameObject.SetActive(true);
+    }
+
+    public void SetInteractNotification(bool active)
+    {
+        interactNotification.SetActive(active);
+    }
+
+    public void SetAmmoNotification(bool show)
+    {
+        if (show)
+        {
+            ammoNotification.text = "<color=yellow>[R] Low Ammo!</color>";
+            ammoNotification.gameObject.SetActive(true);
+        }
+        else
+        {
+            ammoNotification.gameObject.SetActive(false);
+            return;
+        }
     }
 }

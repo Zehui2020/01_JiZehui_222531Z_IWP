@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a7580a6ef0fc724286c93568c1e6c69, type: 3}
   m_Name: MovementData
   m_EditorClassIdentifier: 
-  walkSpeed: 3
+  walkSpeed: 3.5
   crouchSpeed: 2
-  sprintSpeed: 4
+  sprintSpeed: 5
   baseJumpForce: 4.5
   airMultiplier: 0.4
   groundDrag: 5
@@ -23,4 +23,4 @@ MonoBehaviour:
   maxStamina: 100
   staminaRegenRate: 18
   maxSlopeAngle: 100
-  minGroundDist: 0.36
+  minGroundDist: 0.37

@@ -97,4 +97,9 @@ public class PackAPunch : MonoBehaviour, IInteractable
 
         SetCost(tierCosts[currentWeapon.level - 1]);
     }
+
+    public bool GetInteracted()
+    {
+        return interactRoutine == null;
+    }
 }

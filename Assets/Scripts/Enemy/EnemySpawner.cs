@@ -29,8 +29,14 @@ public class EnemySpawner : MonoBehaviour
     public static EnemySpawner Instance;
 
     private int healthIncrease = 0;
-    [SerializeField] private int healthIncreaseAmount = 50;
+    [SerializeField] private int healthIncreaseAmount = 30;
     [SerializeField] private float healthModifier = 1.1f;
+
+    private void OnDisable()
+    {
+        WaveStarted = null;
+        WaveEnded = null;
+    }
 
     private void Awake()
     {
@@ -80,7 +86,7 @@ public class EnemySpawner : MonoBehaviour
     private void IncreaseSpawnAmount()
     {
         if (waveNumber < 20)
-            spawnAmount += 3;
+            spawnAmount += 2;
         else
             spawnAmount = Mathf.Min((int)(0.09 * waveNumber * waveNumber - 0.0029 * waveNumber + 23.9580), 100);
 

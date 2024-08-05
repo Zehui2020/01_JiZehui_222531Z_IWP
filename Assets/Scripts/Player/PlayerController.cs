@@ -44,6 +44,11 @@ public class PlayerController : PlayerStats
 
     public List<VehiclePart.VehiclePartType> vehicleParts = new List<VehiclePart.VehiclePartType>();
 
+    private void OnDisable()
+    {
+        OnUpdatePoints = null;
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -182,7 +187,10 @@ public class PlayerController : PlayerStats
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (collidedInteractable != null)
+            {
                 collidedInteractable.OnInteract();
+                uiController.SetInteractNotification(false);
+            }
         }
 
         if (weaponController.GetFireType() == WeaponData.FireType.SemiAuto)
@@ -352,6 +360,8 @@ public class PlayerController : PlayerStats
 
         if (stunEnemyRoutine == null && itemStats.stunGrenadeRadius > 0)
             stunEnemyRoutine = StartCoroutine(StunEnemyRoutine());
+
+        uiController.SetAmmoNotification(false);
     }
 
     private IEnumerator StunEnemyRoutine()
@@ -404,13 +414,20 @@ public class PlayerController : PlayerStats
 
     private void UseCurrentWeapon()
     {
-        if (weaponController.UseWeapon())
-            ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeFrequency(), weaponController.GetWeaponCamShakeDuration());
-        else if (weaponController.GetCurrentWeapon().ammoCount <= 0)
+        if (!weaponController.UseWeapon())
         {
+            if (weaponController.GetCurrentWeapon().ammoCount > 0)
+                return;
+
             if (weaponController.ReloadWeapon())
                 OnReload();
+
+            return;
         }
+
+        bool show = weaponController.GetCurrentWeapon().ammoCount <= (weaponController.GetCurrentWeapon().weaponData.ammoPerMag * 0.3f);
+        uiController.SetAmmoNotification(show);
+        ShakeCamera(weaponController.GetWeaponCamShakeAmount(), weaponController.GetWeaponCamShakeFrequency(), weaponController.GetWeaponCamShakeDuration());
     }
 
     public void ApplyRecoil(float recoilX, float recoilY)
@@ -442,6 +459,9 @@ public class PlayerController : PlayerStats
         {
             collidedInteractable = interactable;
             interactable.OnEnterRange();
+
+            if (!interactable.GetInteracted())
+                uiController.SetInteractNotification(true);
         }
     }
 
@@ -451,6 +471,7 @@ public class PlayerController : PlayerStats
         {
             collidedInteractable = null;
             interactable.OnExitRange();
+            uiController.SetInteractNotification(false);
         }
     }
 

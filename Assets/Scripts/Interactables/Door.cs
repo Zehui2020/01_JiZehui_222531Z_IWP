@@ -68,4 +68,9 @@ public class Door : MonoBehaviour, IInteractable
         doorCost = newCost;
         cost.text = doorCost.ToString() + "P";
     }
+
+    public bool GetInteracted()
+    {
+        return isOpened;
+    }
 }

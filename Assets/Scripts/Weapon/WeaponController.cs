@@ -188,11 +188,18 @@ public class WeaponController : MonoBehaviour
 
     public bool RestockWeapon()
     {
-        return weapons[currentWeapon].RestockWeapon();
+        if (weapons[currentWeapon].RestockWeapon())
+        {
+            uiController.SetAmmoNotification(false);
+            return true;
+        }
+
+        return false;
     }
 
     public void RefillAmmoClip()
     {
+        uiController.SetAmmoNotification(false);
         weapons[currentWeapon].RefillAmmoClip();
     }
 

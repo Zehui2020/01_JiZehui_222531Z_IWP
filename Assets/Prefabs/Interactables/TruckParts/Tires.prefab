@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vehiclePartType: 4
   vehiclePartName: Tires
-  tireMovementSpeedModifier: 0.5
+  tireMovementSpeedModifier: 0.6
 --- !u!65 &5395930355701337381
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -60,4 +60,9 @@ public class AmmoShelf : MonoBehaviour, IInteractable
         shelfCost = newCost;
         cost.text = shelfCost.ToString() + "P";
     }
+
+    public bool GetInteracted()
+    {
+        return false;
+    }
 }

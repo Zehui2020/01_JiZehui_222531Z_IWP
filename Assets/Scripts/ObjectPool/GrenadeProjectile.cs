@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DesignPatterns.ObjectPool;
+using Unity.Burst.CompilerServices;
 
 public class GrenadeProjectile : PooledObject
 {
@@ -11,16 +12,19 @@ public class GrenadeProjectile : PooledObject
     [SerializeField] private float explosionForce;
     [SerializeField] private int damage;
 
+    private Weapon weapon;
+
     public override void Init()
     {
         projectileRB = GetComponent<Rigidbody>();
     }
 
-    public void SetupProjectile(Vector3 spawnPos, Vector3 shootDir, float ejectForce, int damage)
+    public void SetupProjectile(Weapon weapon, Vector3 spawnPos, Vector3 shootDir, float ejectForce, int damage)
     {
         transform.position = spawnPos;
         transform.forward = shootDir;
         this.damage = damage;
+        this.weapon = weapon;
 
         gameObject.SetActive(true);
 
@@ -39,30 +43,39 @@ public class GrenadeProjectile : PooledObject
             PlayerStats playerStats = col.GetComponent<PlayerStats>();
             Enemy enemy = Utility.Instance.GetTopmostParent(col.transform).GetComponent<Enemy>();
 
-            float distance = Vector3.Distance(PlayerController.Instance.transform.position, col.transform.position);
-            if (distance <= itemStats.minDistance)
-                damage = (int)(damage * itemStats.distanceDamageModifier);
-
             if (playerStats != null)
                 playerStats.TakeDamage(20);
-            else if (enemy != null)
+
+            if (enemy != null)
             {
                 if (enemy.health <= 0)
                     continue;
 
-                enemy.TakeDamage(damage, Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, false);
+                bool isKnuckleActive = false;
+                weapon.AddDamageModifiers(enemy, enemy.transform.position, ref isKnuckleActive);
+
+                enemy.TakeDamage((int)(damage * weapon.totalDamageModifer), Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, false);
+
+                // Chance to inflict burn
+                int randNum = Random.Range(0, 100);
+                if (randNum < itemStats.incendiaryChance)
+                    enemy.BurnEnemy(5f, 1f, (int)((damage * itemStats.incendiaryDamageModifier) / 5f));
+
                 if (enemy.health <= 0)
                 {
-                    PlayerController.Instance.AddPoints(100);
+                    PlayerController.Instance.AddPoints(60);
                     enemy.GetComponent<RagdollController>().ExplosionRagdoll(explosionForce, transform.position, explosionRadius);
                 }
                 else
-                    PlayerController.Instance.AddPoints(30);
+                    PlayerController.Instance.AddPoints(15);
             }
         }
 
         PooledPS pooledPS = ObjectPool.Instance.GetPooledObject("SmallExplosion", true).GetComponent<PooledPS>();
         pooledPS.SetupPS(transform.position);
+
+        PlayerController.Instance.powerShot = 0;
+        PlayerController.Instance.RemoveStatusEffect(StatusEffect.StatusEffectType.PowerShot);
 
         Release();
         gameObject.SetActive(false);

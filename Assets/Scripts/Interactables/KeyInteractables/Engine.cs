@@ -16,6 +16,13 @@ public class Engine : VehiclePart
 
     public override void OnInteract()
     {
+        if (isInteracted)
+            return;
+
+        isInteracted = true;
+
+        base.OnInteract();
+
         engineObjective = new Objective(Objective.ObjectiveType.Progress, "Assemble the Engine");
         ObjectiveManager.Instance.AddObjective(engineObjective);
         engineObjective.OnObjectiveComplete += () => { CompanionManager.Instance.ShowVehiclePartPickupMessage(this); };

@@ -22,6 +22,11 @@ public class StatusEffectUI : MonoBehaviour
 
     private Coroutine TimerRoutine;
 
+    private void OnDisable()
+    {
+        OnTimerUp = null;
+    }
+
     public void RemoveStatus()
     {
         animator.SetTrigger("destroy");

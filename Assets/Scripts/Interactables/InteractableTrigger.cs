@@ -19,4 +19,17 @@ public class InteractableTrigger : MonoBehaviour, IInteractable
     {
         OnInteractEvent?.Invoke();
     }
+
+    public void OnEnterRange()
+    {
+    }
+
+    public void OnExitRange()
+    {
+    }
+
+    public bool GetInteracted()
+    {
+        return false;
+    }
 }

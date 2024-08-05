@@ -15,7 +15,8 @@ public class VehiclePartSpawner : MonoBehaviour
         VehiclePart vehiclePart = Instantiate(vehicleParts[currentVehiclePart], spawnPoints[randSpawnPoint].position, Quaternion.identity);
         vehiclePart.InitInteractable();
 
-        CompanionManager.Instance.ShowVehiclePartFoundMessage(vehiclePart.vehiclePartType);
+        CompanionManager.Instance.ShowVehiclePartFoundMessage(vehiclePart.vehiclePartType, out Objective findPartObjective);
+        vehiclePart.OnInteractEvent += () => { ObjectiveManager.Instance.RemoveObjective(findPartObjective); };
 
         currentVehiclePart++;
         if (currentVehiclePart >= vehicleParts.Count)

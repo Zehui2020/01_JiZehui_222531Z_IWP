@@ -5080,7 +5080,7 @@ MonoBehaviour:
   explodePos: {fileID: 7004774895999554447}
   currentState: 0
   projectileSpawnPos: {fileID: 5522935365566715694}
-  projectileEjectForce: 10
+  projectileEjectForce: 5
 --- !u!114 &5669252508905131785
 MonoBehaviour:
   m_ObjectHideFlags: 0

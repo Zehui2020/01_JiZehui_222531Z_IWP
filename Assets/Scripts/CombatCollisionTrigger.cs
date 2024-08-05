@@ -17,4 +17,9 @@ public class CombatCollisionTrigger : MonoBehaviour
     {
         TriggerEvent?.Invoke(col);
     }
+
+    private void OnDisable()
+    {
+        TriggerEvent = null;
+    }
 }

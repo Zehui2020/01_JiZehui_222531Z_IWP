@@ -43,12 +43,24 @@ public class Enemy : EnemyStats
 
         ragdollController.DeactivateRagdoll();
         enemyCanvas.SetHealthBarActive(false);
+
+        StartCoroutine(FacePlayerRoutine());
     }
 
     public void SpawnEnemy(Vector3 spawnPos)
     {
         transform.position = spawnPos;
         gameObject.SetActive(true);
+    }
+
+    private IEnumerator FacePlayerRoutine()
+    {
+        while (true)
+        {
+            Vector3 dir = Vector3.Normalize(transform.position - PlayerController.Instance.transform.position);
+            transform.forward = -dir;
+            yield return null;
+        }
     }
 
     public bool ChasePlayer(float attackRange)
@@ -88,7 +100,6 @@ public class Enemy : EnemyStats
 
             enemyCanvas.SetHealthBarActive(true);
             TakeDamage((int)(damage * itemStats.burnDamageModifier), Vector3.zero, Vector3.zero, DamagePopup.ColorType.WHITE, true);
-            PlayerController.Instance.AddPoints(3);
             yield return new WaitForSeconds(interval);
             timeRemaining -= interval;
         }
@@ -289,5 +300,10 @@ public class Enemy : EnemyStats
         Sound sound = AudioManager.Instance.FindSound(soundName);
         AudioManager.Instance.InitAudioSource(audioSource, sound);
         audioSource.PlayOneShot(sound.clip);
+    }
+
+    private void OnDisable()
+    {
+        EnemyDied = null;
     }
 }

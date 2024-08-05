@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DesignPatterns.ObjectPool;
+using Unity.Burst.CompilerServices;
 
 public class GrenadeLauncher : Weapon
 {
@@ -24,7 +25,7 @@ public class GrenadeLauncher : Weapon
 
         Vector3 shootDir = GetShotDirection(Camera.main.transform.forward);
         GrenadeProjectile grenadeProjectile = ObjectPool.Instance.GetPooledObject("GrenadeProjectile", false).GetComponent<GrenadeProjectile>();
-        grenadeProjectile.SetupProjectile(firePoint.position, shootDir, weaponData.shellEjectForce, (int)(weaponData.damagePerBullet * upgradeDamageModifier));
+        grenadeProjectile.SetupProjectile(this, firePoint.position, shootDir, weaponData.shellEjectForce, (int)(weaponData.damagePerBullet * upgradeDamageModifier));
 
         ApplyRecoil();
     }

@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour
     public int totalAmmo;
     private float fireRate;
     private float reloadRate;
-    private float totalDamageModifer = 1f;
+    public float totalDamageModifer = 1f;
     public int level;
     protected float upgradeDamageModifier = 1f;
 
@@ -53,6 +53,14 @@ public class Weapon : MonoBehaviour
     public event System.Action<Weapon> ReloadWeaponEvent;
     public event System.Action<Weapon> SwapWeaponEvent;
     public event System.Action<Weapon> RestockWeaponEvent;
+
+    private void OnDisable()
+    {
+        UseWeaponEvent = null;
+        ReloadWeaponEvent = null;
+        SwapWeaponEvent = null;
+        RestockWeaponEvent = null;
+    }
 
     public virtual void InitWeapon()
     {
@@ -190,14 +198,13 @@ public class Weapon : MonoBehaviour
     public virtual void ReloadWeapon() { ReloadWeaponEvent?.Invoke(this); }
 
     public virtual void UseWeapon() { ammoCount--; UseWeaponEvent?.Invoke(this); }
-    public virtual void UpgradeWeapon() { upgradeDamageModifier += 1f; level++; }
+    public virtual void UpgradeWeapon() { upgradeDamageModifier += 0.5f; level++; }
 
     public virtual bool DoRaycast(float tracerSize, int numberOfRaycasts)
     {
         bool isHit = false;
         bool headshot = false;
         bool isKnuckleActive = false;
-        int powerShots = PlayerController.Instance.powerShot;
 
         Dictionary<EnemyStats, bool> enemyHits = new Dictionary<EnemyStats, bool>();
 
@@ -256,26 +263,12 @@ public class Weapon : MonoBehaviour
 
                 Vector3 hitDir = (transform.position - hit.point).normalized;
 
-                // Check for crude knife
-                float dist = Vector3.Distance(transform.position, hit.transform.position);
-                if (dist <= itemStats.minDistance)
-                    totalDamageModifer += itemStats.distanceDamageModifier;
-
-                // Check for knuckle duster
-                if (enemyStats.health >= enemyStats.maxHealth * itemStats.knuckleHealthThreshold || isKnuckleActive)
-                {
-                    isKnuckleActive = true;
-                    totalDamageModifer += itemStats.knuckleDamageModifier;
-                }
-
-                // Check for power shots
-                if (powerShots > 0)
-                    totalDamageModifer += (itemStats.bootsDamageModifier * powerShots);
+                AddDamageModifiers(enemyStats, hit.transform.position, ref isKnuckleActive);
 
                 // Tally up damage
                 if (totalDamageModifer > 0)
                     damage = (int)(damage * totalDamageModifer);
-                Debug.Log(totalDamageModifer);
+
                 enemyStats.TakeDamage(damage, hit.point, -hitDir, colorType, true);
 
                 // Chance to inflict burn
@@ -288,7 +281,7 @@ public class Weapon : MonoBehaviour
         }
 
         // Reset power shots
-        if (powerShots > 0 && isHit)
+        if (PlayerController.Instance.powerShot > 0 && isHit)
         {
             PlayerController.Instance.powerShot = 0;
             PlayerController.Instance.RemoveStatusEffect(StatusEffect.StatusEffectType.PowerShot);
@@ -312,8 +305,23 @@ public class Weapon : MonoBehaviour
         return isHit;
     }
 
-    private void ApplyDamageModifiers(Collider hitCollider, EnemyStats enemyStats)
+    public void AddDamageModifiers(EnemyStats enemyStats, Vector3 hitPosition, ref bool isKnuckleActive)
     {
+        // Check for crude knife
+        float dist = Vector3.Distance(transform.position, hitPosition);
+        if (dist <= itemStats.minDistance)
+            totalDamageModifer += itemStats.distanceDamageModifier;
+
+        // Check for knuckle duster
+        if (enemyStats.health >= enemyStats.maxHealth * itemStats.knuckleHealthThreshold || isKnuckleActive)
+        {
+            isKnuckleActive = true;
+            totalDamageModifer += itemStats.knuckleDamageModifier;
+        }
+
+        // Check for power shots
+        if (PlayerController.Instance.powerShot > 0)
+            totalDamageModifer += (itemStats.bootsDamageModifier * PlayerController.Instance.powerShot);
     }
 
     public void Swap()

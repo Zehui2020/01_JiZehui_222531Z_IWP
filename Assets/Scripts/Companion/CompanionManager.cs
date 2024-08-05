@@ -176,9 +176,37 @@ public class CompanionManager : MonoBehaviour
         }
     }
 
-    public void ShowVehiclePartFoundMessage(VehiclePart.VehiclePartType vehiclePartType)
+    public void ShowVehiclePartFoundMessage(VehiclePart.VehiclePartType vehiclePartType, out Objective findPartObjective)
     {
-        OnMessageFinish += () => { PlayerController.Instance.SetWaveObjectiveToSpawnVehiclePart(3); };
+        Objective objective = null;
+
+        switch (vehiclePartType)
+        {
+            case VehiclePart.VehiclePartType.Floodlights:
+                objective = new Objective(Objective.ObjectiveType.Normal, "Find the Floodlights in the facility");
+                break;
+            case VehiclePart.VehiclePartType.Gas_Tank:
+                objective = new Objective(Objective.ObjectiveType.Normal, "Find the Gas Tank in the facility");
+                break;
+            case VehiclePart.VehiclePartType.Reinforced_Steel:
+                objective = new Objective(Objective.ObjectiveType.Normal, "Find the Vehicle Reinforcement in the facility");
+                break;
+            case VehiclePart.VehiclePartType.Engine:
+                objective = new Objective(Objective.ObjectiveType.Normal, "Find the Engine in the facility");
+                break;
+            case VehiclePart.VehiclePartType.Tires:
+                objective = new Objective(Objective.ObjectiveType.Normal, "Find the Tires in the facility");
+                break;
+        }
+
+        OnMessageFinish += () =>
+        {
+            PlayerController.Instance.SetWaveObjectiveToSpawnVehiclePart(3);
+        };
+
+        ObjectiveManager.Instance.AddObjective(objective);
+
+        findPartObjective = objective;
 
         foreach (VehiclePartFoundMessage message in companionMessenger.vehiclePartFoundMessages)
         {

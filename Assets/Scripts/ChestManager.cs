@@ -151,14 +151,17 @@ public class ChestManager : MonoBehaviour
 
     private void CheckAllChestsOpened()
     {
+        int counter = 0;
+
         foreach (PooledObject pooledObject in chests)
         {
             Chest chest = pooledObject as Chest;
-            if (chest != null && !chest.isOpened)
-                return;
+            if (chest != null && chest.isOpened)
+                counter++;
         }
 
-        StartCoroutine(RespawnChests());
+        if (counter > 3)
+            StartCoroutine(RespawnChests());
     }
 
     private IEnumerator RespawnChests()
@@ -170,7 +173,7 @@ public class ChestManager : MonoBehaviour
             Chest chest = pooledObject as Chest;
             chest.ResetChest();
             chest.OnInteractEvent -= CheckAllChestsOpened;
-        }
+        }   
 
         chests.Clear();
 
