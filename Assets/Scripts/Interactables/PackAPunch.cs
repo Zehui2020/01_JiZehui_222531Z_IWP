@@ -55,20 +55,20 @@ public class PackAPunch : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        if (interactRoutine == null)
+        if (interactRoutine != null)
+            return;
+
+        if (PlayerController.Instance.GetPoints() < packAPunchCost)
+        {
+            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
+            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
+        }
+        else
             interactRoutine = StartCoroutine(InteractRoutine());
     }
 
     private IEnumerator InteractRoutine()
     {
-        if (PlayerController.Instance.GetPoints() < packAPunchCost)
-        {
-            AudioManager.Instance.PlayOneShot(Sound.SoundName.InteractFail);
-            CompanionManager.Instance.ShowRandomMessage(CompanionManager.Instance.companionMessenger.interactionFailMessages);
-            interactRoutine = null;
-            yield break;
-        }
-
         cost.gameObject.SetActive(false);
         PlayerController.Instance.DeductPoints(packAPunchCost);
         PlayerController.Instance.UpgradeCurrentWeapon();
@@ -100,6 +100,6 @@ public class PackAPunch : MonoBehaviour, IInteractable
 
     public bool GetInteracted()
     {
-        return interactRoutine == null;
+        return (interactRoutine == null && PlayerController.Instance.points >= packAPunchCost) ? false : true;
     }
 }

@@ -154,12 +154,15 @@ public class Chest : PooledObject, IInteractable
     public void SetCost(int newCost)
     {
         chestCost = newCost;
-        cost.text = chestCost.ToString() + "P";
+        if (chestCost <= 0)
+            cost.text = "FREE!";
+        else
+            cost.text = chestCost.ToString() + "P";
     }
 
     public void ResetChest()
     {
-        animator.Play(Animator.StringToHash(closeAnimState), 0, 0);
+        animator.SetTrigger("close");
 
         isOpened = false;
         cost.gameObject.SetActive(false);
@@ -183,6 +186,6 @@ public class Chest : PooledObject, IInteractable
 
     public bool GetInteracted()
     {
-        return isOpened;
+        return (!isOpened && PlayerController.Instance.points >= chestCost) ? false : true;
     }
 }

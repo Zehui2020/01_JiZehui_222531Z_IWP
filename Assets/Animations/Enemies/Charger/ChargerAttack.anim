@@ -97910,6 +97910,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
+  - time: 0.8333333
+    functionName: PlayRandomAttackSound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.2666667
     functionName: OnDamageEventEnd
     data: 
@@ -97919,6 +97926,13 @@ AnimationClip:
     messageOptions: 0
   - time: 2.9666667
     functionName: OnDamageEventStart
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.9666667
+    functionName: PlayRandomAttackSound
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

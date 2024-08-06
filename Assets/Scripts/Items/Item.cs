@@ -12,7 +12,7 @@ public class Item : ScriptableObject
 
     public enum ItemType { HDHUD, AdrenalineShot, Gasoline, CrudeKnife, RitualSickle, HoloDie, BundleOfDynamite, ColdOne, WarmOne, 
         StunGrenade, Shungite, XKILLDrum, HealthPack, JackInTheBox, KnuckleDuster, CorruptedBoots, AmmoStash, Abascus, IncendiaryRound,
-        PiercingRound};
+        PiercingRound, BlackCard};
     public ItemType itemType;
 
     public enum ItemCatagory { Damage, Healing, Utility };

@@ -63,6 +63,6 @@ public class AmmoShelf : MonoBehaviour, IInteractable
 
     public bool GetInteracted()
     {
-        return false;
+        return !(PlayerController.Instance.points >= shelfCost);
     }
 }

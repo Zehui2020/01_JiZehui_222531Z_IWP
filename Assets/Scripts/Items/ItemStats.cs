@@ -52,6 +52,8 @@ public class ItemStats : ScriptableObject
 
     public float piercingChance;
 
+    public int freeChests;
+
     public void ResetStats()
     {
         critRate = 1;
@@ -100,5 +102,7 @@ public class ItemStats : ScriptableObject
         incendiaryDamageModifier = 0;
 
         piercingChance = 0;
+
+        freeChests = 0;
     }
 }

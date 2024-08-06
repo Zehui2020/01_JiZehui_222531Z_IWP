@@ -10,6 +10,8 @@ public class ChestManager : MonoBehaviour
     public List<Item> items = new List<Item>();
     [SerializeField] private Transform[] chestSpawnPoints;
 
+    [SerializeField] private int counterToReset = 3;
+    [SerializeField] private ItemStats itemStats;
     [SerializeField] List<PooledObject> startingChests = new List<PooledObject>();
     [SerializeField] List<PooledObject> chests = new List<PooledObject>();
 
@@ -27,6 +29,33 @@ public class ChestManager : MonoBehaviour
 
         foreach (PooledObject chest in startingChests)
             chest.Init();
+
+        EnemySpawner.WaveStarted += (waveNum) => { CheckFreeChests(); };
+    }
+
+    public void CheckFreeChests()
+    {
+        List<Chest> unopenedChests = new List<Chest>();
+        foreach (Chest chest in chests)
+        {
+            if (!chest.isOpened)
+                unopenedChests.Add(chest);
+        }
+
+        if (unopenedChests.Count < itemStats.freeChests)
+        {
+            foreach (Chest chest in unopenedChests)
+                chest.SetCost(0);
+        }
+        else
+        {
+            for (int i = 0; i < itemStats.freeChests; i++)
+            {
+                int randNum = Random.Range(0, unopenedChests.Count);
+                unopenedChests[randNum].SetCost(0);
+                unopenedChests.RemoveAt(randNum);
+            }
+        }
     }
 
     public void SetupChests()
@@ -156,11 +185,11 @@ public class ChestManager : MonoBehaviour
         foreach (PooledObject pooledObject in chests)
         {
             Chest chest = pooledObject as Chest;
-            if (chest != null && chest.isOpened)
+            if (chest != null && !chest.isOpened)
                 counter++;
         }
 
-        if (counter > 3)
+        if (counter > counterToReset)
             StartCoroutine(RespawnChests());
     }
 

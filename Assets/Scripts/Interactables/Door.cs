@@ -71,6 +71,6 @@ public class Door : MonoBehaviour, IInteractable
 
     public bool GetInteracted()
     {
-        return isOpened;
+        return (!isOpened && PlayerController.Instance.points >= doorCost) ? false : true;
     }
 }

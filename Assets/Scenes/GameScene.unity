@@ -20916,7 +20916,7 @@ Terrain:
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
   m_HeightmapMaximumLOD: 0
-  m_ShadowCastingMode: 2
+  m_ShadowCastingMode: 0
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
@@ -40415,6 +40415,7 @@ MonoBehaviour:
   - {fileID: 4697083791713992109, guid: 34cf56bf5b49f2242bb4eff94b1a101e, type: 3}
   - {fileID: 1928865723058050912, guid: 4cca5ed7792b111438e849ffc993ae18, type: 3}
   - {fileID: 201909722217257629, guid: 9d755ab1df5ef9d4183a11eb4e3bb359, type: 3}
+  - {fileID: 1928865723058050912, guid: 3c4a84558bd08944ebae69f5f122ca91, type: 3}
   - {fileID: 6409823374401450125, guid: c9c24a4a782fa3442bf471707d4b0de1, type: 3}
   - {fileID: 5050269549887794390, guid: 4a58d50323d4868418a13e4128e6c6fa, type: 3}
   - {fileID: 1294587799088437096, guid: d65c4c576dae56d4393ea72fa6a89b19, type: 3}
@@ -43880,7 +43881,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystems:
   - {fileID: 1524405162}
-  - {fileID: 0}
 --- !u!199 &1524405161
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -47875,7 +47875,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    maxLights: 50
+    maxLights: 10
   TrailModule:
     enabled: 0
     mode: 0
@@ -57689,6 +57689,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f5e1b671d6c9a1641a08b11eaa07b44d, type: 2}
   - {fileID: 11400000, guid: 58b977581ed6ebe4c8ca96ad885bdcb8, type: 2}
   - {fileID: 11400000, guid: 7850466dede887e4b9a63fd2754bae18, type: 2}
+  - {fileID: 11400000, guid: d1b2bda0917f2d34486d2fa0e458bd4a, type: 2}
   chestSpawnPoints:
   - {fileID: 703818608}
   - {fileID: 1870571755}
@@ -57703,6 +57704,8 @@ MonoBehaviour:
   - {fileID: 1390787401}
   - {fileID: 1589213490}
   - {fileID: 1919611190}
+  counterToReset: 10
+  itemStats: {fileID: 11400000, guid: 1b71fc74fd7f8f94685194172023b3b2, type: 2}
   startingChests:
   - {fileID: 1214983495}
   chests: []
