@@ -32,18 +32,16 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator LoadNewScene(string sceneName)
     {
-        if (sceneName == "MainMenu")
-            yield return new WaitForSeconds(2f);
-
         AudioManager.Instance.FadeAllSound(false, 0.5f, 0f);
         FadeOut();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSecondsRealtime(0.5f);
 
         SceneManager.LoadSceneAsync(sceneName);
+        Time.timeScale = 1.0f;
 
-        yield return new WaitForSeconds(0.5f);
-
+        yield return new WaitForSecondsRealtime(0.5f);
+        
         changeSceneRoutine = null;
     }
 

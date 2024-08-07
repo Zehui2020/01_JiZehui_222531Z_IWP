@@ -65,4 +65,9 @@ public class AmmoShelf : MonoBehaviour, IInteractable
     {
         return !(PlayerController.Instance.points >= shelfCost);
     }
+
+    private void OnDisable()
+    {
+        OnInteractEvent = null;
+    }
 }

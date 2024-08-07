@@ -82,7 +82,6 @@ public class Flamethrower : Weapon
                 addPoints = true;                
 
             enemy.BurnEnemy(baseBurnDuration, baseBurnInterval, (int)(weaponData.damagePerBullet * 1.8f));
-            Debug.Log(totalDamageModifer);
         }
 
         if (addPoints)

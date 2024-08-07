@@ -63,7 +63,9 @@ public class Sound
         Roar,
         Thud,
         Swing,
-        SoftFootstep
+        SoftFootstep,
+        IndoorAmbience,
+        OutdoorAmbience
     }
     public SoundName name;
 
@@ -82,6 +84,8 @@ public class Sound
 
     public bool loop;
     public bool createSource = true;
+    public bool playOnAwake = false;
+    public bool doNotFade = false;
 
     public Coroutine fadeRoutine;
 
@@ -98,7 +102,7 @@ public class Sound
 
         while (time < duration)
         {
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             if (!fadeIn)
                 source.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
             else
@@ -106,8 +110,17 @@ public class Sound
             yield return null;
         }
 
-        source.Stop();
-        source.volume = volume;
+        if (!fadeIn)
+        {
+            source.Stop();
+            source.volume = 0;
+        }
+        else
+        {
+            source.Play();
+            source.volume = targetVolume;
+        }
+
         fadeRoutine = null;
 
         yield break;

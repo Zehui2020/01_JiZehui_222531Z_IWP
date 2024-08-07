@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DesignPatterns.ObjectPool;
 using TMPro;
+using static Sound;
 
 public class Chest : PooledObject, IInteractable
 {
@@ -89,9 +90,9 @@ public class Chest : PooledObject, IInteractable
         OnInteractEvent?.Invoke();
 
         if (chestType == ChestType.Weapon)
-            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.WeaponChestOpen).clip);
+            AudioManager.Instance.PlayOneShot(audioSource, SoundName.WeaponChestOpen);
         else
-            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.NormalChestOpen).clip);
+            AudioManager.Instance.PlayOneShot(audioSource, SoundName.NormalChestOpen);
 
         switch (chestType)
         {
@@ -187,5 +188,10 @@ public class Chest : PooledObject, IInteractable
     public bool GetInteracted()
     {
         return (!isOpened && PlayerController.Instance.points >= chestCost) ? false : true;
+    }
+
+    private void OnDisable()
+    {
+        OnInteractEvent = null;
     }
 }

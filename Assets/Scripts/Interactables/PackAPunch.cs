@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static Sound;
 
 public class PackAPunch : MonoBehaviour, IInteractable
 {
@@ -21,6 +22,11 @@ public class PackAPunch : MonoBehaviour, IInteractable
     private void Start()
     {
         InitInteractable();
+    }
+
+    private void OnDisable()
+    {
+        OnInteractEvent = null;
     }
 
     public void InitInteractable()
@@ -72,7 +78,7 @@ public class PackAPunch : MonoBehaviour, IInteractable
         cost.gameObject.SetActive(false);
         PlayerController.Instance.DeductPoints(packAPunchCost);
         PlayerController.Instance.UpgradeCurrentWeapon();
-        audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.PackAPunchInteract).clip);
+        AudioManager.Instance.PlayOneShot(audioSource, SoundName.PackAPunchInteract);
         OnInteractEvent?.Invoke();
 
         yield return new WaitForSeconds(6f);

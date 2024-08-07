@@ -71,4 +71,9 @@ public class VehiclePart : MonoBehaviour, IInteractable
     {
         return isInteracted;
     }
+
+    private void OnDisable()
+    {
+        OnInteractEvent = null;
+    }
 }

@@ -174,7 +174,7 @@ public class Enemy : EnemyStats
         Destroy(explosion, 5f);
 
         if (hitColliders.Length > 0)
-            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.DynamiteExplode).clip);
+            AudioManager.Instance.PlayOneShot(audioSource, Sound.SoundName.DynamiteExplode);
 
         foreach (var hitCollider in hitColliders)
         {
@@ -257,8 +257,7 @@ public class Enemy : EnemyStats
     {
         Sound[] attackSounds = AudioManager.Instance.zombieAttack;
         int randNum = Random.Range(0, attackSounds.Length);
-        AudioManager.Instance.InitAudioSource(audioSource, attackSounds[randNum]);
-        audioSource.PlayOneShot(attackSounds[randNum].clip);
+        AudioManager.Instance.PlayOneShot(audioSource, attackSounds[randNum].name);
     }
 
     public void PlayRandomDieSound()
@@ -271,8 +270,7 @@ public class Enemy : EnemyStats
 
         Sound[] dieSounds = AudioManager.Instance.zombieDie;
         int randNum = Random.Range(0, dieSounds.Length);
-        AudioManager.Instance.InitAudioSource(audioSource, dieSounds[randNum]);
-        audioSource.PlayOneShot(dieSounds[randNum].clip);
+        AudioManager.Instance.PlayOneShot(audioSource, dieSounds[randNum].name);
     }
 
     public void PlayRandomGrowlSound(float minDuration, float maxDuration)
@@ -289,17 +287,14 @@ public class Enemy : EnemyStats
 
         Sound[] growlSounds = AudioManager.Instance.zombieDie;
         int randNum = Random.Range(0, growlSounds.Length);
-        AudioManager.Instance.InitAudioSource(audioSource, growlSounds[randNum]);
-        audioSource.PlayOneShot(growlSounds[randNum].clip);
+        AudioManager.Instance.PlayOneShot(audioSource, growlSounds[randNum].name);
 
         growlRoutine = null;
     }
 
     public void PlaySound(Sound.SoundName soundName)
     {
-        Sound sound = AudioManager.Instance.FindSound(soundName);
-        AudioManager.Instance.InitAudioSource(audioSource, sound);
-        audioSource.PlayOneShot(sound.clip);
+        AudioManager.Instance.PlayOneShot(audioSource, soundName);
     }
 
     private void OnDisable()

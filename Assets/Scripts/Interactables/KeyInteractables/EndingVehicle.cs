@@ -11,6 +11,7 @@ public class EndingVehicle : MonoBehaviour, IInteractable
 
     [SerializeField] private float fixRadius;
     [SerializeField] private float fixDuration;
+    [SerializeField] private int partsToWin = 5;
     private bool canInteract = false;
 
     [SerializeField] private GameObject floodlights;
@@ -75,7 +76,7 @@ public class EndingVehicle : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        if (vehicleParts.Count >= 5)
+        if (vehicleParts.Count >= partsToWin)
         {
             LevelManager.Instance.LoadScene("WinScreen");
             return;

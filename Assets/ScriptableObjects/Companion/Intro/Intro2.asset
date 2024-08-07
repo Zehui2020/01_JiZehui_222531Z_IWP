@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   message: See the <color=yellow>broken truck</color> near you? That's your ticket
     out of this hell hole. I'll be searching for <color=yellow>spare parts</color>
-    with my UAV recon, and I'll notify you when I find one.
+    with my UAV recon. I'll notify you when I find one.
   waitDuration: 2
   entryDelay: 0
   textDelay: 0.3

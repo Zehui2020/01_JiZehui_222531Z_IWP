@@ -16,23 +16,29 @@ public class MixerManager : MonoBehaviour
     private void Start()
     {
         SetSliders();
+        SetMasterVolume();
+        SetBGMVolume();
+        SetSFXVolume();
     }
 
     public void SetMasterVolume()
     {
-        SetVolume("Master", Mathf.Log10(masterSlider.value) * 20);
+        float volume = masterSlider.value > 0 ? Mathf.Log10(masterSlider.value) * 20 : -80f;
+        SetVolume("Master", volume);
         playerSettings.masterVolume = masterSlider.value;
     }
 
     public void SetBGMVolume()
     {
-        SetVolume("BGM", Mathf.Log10(bgmSlider.value) * 20 + 5);
+        float volume = bgmSlider.value > 0 ? Mathf.Log10(bgmSlider.value) * 20 + 5 : -80f;
+        SetVolume("BGM", volume);
         playerSettings.bgmVolume = bgmSlider.value;
     }
 
     public void SetSFXVolume()
     {
-        SetVolume("SFX", Mathf.Log10(sfxSlider.value) * 20);
+        float volume = sfxSlider.value > 0 ? Mathf.Log10(sfxSlider.value) * 20 : -80f;
+        SetVolume("SFX", volume);
         playerSettings.sfxVolume = sfxSlider.value;
     }
 

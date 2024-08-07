@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DesignPatterns.ObjectPool;
+using static Sound;
 
 public class AmmoShell : PooledObject
 {
@@ -51,9 +52,7 @@ public class AmmoShell : PooledObject
         if (isAudioPlayed)
             return;
 
-        Sound sound = AudioManager.Instance.FindSound(ammoShellSound);
-        AudioManager.Instance.InitAudioSource(audioSource, sound);
-        audioSource.PlayOneShot(sound.clip);
+        AudioManager.Instance.PlayOneShot(audioSource, ammoShellSound);
         isAudioPlayed = true;
     }
 }

@@ -46,6 +46,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject interactNotification;
     [SerializeField] private TextMeshProUGUI ammoNotification;
 
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject FPS;
+
     private Coroutine crosshairLerpRoutine;
 
     public void InitUIController()
@@ -75,6 +78,7 @@ public class UIController : MonoBehaviour
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
+
 
     public void UpdateStaminaBar(float currentStamina, float maxStamina)
     {
@@ -142,7 +146,7 @@ public class UIController : MonoBehaviour
 
     public void OnWaveStart(int waveNumber)
     {
-        waveNumberText.text = waveNumber.ToString();
+        waveNumberText.text = "Wave " + waveNumber;
         waveAlertText.text = "Wave " + waveNumber;
 
         waveAlertAnimator.SetTrigger("show");
@@ -259,5 +263,16 @@ public class UIController : MonoBehaviour
             ammoNotification.gameObject.SetActive(false);
             return;
         }
+    }
+
+    public bool DisplayPauseMenu()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
+        return pauseMenu.activeInHierarchy;
+    }
+
+    public void SetShowFPS(bool active)
+    {
+        FPS.SetActive(active);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using static Sound;
 
 public class Door : MonoBehaviour, IInteractable
 {
@@ -60,7 +61,7 @@ public class Door : MonoBehaviour, IInteractable
         OnInteractEvent?.Invoke();
 
         if (audioSource != null)
-            audioSource.PlayOneShot(AudioManager.Instance.FindSound(Sound.SoundName.DoorOpen).clip);
+            AudioManager.Instance.PlayOneShot(audioSource, SoundName.DoorOpen);
     }
 
     public void SetCost(int newCost)
@@ -72,5 +73,10 @@ public class Door : MonoBehaviour, IInteractable
     public bool GetInteracted()
     {
         return (!isOpened && PlayerController.Instance.points >= doorCost) ? false : true;
+    }
+
+    private void OnDisable()
+    {
+        OnInteractEvent = null;
     }
 }

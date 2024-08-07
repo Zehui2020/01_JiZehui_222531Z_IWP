@@ -54,6 +54,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 1
     clip: {fileID: 8300000, guid: a75abf6529314764fb011df7c4af94fd, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -62,6 +64,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 2
     clip: {fileID: 8300000, guid: 9e11ca2cf31bd384cbae255606a03384, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -70,6 +74,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 3
     clip: {fileID: 8300000, guid: a3a8f4a41ef5bc947869e30e371ca620, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -78,6 +84,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 4
     clip: {fileID: 8300000, guid: 88a9a41aae5d734419f89a7f89d589fa, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -86,6 +94,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 5
     clip: {fileID: 8300000, guid: d0752db0249e1284d82d1cd91a04fdc5, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -94,6 +104,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 6
     clip: {fileID: 8300000, guid: 6ebf4c2c33080494eb3015df8acc0f0e, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -102,6 +114,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 7
     clip: {fileID: 8300000, guid: 143db2679c6359140b510149de0fa795, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -110,6 +124,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 8
     clip: {fileID: 8300000, guid: b5a7a519b6a013d4fb020fafe9601c29, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -118,6 +134,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 9
     clip: {fileID: 8300000, guid: afb234efc91e76249b3b105b69e5395e, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -126,6 +144,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 10
     clip: {fileID: 8300000, guid: 8d8cc043c0f3d65489b7b8edaccbeeb3, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -134,6 +154,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 11
     clip: {fileID: 8300000, guid: db0f84a836ab64049b5625a4c93daa61, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -142,6 +164,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 12
     clip: {fileID: 8300000, guid: 7485d90bab47efd44aa5bcdae727ce76, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -150,6 +174,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 13
     clip: {fileID: 8300000, guid: 871abfc138701c246972e6381b8428e4, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -158,6 +184,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 1
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 14
     clip: {fileID: 8300000, guid: 90ebeff1eb4f9da45b2115579453ba6a, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -166,6 +194,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 15
     clip: {fileID: 8300000, guid: 7ef159e897fd4264592bd7ad67ac8a9e, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -174,6 +204,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 16
     clip: {fileID: 8300000, guid: fd8f7dee7f4c4f347b1932f92fa31ea9, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -182,6 +214,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 17
     clip: {fileID: 8300000, guid: 392340dc9ad3bd049850c401684a0c69, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -190,6 +224,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 18
     clip: {fileID: 8300000, guid: df5850292adfb674784a6fc0034e3b26, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -198,6 +234,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 19
     clip: {fileID: 8300000, guid: 8aded7140e54e43468092444af3a345d, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -206,6 +244,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 20
     clip: {fileID: 8300000, guid: 3c76629eac7ddff45b23fffda8ff57f0, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -214,6 +254,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 21
     clip: {fileID: 8300000, guid: c69d374c60d5341468b3946b670f142d, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -222,6 +264,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 22
     clip: {fileID: 8300000, guid: 7b1c38c1c264a454b97995819c9d09ba, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -230,6 +274,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 23
     clip: {fileID: 8300000, guid: bc38fd9c108f4f4409602121fc5ddf0b, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -238,6 +284,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 24
     clip: {fileID: 8300000, guid: 1f55db65d5a57a84284acd2025059d00, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -246,6 +294,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 25
     clip: {fileID: 8300000, guid: dc046209a4e9b1e4085ddce7018cebe6, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -254,6 +304,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 26
     clip: {fileID: 8300000, guid: 97cb173cdcf443f49ba2102f53c7d27b, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -262,6 +314,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 27
     clip: {fileID: 8300000, guid: 7dd2451d54d4dcb4cb3cd5848d395d51, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -270,6 +324,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 28
     clip: {fileID: 8300000, guid: f5284b5fec0eff54086228eb3ecca692, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -278,6 +334,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 1
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 29
     clip: {fileID: 8300000, guid: 06d1fc525f4fd454288a69ebb10c22ec, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -286,6 +344,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 30
     clip: {fileID: 8300000, guid: 45fe84dcd00fc1146bd85bd89a11c403, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -294,6 +354,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 31
     clip: {fileID: 8300000, guid: bf642bf26a634f640a0aacf2d538a113, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -302,6 +364,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 32
     clip: {fileID: 8300000, guid: 0a45e347d932632419793510e2ac9c10, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -310,6 +374,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 33
     clip: {fileID: 8300000, guid: 7ef5f05c045fba64dad2cd7812dcdd47, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -318,6 +384,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 34
     clip: {fileID: 8300000, guid: 38a44880c612738489b28406ad327672, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -326,6 +394,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 35
     clip: {fileID: 8300000, guid: eafec50043d8a6643bc2ae36b96ca4a8, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -334,6 +404,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 36
     clip: {fileID: 8300000, guid: d56569ffa04105440a042dcf01b4f035, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -342,6 +414,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 37
     clip: {fileID: 8300000, guid: 535f9c17537d7fa4190b8bff87e06ac5, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -350,6 +424,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 38
     clip: {fileID: 8300000, guid: da5053cc83d6c8449845b0aa36e11336, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -358,6 +434,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 1
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 39
     clip: {fileID: 8300000, guid: a94bd4f7ee9cd664bbeeff84ee65b459, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -366,6 +444,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 1
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 40
     clip: {fileID: 8300000, guid: 65ba43234eea19148b7f15e0709749d1, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -374,6 +454,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 41
     clip: {fileID: 8300000, guid: d1a3e24b61833674f81db4c3539dc9b1, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -382,6 +464,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 42
     clip: {fileID: 8300000, guid: b175acd3a3670b4478faa71eadafef6c, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -390,6 +474,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 43
     clip: {fileID: 8300000, guid: d2190def91c62704f8134ba7e0c9ae5c, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -398,6 +484,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 44
     clip: {fileID: 8300000, guid: 95d6ce299e6adcf4da07f7ce268f5fe3, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -406,6 +494,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 45
     clip: {fileID: 8300000, guid: 98c0ef54062a5c54da6489ba264cb8cb, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -414,6 +504,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 46
     clip: {fileID: 8300000, guid: 18bc3bccc457bd14f862146b3776190a, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -422,6 +514,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 47
     clip: {fileID: 8300000, guid: e3df1185491745444baa77620e593aa9, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -430,6 +524,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 48
     clip: {fileID: 8300000, guid: be221663b3fb4aa42965154e3d180821, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -438,6 +534,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 49
     clip: {fileID: 8300000, guid: 6af805f2df6c8f94d8dfea826e630f7b, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -446,6 +544,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 50
     clip: {fileID: 8300000, guid: 66fd092d9f2325c4cb4a42780b0bafcc, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -454,6 +554,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 1
+    playOnAwake: 0
+    doNotFade: 0
   - name: 51
     clip: {fileID: 8300000, guid: 69447d7ee6934eb449b2487c31937ae2, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -462,6 +564,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 52
     clip: {fileID: 8300000, guid: 807b0ca0ffa3da64da165eee80d65d9b, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -470,6 +574,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 53
     clip: {fileID: 8300000, guid: 7dd0178a64cc7ee4ca84e8d2ad332758, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -478,6 +584,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 54
     clip: {fileID: 8300000, guid: 9eaa93f6e6e3d1a45a79e941b2b5163e, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -486,6 +594,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 55
     clip: {fileID: 8300000, guid: 224ec5acfac50834699e3781860f56a6, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -494,39 +604,69 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
+  - name: 56
+    clip: {fileID: 8300000, guid: f53637531b9c062419456b8249bebed0, type: 3}
+    mixerGroup: {fileID: -4921478165539472393, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
+    pitch: 1
+    volume: 0.5
+    source: {fileID: 0}
+    loop: 1
+    createSource: 1
+    playOnAwake: 0
+    doNotFade: 1
+  - name: 57
+    clip: {fileID: 8300000, guid: 6ae9398c928c7f641b7c70bdf5c26e9c, type: 3}
+    mixerGroup: {fileID: -4921478165539472393, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
+    pitch: 1
+    volume: 0.5
+    source: {fileID: 0}
+    loop: 1
+    createSource: 1
+    playOnAwake: 1
+    doNotFade: 1
   zombieGrowl:
   - name: 0
     clip: {fileID: 8300000, guid: 2c88e2c1a9f3ecc43932029837ca1881, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 10
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: bbe2e024fb0af0049b2fcfac0bc193ee, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 10
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: 27d93489d72de614bb957c2757b9876d, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 10
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: 4d613f401ca4bb44494de5a76c6a10e1, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 10
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   zombieAttack:
   - name: 0
     clip: {fileID: 8300000, guid: a6d10b69e2d65934b8fc4e6a617624da, type: 3}
@@ -536,6 +676,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: 67c09cd302432d440a99757716214b7f, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -544,6 +686,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: 7e7831c6b21d241428f6bb87aea8f95f, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -552,6 +696,8 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: f9f3c0930029c334ea92623bd01ea8a9, type: 3}
     mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
@@ -560,36 +706,46 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   zombieDie:
   - name: 0
     clip: {fileID: 8300000, guid: b553a53eec829c54aa52d17fe43645c8, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 5
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: f89186a7a74595b43994f1d7b4e480c8, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 5
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: f8b14cde2c3c2a94c867c48de91629b2, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 5
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0
   - name: 0
     clip: {fileID: 8300000, guid: 65c99cda1bb2e0a4aaedcf6d81965d26, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 7868881172993788651, guid: 6e7897bbf35a119478bb5b858604e54c, type: 2}
     pitch: 1
     volume: 5
     source: {fileID: 0}
     loop: 0
     createSource: 0
+    playOnAwake: 0
+    doNotFade: 0

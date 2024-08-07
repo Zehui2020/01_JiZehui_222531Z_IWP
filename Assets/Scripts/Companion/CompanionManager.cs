@@ -201,7 +201,7 @@ public class CompanionManager : MonoBehaviour
 
         OnMessageFinish += () =>
         {
-            PlayerController.Instance.SetWaveObjectiveToSpawnVehiclePart(3);
+            PlayerController.Instance.SetWaveObjectiveToSpawnVehiclePart();
         };
 
         ObjectiveManager.Instance.AddObjective(objective);
@@ -225,5 +225,10 @@ public class CompanionManager : MonoBehaviour
 
         VehicleToTruckObjective objective = new VehicleToTruckObjective(Objective.ObjectiveType.Normal, "Bring the " + vehiclePart.vehiclePartName + " back to the truck", vehiclePart.vehiclePartType);
         ObjectiveManager.Instance.AddObjective(objective);
+    }
+
+    private void OnDisable()
+    {
+        OnMessageFinish = null;
     }
 }

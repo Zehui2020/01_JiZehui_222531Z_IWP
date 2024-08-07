@@ -42,6 +42,8 @@ public class PlayerController : PlayerStats
     [SerializeField] private VehiclePartSpawner vehiclePartSpawner;
     [SerializeField] private GameObject crudeKnifeRadius;
 
+    [SerializeField] private int itemSpawnInterval = 3;
+
     public List<VehiclePart.VehiclePartType> vehicleParts = new List<VehiclePart.VehiclePartType>();
 
     private void OnDisable()
@@ -86,20 +88,20 @@ public class PlayerController : PlayerStats
         CompanionManager.Instance.OnMessageFinish += () =>
         {
             EnemySpawner.Instance.StartWave(2f);
-            SetWaveObjectiveToSpawnVehiclePart(3);
+            SetWaveObjectiveToSpawnVehiclePart();
         };
 
         LevelManager.Instance.FadeIn();
     }
 
-    public void SetWaveObjectiveToSpawnVehiclePart(int waveNumber)
+    public void SetWaveObjectiveToSpawnVehiclePart()
     {
         waveObjectiveCounter++;
 
         WaveObjective objective = new WaveObjective(
             Objective.ObjectiveType.Normal, 
-            "Survive for " + waveNumber + " waves " + Utility.Instance.ToRoman(waveObjectiveCounter) + " (0/" + waveNumber + ")", 
-            waveNumber);
+            "Survive for " + itemSpawnInterval + " waves " + Utility.Instance.ToRoman(waveObjectiveCounter) + " (0/" + itemSpawnInterval + ")",
+            itemSpawnInterval);
 
         ObjectiveManager.Instance.AddObjective(objective);
         objective.OnObjectiveComplete += vehiclePartSpawner.SpawnVehiclePart;
@@ -214,6 +216,9 @@ public class PlayerController : PlayerStats
             SetADS(false);
             cameraController.SetADS(false);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            TogglePause();
 
         weaponController.UpdateCurrentWeapon(horizontal, vertical, mouseX, mouseY, movementController.isGrounded || movementController.isOnSlope);
         weaponController.SetSprinting(movementController.isSprinting);
@@ -674,6 +679,22 @@ public class PlayerController : PlayerStats
                 continue;
 
             enemy.StunEnemy(itemStats.jitbStunDuration);
+        }
+    }
+
+    public void TogglePause()
+    {
+        if (uiController.DisplayPauseMenu())
+        {
+            Time.timeScale = 0;
+            Cursor.lockState = CursorLockMode.None;
+            AudioManager.Instance.PauseAllSounds();
+        }
+        else
+        {
+            Time.timeScale = 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            AudioManager.Instance.UnpauseAllSounds();
         }
     }
 }

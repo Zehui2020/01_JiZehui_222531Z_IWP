@@ -11,14 +11,24 @@ public class ConsoleManager : MonoBehaviour
     [SerializeField] private Transform indoors;
     [SerializeField] private Transform outdoors;
 
+    private bool isDeveloperMode = false;
+
     private void Awake()
     {
         Instance = this;
         gameObject.SetActive(false);
     }
 
+    public void SetDevMode(bool devMode)
+    {
+        isDeveloperMode = devMode;
+    }
+
     public void SetConsole()
     {
+        if (!isDeveloperMode)
+            return;
+
         if (!gameObject.activeInHierarchy)
         {
             Time.timeScale = 0;

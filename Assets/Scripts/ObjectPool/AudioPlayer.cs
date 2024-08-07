@@ -9,8 +9,7 @@ public class AudioPlayer : PooledObject
 
     public void SetupAudioPlayer(Sound soundToPlay)
     {
-        AudioManager.Instance.InitAudioSource(audioSource, soundToPlay);
-        audioSource.PlayOneShot(soundToPlay.clip);
+        AudioManager.Instance.PlayOneShot(audioSource, soundToPlay.name);
         Deactivate(soundToPlay.clip.length);
     }
 

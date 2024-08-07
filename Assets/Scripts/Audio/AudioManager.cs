@@ -15,37 +15,11 @@ public class AudioManager : MonoBehaviour
     public Sound[] zombieAttack;
     public Sound[] zombieDie;
 
-    private static AudioManager _instance;
-
-    public static AudioManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<AudioManager>();
-
-                if (_instance == null)
-                {
-                    GameObject singletonObject = new GameObject(typeof(AudioManager).Name);
-                    _instance = singletonObject.AddComponent<AudioManager>();
-                }
-            }
-
-            return _instance;
-        }
-    }
+    public static AudioManager Instance;
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
-        if (_instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        Instance = this;
         InitSoundList(sounds);
 
         InitSoundList(zombieGrowl);
@@ -62,6 +36,9 @@ public class AudioManager : MonoBehaviour
 
             s.source = gameObject.AddComponent<AudioSource>();
             InitAudioSource(s.source, s);
+
+            if (s.playOnAwake)
+                s.source.Play();
         }
     }
 
@@ -98,6 +75,13 @@ public class AudioManager : MonoBehaviour
         s.source.PlayOneShot(s.clip);
     }
 
+    public void PlayOneShot(AudioSource source, Sound.SoundName sound)
+    {
+        Sound s = FindSound(sound);
+        InitAudioSource(source, s);
+        source.PlayOneShot(s.clip);
+    }
+
     public void OnlyPlayAfterSoundEnds(Sound.SoundName sound)
     {
         Sound s = FindSound(sound);
@@ -129,13 +113,19 @@ public class AudioManager : MonoBehaviour
     public void PauseAllSounds()
     {
         foreach (Sound s in sounds)
-            s.source.Pause();
+        {
+            if (s.source != null)
+                s.source.Pause();
+        }
     }
 
     public void UnpauseAllSounds()
     {
         foreach (Sound s in sounds)
-            s.source.UnPause();
+        {
+            if (s.source != null)
+                s.source.UnPause();
+        }
     }
 
     public bool CheckIfSoundPlaying(Sound.SoundName sound)
@@ -147,6 +137,9 @@ public class AudioManager : MonoBehaviour
     {
         foreach (Sound s in sounds)
         {
+            if (s.doNotFade)
+                continue;
+
             StopFadeRoutine(s.name);
             s.fadeRoutine = StartCoroutine(s.FadeSoundRoutine(fadeIn, duration, targetVolume));
         }

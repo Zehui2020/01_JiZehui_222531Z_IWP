@@ -222,7 +222,7 @@ public class Weapon : MonoBehaviour
             else
                 Physics.Raycast(ray, out hits[0], Mathf.Infinity, ~playerLayer);
 
-            if (hits[0].point == Vector3.zero)
+            if (hits.Length == 0 || hits[0].point == Vector3.zero)
             {
                 ShootTracer(firePoint.position + (shootDir * 500f), new RaycastHit(), tracerSize);
                 continue;
